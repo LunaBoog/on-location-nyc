@@ -198,6 +198,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     <span class="pill">Jobs <b id="p-jobs">0/7</b></span>
     <span class="pill">Field <b id="p-sq">0/18</b></span>
     <span class="pill">Guide <b id="p-finds">0/17</b></span>
+    <span class="pill" title="Loose trash bags hauled this phase">🗑️ <b id="p-trash">0/10</b></span>
     <span class="pill">$ <b id="p-cash">0</b></span>
     <span class="pill">Rep <b id="p-rep">0</b></span>
     <span class="spacer"></span>
@@ -387,8 +388,8 @@ function buildApartment(){
 function buildHomeBlock(){
   return buildBlock({id:"homeblock",name:"YOUR BLOCK \u00b7 ASTORIA",theme:"resid",facade:"h",w:24,h:13,
     carSpot:{x:10,y:6},arrive:{x:10,y:5,dir:"down"},
-    doors:[{x:4,y:4,to:"apartment",tx:6,ty:7,dir:"up"},{x:17,y:4,to:"rental",tx:7,ty:8,dir:"up"}],
-    placards:[{x:4,t:"HOME"},{x:17,t:"OUTERPRISE"}],
+    doors:[{x:4,y:4,to:"apartment",tx:6,ty:7,dir:"up"}],
+    placards:[{x:4,t:"HOME"}],
     npcs:[
       {id:"hector",name:"Hector",role:"Neighbor",x:8,y:5,
        sprite:sp("#6b5bd2","#4a3da3","#1a1a1a","#7a4a2e"),
@@ -397,8 +398,8 @@ function buildHomeBlock(){
     ],
     props:[
       {id:"car_home",kind:"car",x:10,y:6,solid:true,needCar:true,label:"Your rental car"},
-      {id:"subway",kind:"look",art:"subway",x:21,y:11,solid:true,label:"Subway entrance",
-       body:"The N/W stairs. You COULD take the train \u2014 but locations lives in a car. You carry cones, signs, the whole kit; the train won't cut it."},
+      {id:"subway",kind:"subway",art:"subway",x:21,y:11,solid:true,label:"30 Av station \u00b7 N/W",to:"rentalblock",exit:{x:20,y:11},
+       station:"30 Av",dest:"Queensboro Plaza"},
       {id:"tree_h1",kind:"tree",x:2,y:5,solid:true},
       {id:"tree_h2",kind:"tree",x:22,y:5,solid:true},
       {id:"trash_h",kind:"look",art:"trash",x:13,y:11,solid:true,label:"Curb",
@@ -412,7 +413,7 @@ function buildRental(){
   box(t,1,1,12,1,"=");                    // counter backdrop
   t[9][7]="X";
   return {id:"rental",name:"OUTERPRISE RENT-A-CAR",theme:"civic",tiles:t,
-    doors:[{x:7,y:9,to:"homeblock",tx:17,ty:5,dir:"down"}],
+    doors:[{x:7,y:9,to:"rentalblock",tx:6,ty:5,dir:"down"}],
     npcs:[
       {id:"trevor",name:"Trevor",role:"Outerprise Agent",x:5,y:4,special:"rental",
        sprite:sp("#3fae6a","#2c7a4a","#3a2c1a","#e3bd96",{tie:"#fff"}),
@@ -473,15 +474,15 @@ function buildOffice(){
     npcs:[
       /* -- LOCATIONS OFFICE (left) : your department -- */
       {id:"sal",name:"Ryan",role:"Location Manager",x:3,y:3,
-       sprite:sp("#3f7d6a","#2c5a4c","#3a3a3a","#caa074",{walkie:true}),
+       sprite:sp("#3f7d6a","#2c5a4c","#1c140e","#5c3a22",{walkie:true,dreads:true}),
        chat:["Twenty years working these streets. Rule one: leave every block better than you found it.",
              "Caitlin runs your day; I fight the battles upstairs. You win them on the sidewalk. Welcome to Locations."]},
       {id:"caitlin",name:"Caitlin",role:"Assistant Location Manager (your boss)",x:5,y:3,special:"boss",ticket:"techscout",
-       sprite:sp("#7a4f9c","#5c3a78","#6a3a1e","#efcfb0",{walkie:true,longHair:true}),
+       sprite:sp("#16171c","#0e0f13","#0c0a0d","#f3d5bf",{walkie:true,longHair:true,bangs:true,bandTee:"#cf3a3a",legs:"#0f1014"}),
        chat:["Did you read my email? Good. Then you already know more than half the crew.",
              "Your job is to make my job easy, and my job is to make Ryan's job easy. That's the whole org chart."]},
       {id:"gaby",name:"Amber",role:"Locations Coordinator",x:6,y:3,sideQuest:"holdtiming",
-       sprite:sp("#c8506b","#9c3a52","#1a1a1a","#7a4a2e",{walkie:true}),
+       sprite:sp("#c8506b","#9c3a52","#7a4f2e","#f1d0b6",{walkie:true,longHair:true}),
        chat:["I keep the department's paper moving \u2014 agreements, permits, COIs, the sign log. You break it on the street, I feel it in the files.",
              "Anything you sign or post, photograph it and send it to me. If it isn't in the folder, it didn't happen."]},
       /* -- UPM OFFICE (middle) -- */
@@ -764,8 +765,31 @@ function buildStoopSet(){
   return m;
 }
 
+/* -- Queensboro Plaza: Outerprise Rent-A-Car, one N-train ride from home -- */
+function buildRentalBlock(){
+  return buildBlock({id:"rentalblock",name:"QUEENSBORO PLAZA \u00b7 LIC",theme:"street",facade:"b",w:20,h:13,
+    carSpot:{x:10,y:6},arrive:{x:10,y:5,dir:"down"},
+    doors:[{x:6,y:4,to:"rental",tx:7,ty:8,dir:"up"}],
+    placards:[{x:6,t:"OUTERPRISE"}],
+    npcs:[
+      {id:"ines",name:"In\u00e9s",role:"Commuter",x:13,y:11,
+       sprite:sp("#3a6ea5","#274d76","#3d2f22","#c98d64",{longHair:true}),
+       chat:["Outerprise? Right there, under the tracks. Tell Trevor Ines sent you \u2014 he won't know who that is, but it's fun.",
+             "Every film crew in Queens rents from that counter. You're the third one this week."]},
+    ],
+    props:[
+      {id:"car_rent",kind:"car",x:10,y:6,solid:true,needCar:true,label:"Your rental car"},
+      {id:"subwayQP",kind:"subway",art:"subway",x:16,y:11,solid:true,label:"Queensboro Plaza station \u00b7 N/W",to:"homeblock",exit:{x:15,y:11},
+       station:"Queensboro Plaza",dest:"30 Av"},
+      {id:"tree_r1",kind:"tree",x:2,y:5,solid:true},
+      {id:"lightR1",kind:"light",x:4,y:5,solid:false},{id:"lightR2",kind:"light",x:15,y:5,solid:false},
+      {id:"rentSign",kind:"look",art:"sign",x:3,y:11,solid:true,label:"Rental lot sign",
+       body:"OUTERPRISE RENT-A-CAR \u00b7 CORPORATE ACCOUNTS WELCOME. 'We'll pick you up!' (They will not pick you up. You took the train.)"},
+    ]});
+}
+
 const MAPS={
-  apartment:buildApartment(), homeblock:buildHomeBlock(), rental:buildRental(),
+  apartment:buildApartment(), homeblock:buildHomeBlock(), rentalblock:buildRentalBlock(), rental:buildRental(),
   officeblock:buildOfficeBlock(), office:buildOffice(),
   cityblock:buildCityBlock(), cityoffice:buildCityOffice(),
   setblock:buildSetBlock(),
@@ -780,7 +804,8 @@ for(const mid in MAPS)for(const n of (MAPS[mid].npcs||[]))CAST[n.id]={name:n.nam
 
 /* drivable destinations for the CAR fast-travel menu (unlocked progressively) */
 const DRIVABLE={
-  homeblock:{label:"Your Block",sub:"Apartment & the rental counter",icon:"\uD83C\uDFE0"},
+  homeblock:{label:"Your Block",sub:"Your apartment in Astoria",icon:"\uD83C\uDFE0"},
+  rentalblock:{label:"Outerprise Rent-A-Car",sub:"Queensboro Plaza \u00b7 the rental counter",icon:"\uD83D\uDD11"},
   officeblock:{label:"Production Office",sub:"Your department, the crew, the copier",icon:"\uD83C\uDFAC"},
   cityblock:{label:"City Film Office",sub:"Permits \u00b7 insurance \u00b7 water \u00b7 tax",icon:"\uD83C\uDFDB\uFE0F"},
   scoutblock:{label:"Scout Neighborhood",sub:"Halloran's brownstone & the block",icon:"\uD83D\uDD0D"},
@@ -1117,6 +1142,7 @@ const BADGES={
   nolife:{icon:"🧠",name:"No Lifelines",note:"Wrap the show without calling Amber for help."},
   wrap:{icon:"🍾",name:"That's a Wrap",note:"Finish the show."},
   hotdog:{icon:"🌭",name:"Frankly Excellent",note:"Wrap the show as Frank, in the hotdog suit."},
+  sweep:{icon:"\uD83D\uDDD1\uFE0F",name:"Clean Sweep",note:"Haul all 10 loose trash bags in a single phase."},
   lucky:{icon:"🍀",name:"Lucky Scratch",note:"Win on a bodega scratcher. (Then pay the P-Card back.)"},
 };
 
@@ -1300,6 +1326,8 @@ function drawPortraitInto(cnv,pal){
     if(pal.vest){c.fillStyle="#ffd84a";c.fillRect(6,24,4,8);c.fillRect(22,24,4,8);c.fillStyle="#cfcfcf";c.fillRect(4,27,24,1);}
     else if(pal.tie){c.fillStyle="#fff";c.fillRect(13,24,6,4);c.fillStyle=pal.tie;c.fillRect(15,24,3,8);}
     else if(pal.apron){c.fillStyle=pal.apron;c.fillRect(11,26,10,6);}
+    else if(pal.bandTee){c.fillStyle="#e9ecf4";c.fillRect(11,25,10,6);c.fillStyle=pal.bandTee;c.fillRect(13,26,6,1);c.fillRect(14,27,4,2);c.fillRect(15,29,2,1);
+      c.fillStyle="#1a1a1a";c.fillRect(12,30,8,1);}
     else if(pal.accent&&!pal.studs){c.fillStyle=pal.accent;c.fillRect(4,24,24,2);}
     if(pal.studs){c.fillStyle="#c9ccd4";c.fillRect(6,25,2,2);c.fillRect(10,24,2,2);c.fillRect(20,24,2,2);c.fillRect(24,25,2,2);
       c.fillStyle="#3a3f4d";c.fillRect(15,24,2,8);} // zipper
@@ -1314,8 +1342,13 @@ function drawPortraitInto(cnv,pal){
   else if(pal.mohawk){c.fillStyle=pal.hair;c.fillRect(8,5,16,2); // shaved sides
     c.fillStyle=pal.mohawk;c.fillRect(13,0,6,7);c.fillRect(14,-1,4,3);
     c.fillStyle="rgba(255,255,255,.20)";c.fillRect(14,0,1,6);}
+  else if(pal.dreads){c.fillStyle=pal.hair;c.fillRect(7,2,18,7);c.fillRect(8,1,16,2);
+    for(const [x,len] of [[4,20],[6,23],[8,14],[22,14],[24,23],[26,20]])c.fillRect(x,6,2,len);
+    c.fillStyle="rgba(255,255,255,.10)";for(const x of [4,6,24,26])for(let y=9;y<26;y+=4)c.fillRect(x,y,2,1);
+    c.fillStyle="#caa074";c.fillRect(6,28,2,1);c.fillRect(24,28,2,1);}
   else if(pal.longHair){c.fillStyle=pal.hair;c.fillRect(7,3,18,6);c.fillRect(5,7,5,18);c.fillRect(22,7,5,18);c.fillRect(7,8,2,8);c.fillRect(23,8,2,8);}
   else{c.fillStyle=pal.hair;c.fillRect(7,4,18,5);c.fillRect(7,8,3,5);c.fillRect(22,8,3,5);}
+  if(pal.bangs){c.fillStyle=pal.hair;c.fillRect(8,6,16,5);c.fillStyle="rgba(0,0,0,.25)";c.fillRect(11,10,1,1);c.fillRect(15,10,1,1);c.fillRect(20,10,1,1);}
   if(pal.hat&&pal.capBack){c.fillStyle=pal.hat;c.fillRect(6,2,20,6);c.fillRect(4,4,4,6);c.fillStyle="rgba(255,255,255,.12)";c.fillRect(6,2,20,2);}
   else if(pal.hat){c.fillStyle=pal.hat;c.fillRect(6,2,20,5);c.fillRect(5,6,22,2);}
   // face
@@ -1747,7 +1780,7 @@ function lightGlow(sx,sy){const r=isNight()?64:30,a=isNight()?0.5:0.18;const g=c
 function drawPerson(sx,sy,pal,dir,frame,t){
   ctx.fillStyle="rgba(0,0,0,.22)";ctx.beginPath();ctx.ellipse(sx+16,sy+29,10,4,0,0,7);ctx.fill();
   const sw=frame?2:0, idle=Math.round(Math.sin((t||0)/520+sx)*0.5);
-  ctx.fillStyle="#2a2f3a";ctx.fillRect(sx+11,sy+22-sw,4,7);ctx.fillRect(sx+17,sy+22+sw,4,7);
+  ctx.fillStyle=pal.legs||"#2a2f3a";ctx.fillRect(sx+11,sy+22-sw,4,7);ctx.fillRect(sx+17,sy+22+sw,4,7);
   if(pal.costume==="hotdog"){ // full-body bun
     ctx.fillStyle="#e8b46a";ctx.fillRect(sx+7,sy+11+idle,5,14);ctx.fillRect(sx+20,sy+11+idle,5,14);
     ctx.fillStyle="#f2c88a";ctx.fillRect(sx+7,sy+11+idle,5,2);ctx.fillRect(sx+20,sy+11+idle,5,2);
@@ -1760,6 +1793,7 @@ function drawPerson(sx,sy,pal,dir,frame,t){
     if(pal.vest){ctx.fillStyle="#ffd84a";ctx.fillRect(sx+10,sy+13+idle,4,11);ctx.fillRect(sx+18,sy+13+idle,4,11);ctx.fillStyle="#cfcfcf";ctx.fillRect(sx+9,sy+17+idle,14,2);}
     else if(pal.apron){ctx.fillStyle=pal.apron;ctx.fillRect(sx+12,sy+15+idle,8,9);}
     else if(pal.tie){ctx.fillStyle=pal.tie;ctx.fillRect(sx+15,sy+13+idle,2,8);}
+    else if(pal.bandTee){ctx.fillStyle="#e9ecf4";ctx.fillRect(sx+12,sy+15+idle,8,5);ctx.fillStyle=pal.bandTee;ctx.fillRect(sx+14,sy+16+idle,4,1);ctx.fillRect(sx+15,sy+17+idle,2,2);}
     else if(pal.studs){ctx.fillStyle="#3a3f4d";ctx.fillRect(sx+15,sy+13+idle,2,11);
       ctx.fillStyle="#c9ccd4";ctx.fillRect(sx+10,sy+14+idle,1,1);ctx.fillRect(sx+12,sy+13+idle,1,1);ctx.fillRect(sx+19,sy+13+idle,1,1);ctx.fillRect(sx+21,sy+14+idle,1,1);}
     else if(pal.accent){ctx.fillStyle=pal.accent;ctx.fillRect(sx+9,sy+13+idle,14,2);}
@@ -1770,8 +1804,13 @@ function drawPerson(sx,sy,pal,dir,frame,t){
   if(pal.afro){ctx.fillStyle=pal.hair;ctx.beginPath();ctx.arc(sx+16,sy+4+idle,7,0,7);ctx.fill();ctx.fillRect(sx+9,sy+3+idle,14,3);}
   else if(pal.mohawk){ctx.fillStyle=pal.hair;ctx.fillRect(sx+11,sy+3+idle,10,2);
     ctx.fillStyle=pal.mohawk;ctx.fillRect(sx+14,sy-2+idle,4,7);}
+  else if(pal.dreads){ctx.fillStyle=pal.hair;ctx.fillRect(sx+10,sy+1+idle,12,5);
+    for(const [dx,len] of [[8,13],[10,15],[20,15],[22,13]])ctx.fillRect(sx+dx,sy+4+idle,2,len);
+    if(dir==="up")for(let i=0;i<5;i++)ctx.fillRect(sx+11+i*2,sy+4+idle,1,13-(i%2)*2);
+    ctx.fillStyle="rgba(255,255,255,.10)";for(const dx of [8,10,20,22])ctx.fillRect(sx+dx,sy+7+idle,1,1),ctx.fillRect(sx+dx+1,sy+11+idle,1,1);}
   else if(pal.longHair){ctx.fillStyle=pal.hair;ctx.fillRect(sx+10,sy+2+idle,12,4);ctx.fillRect(sx+9,sy+4+idle,3,12);ctx.fillRect(sx+20,sy+4+idle,3,12);}
   else{ctx.fillStyle=pal.hair;ctx.fillRect(sx+10,sy+2+idle,12,4);}
+  if(pal.bangs&&dir!=="up"){ctx.fillStyle=pal.hair;ctx.fillRect(sx+11,sy+4+idle,10,2);ctx.fillRect(sx+11,sy+6+idle,2,1);ctx.fillRect(sx+19,sy+6+idle,2,1);}
   if(pal.hat&&pal.capBack){ctx.fillStyle=pal.hat;ctx.fillRect(sx+10,sy+1+idle,12,4);ctx.fillRect(sx+8,sy+3+idle,3,3);}
   else if(pal.hat){ctx.fillStyle=pal.hat;ctx.fillRect(sx+9,sy+1+idle,14,4);ctx.fillRect(sx+8,sy+4+idle,16,2);}
   if(pal.beard&&dir!=="up"){ctx.fillStyle=pal.beard;ctx.fillRect(sx+12,sy+10+idle,8,3);}
@@ -1889,6 +1928,7 @@ function drawDriving(now){
 
 function draw(faced,now){
   if(S.drive){drawDriving(now);drawSnow(lastDt);return;}
+  if(S.train){drawTrain(now);return;}
   const m=curMap(), MW=m.tiles[0].length, MH=m.tiles.length;
   let camX=Math.round(S.px+16-VIEW_W*TILE/2), camY=Math.round(S.py+16-VIEW_H*TILE/2);
   camX=Math.max(0,Math.min(camX,MW*TILE-VIEW_W*TILE));
@@ -1962,13 +2002,14 @@ function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
     <p>Hi ${nm},</p>
     <p>Welcome to the Locations Department! You're our new <b>Locations Assistant</b> on <b>Mission Implausible: The Pridwin</b>, a feature shooting in Brooklyn. Our hero location is <b>Mr. Halloran's brownstone</b>: two days inside, plus a big stoop scene out on the public sidewalk. Lots of permits, lots of neighbors, one very old fireplace.</p>
     <p class="em-sec">TODAY \u00b7 PREP DAY 1</p>
-    <ul><li><b>First:</b> pick up your rental at <b>Outerprise Rent-A-Car</b>, right on your block. It's booked on the production account; just ask for Trevor.</li>
+    <ul><li><b>First:</b> hop on the <b>N train</b> at 30 Av (end of your block) to <b>Queensboro Plaza</b> and pick up your rental at <b>Outerprise Rent-A-Car</b>. It's booked on the production account; just ask for Trevor.</li>
     <li><b>Then:</b> drive to the <b>production office in LIC</b> and find me in the Locations office. I've got your <b>E-ZPass</b>, <b>P-Card</b> and a float of petty cash.</li>
     <li><b>After that:</b> the tech scout with the department heads, scouting the brownstone, meeting the neighbors, and pulling our <b>City film permit</b>.</li></ul>
     <p class="em-sec">THE REST OF THE WEEK</p>
     <ul><li><b>Shoot:</b> the rain sequence (a water question for DEP), posting our No Parking signs, and lock-ups on the stoop day.</li>
     <li><b>Wrap:</b> we give the block back cleaner than we found it. Every sign, every bag, every thank-you.</li></ul>
     <p>Ryan's only rule: <i>leave every block better than you found it.</i> Keep your phone on and your walkie charged once you get one.</p>
+    <p><b>P.S.</b> Ryan's paying a clean-block bonus this show: see a loose trash bag anywhere we work, haul it. Find all ten in a phase and there's cash in it.</p>
     <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
     <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
   if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>Space</b> to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
@@ -2025,7 +2066,7 @@ function openRental(){const tr=CAST.trevor;openModal("Outerprise Rent-A-Car","Pi
   p(`You sign once and it's yours for the shoot.`,"muted");
   actBtn("\uD83D\uDE97 Take the keys",()=>{
     S.setHasCar(true);
-    if(!S.unlocked.has("officeblock"))S.unlock("officeblock");
+    if(!S.unlocked.has("officeblock"))S.unlock("officeblock");S.unlock("rentalblock");
     mbody.innerHTML="";
     p(`Keys in hand. Your silver sedan's parked right outside.`);
     mbody.appendChild(el("div","banner ok","\uD83D\uDE97 <b>Rental car unlocked.</b> Head outside, tap the car, and drive to the <b>Production Office</b> to meet Caitlin."));
@@ -2080,6 +2121,7 @@ function openCarMenu(){openModal("Your Rental Car","Where to?");
   actBtn("Stay here",closeModal,"act ghost");}
 function lockReason(id){
   if(id==="officeblock")return "Pick up your rental first";
+  if(id==="rentalblock")return "Take the N train there first";
   if(id==="cityblock"||id==="scoutblock")return "Unlocks once Caitlin gives you the day's list";
   if(id==="setblock")return "Unlocks when the company starts shooting (finish Prep)";
   return "Locked";}
@@ -2172,7 +2214,8 @@ function openDiscoveries(){openModal("Field Guide","Keepsakes & lessons");
 function openWhereAmI(){const m=curMap();openModal("Where am I?",m.name);
   const here={
     apartment:"Your apartment. Grab your stuff and head out to the block \u2014 the rental counter is your first stop.",
-    homeblock:"Your block in Astoria. Outerprise Rent-A-Car is here; pick up the car, then drive to the office.",
+    homeblock:"Your block in Astoria. The 30 Av N/W station is at the end of the block \u2014 Outerprise Rent-A-Car is one train ride away at Queensboro Plaza.",
+    rentalblock:"Queensboro Plaza, under the elevated tracks. Outerprise Rent-A-Car is the door up top; the station is on the corner if you need the train home.",
     rental:"Outerprise Rent-A-Car. Take the keys from Trevor, then go tap your car outside.",
     officeblock:"The production office district in LIC. The office door is up top; the working trucks stage at the SET block now.",
     office:"The production office. Private offices along the top: Locations (Ryan, Caitlin & Amber), the UPM, the director's suite. Cubicles in the middle, copy room bottom-left (Priya & the set signs), kitchen bottom-right. Poke around \u2014 the drawers are worth it.",
@@ -2247,7 +2290,7 @@ const S={
   moving:false,fromX:0,fromY:0,toX:0,toY:0,moveStart:0,stepFrame:0,transition:null,drive:null,
   phase:"PREP",solved:new Set(),sqSolved:new Set(),flags:new Set(),finds:new Set(),
   coins:0,rep:0,name:"",soundOn:true,hasCar:false,charIdx:0,unlocked:new Set(["homeblock"]),
-  signs:new Set(),pulled:new Set(),receipts:[],stats:{},lingo:new Set(),badges:new Set(),bought:{},musicOn:true,
+  trash:{phase:null,spots:[],paid:false},signs:new Set(),pulled:new Set(),receipts:[],stats:{},lingo:new Set(),badges:new Set(),bought:{},musicOn:true,
   setFlag(f){this.flags.add(f);saveSet("flags",this.flags);},
   addFind(f){if(!this.finds.has(f)){this.finds.add(f);saveSet("finds",this.finds);updateHUD();if(started&&FINDS[f])addFloat(FINDS[f].icon+" "+FINDS[f].name,"#e9ecf4");}},
   addCoins(n){this.coins=Math.max(0,this.coins+n);saveNum("coins",this.coins);updateHUD();if(started&&n&&!this.drive)addFloat((n>0?"+$":"\u2212$")+Math.abs(n),n>0?"#5fd08a":"#e8743b");},
@@ -2268,10 +2311,10 @@ function restore(){
   S.hasCar=loadBool("hasCar",false);
   S.charIdx=Math.max(0,Math.min(CHARS.length-1,loadNum("charIdx",0)));
   S.unlocked=loadSet("unlocked",["homeblock"]);S.unlocked.add("homeblock");
-  if(S.hasCar)S.unlocked.add("officeblock");
+  if(S.hasCar){S.unlocked.add("officeblock");S.unlocked.add("rentalblock");}
   if(S.flags.has("kit")){S.unlocked.add("cityblock");S.unlocked.add("scoutblock");}
   S.signs=loadSet("signs");S.pulled=loadSet("pulled");S.receipts=loadJSON("receipts",[]);S.stats=loadJSON("stats",{});
-  S.lingo=loadSet("lingo");S.badges=loadSet("badges");S.bought=loadJSON("bought",{});S.musicOn=loadBool("musicOn",true);
+  S.trash=loadJSON("trash",{phase:null,spots:[],paid:false});S.lingo=loadSet("lingo");S.badges=loadSet("badges");S.bought=loadJSON("bought",{});S.musicOn=loadBool("musicOn",true);
   if(S.map==="stoopset"){S.map="scoutblock";S.x=5;S.y=5;S.px=S.x*TILE;S.py=S.y*TILE;}
   if(S.hasCar||S.flags.has("kit")||S.solved.size){S.flags.add("dayStarted");S.flags.add("hasBag");saveSet("flags",S.flags);}
   S.drive=null;advancePhaseAfter();
@@ -2284,6 +2327,7 @@ function updateHUD(){
   document.getElementById("p-sq").textContent=S.sqSolved.size+"/"+SQTOTAL;
   document.getElementById("p-finds").textContent=S.finds.size+"/"+FINDTOTAL;
   document.getElementById("p-cash").textContent=S.coins;
+  {const tt=document.getElementById("p-trash");if(tt)tt.textContent=S.trash&&S.trash.spots.length?`${S.trash.spots.filter(b=>b.got).length}/${S.trash.spots.length}`:"\u2014";}
   document.getElementById("p-rep").textContent=S.rep;
   document.getElementById("b-sound").textContent=S.soundOn?"\uD83D\uDD0A Sound":"\uD83D\uDD07 Muted";
   document.getElementById("b-music").textContent=S.musicOn?"\uD83C\uDFB5 Music":"\uD83C\uDFB5 Off";
@@ -2310,10 +2354,12 @@ function facedTarget(){const[dx,dy]=DIRV[S.dir],fx=S.x+dx,fy=S.y+dy;
   return null;}
 const OPP={up:"down",down:"up",left:"right",right:"left"};
 function interact(){
+  if(S.train)return;
   if(!S.flags.has("dayStarted")){openEmail(true);return;}
   if(S.map==="stoopset"&&LK&&LK.active&&lockAsk())return;
   const f=facedTarget();if(!f)return;
   if(f.type==="prop"&&f.ent.id==="gobag"&&!S.flags.has("hasBag")){openGrabBag();return;}
+  if(f.type==="prop"&&f.ent.kind==="subway"){openSubway(f.ent);return;}
   if(f.type==="walker"){openWalker(f.ent);return;}
   if(f.type==="ped")return;
   if(f.type==="npc"){const n=f.ent;n._dir=OPP[S.dir];AMB.look=4;
@@ -2339,6 +2385,38 @@ function interact(){
       p(`Posted: <b>${signsPosted()}/5</b> poles${S.signs.has("tree_s1")?" + the street tree (string, not tape)":""}. ${pullPhase()?`Still up: <b>${pendingPulls().length}</b> \u2014 pull them before you run the wrap-out.`:"They come down at wrap."}`);actBtn("Close",closeModal);return;}
   }
   interactBase(f);}
+function openSubway(pr){openModal(pr.label,"MTA \u00b7 N/W line");
+  p(`Tap your phone at the turnstile and head up to the elevated platform. Next stop that matters: <b>${pr.dest}</b>.`);
+  if(!S.hasCar)p("Locations lives in a car \u2014 but you have to GET the car first. One train ride to the rental counter.","muted");
+  actBtn(`\uD83D\uDE87 Ride to ${pr.dest}`,()=>{closeModal();startTrain(pr);});actBtn("Not now",closeModal,"act ghost");}
+function startTrain(pr){const back=Object.values(MAPS[pr.to].props||[]).find(q=>q.kind==="subway");
+  S.train={to:pr.to,exit:back?back.exit:null,from:pr.station,dest:pr.dest,start:performance.now(),dur:4200};held.clear();
+  tone(659,0.35,"sine",0.05);setTimeout(()=>tone(523,0.5,"sine",0.05),380);}
+function updateTrain(now){if(!S.train)return;if(now-S.train.start<S.train.dur)return;const tr=S.train;S.train=null;
+  const m=MAPS[tr.to],a=tr.exit||m.arrive;S.map=tr.to;S.x=a.x;S.y=a.y;S.dir="left";S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;savePos();setBanner(m.name);statAdd("rides");}
+function drawTrain(now){const W=VIEW_W*TILE,H=VIEW_H*TILE,tr=S.train,t=(now-tr.start)/1000,k=Math.min(1,(now-tr.start)/tr.dur),night=isNight();
+  const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,night?"#0b1030":"#f2a07a");sky.addColorStop(1,night?"#26305a":"#ffe1b0");ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  const sp1=(t*30)%160;ctx.fillStyle=night?"#1a1f36":"#a7788a";                                   // far skyline
+  for(let i=-1;i<5;i++){const x=i*160-sp1;ctx.fillRect(x,120,30,110);ctx.fillRect(x+34,90,22,140);ctx.fillRect(x+60,140,40,90);ctx.fillRect(x+104,70,18,160);ctx.fillRect(x+126,110,30,120);}
+  const sp2=(t*110)%120;                                                                          // near rooftops + water towers
+  for(let i=-1;i<6;i++){const x=i*120-sp2;ctx.fillStyle=night?"#141828":"#5a4a56";ctx.fillRect(x,180,70,80);ctx.fillRect(x+74,196,42,64);
+    ctx.fillStyle=night?"#2a2215":"#4a3826";ctx.fillRect(x+20,158,20,16);ctx.fillRect(x+22,174,2,8);ctx.fillRect(x+36,174,2,8);
+    ctx.fillStyle=night?"#ffe79a":"#d9c2a0";for(let r=0;r<3;r++)for(let c=0;c<4;c++)if((i+r+c)%3)ctx.fillRect(x+6+c*16,190+r*20,6,8);}
+  ctx.fillStyle="#3a3f4d";ctx.fillRect(0,300,W,52);                                                 // el structure
+  const sp3=(t*420)%48;ctx.fillStyle="#2a2e38";for(let i=-1;i<12;i++){const x=i*48-sp3;ctx.fillRect(x,300,6,52);ctx.fillRect(x,300,48,4);}
+  ctx.fillStyle="#1a1d24";ctx.fillRect(0,292,W,8);
+  const bob=Math.sin(now/70)*1;const ty=222+bob;                                                    // the train (it stays; the city moves)
+  for(let c=0;c<3;c++){const x=18+c*152;ctx.fillStyle="#c9ccd4";roundRect(x,ty,146,66,6);ctx.fill();ctx.fillStyle="#aeb3bc";ctx.fillRect(x,ty+50,146,16);
+    ctx.fillStyle="#8a4fa0";ctx.fillRect(x,ty+46,146,4);
+    for(let w=0;w<5;w++){ctx.fillStyle=night?"#ffe79a":"#27314a";ctx.fillRect(x+10+w*27,ty+14,19,20);ctx.fillStyle="rgba(255,255,255,.22)";ctx.fillRect(x+11+w*27,ty+15,5,3);}
+    ctx.fillStyle="#7a8090";ctx.fillRect(x+64,ty+10,18,40);ctx.fillStyle="#1a1d24";ctx.fillRect(x+72,ty+10,2,40);
+    ctx.fillStyle="#fccc0a";ctx.beginPath();ctx.arc(x+126,ty+42,0,0,7);ctx.fill();}
+  ctx.fillStyle="#fccc0a";ctx.beginPath();ctx.arc(28+126,ty+24,11,0,7);ctx.fill();ctx.fillStyle="#1a1d24";ctx.font="bold 14px ui-sans-serif,system-ui,sans-serif";ctx.textAlign="center";ctx.fillText("N",28+126,ty+29);
+  ctx.fillStyle="rgba(10,13,20,.85)";ctx.fillRect(0,12,W,30);ctx.fillStyle="#ffce3a";ctx.font="bold 13px ui-monospace,monospace";
+  ctx.fillText(`\uD83D\uDE87  N TRAIN \u00b7 ${tr.from} \u2192 ${tr.dest}`,W/2,32);
+  if(t<1.4){ctx.fillStyle="rgba(10,13,20,.8)";ctx.fillRect(W/2-170,58,340,22);ctx.fillStyle="#e9ecf4";ctx.font="bold 10px ui-monospace,monospace";ctx.fillText("\u201cStand clear of the closing doors, please.\u201d",W/2,73);}
+  if(k>0.8){ctx.globalAlpha=Math.min(1,(k-0.8)*6);ctx.fillStyle="#1a1d24";ctx.fillRect(W/2-110,62,220,26);ctx.fillStyle="#fff";ctx.font="bold 12px ui-sans-serif,system-ui,sans-serif";ctx.fillText(tr.dest.toUpperCase(),W/2,80);ctx.globalAlpha=1;}
+  ctx.fillStyle="#1f2636";ctx.fillRect(W*0.2,H-12,W*0.6,5);ctx.fillStyle="#fccc0a";ctx.fillRect(W*0.2,H-12,W*0.6*k,5);}
 function interactBase(f){
   if(f.type==="npc"){const n=f.ent;
     if(n.special==="boss"){openBoss(n);return;}
@@ -2391,6 +2469,7 @@ const MOVE_MS=140, TRANS_MS=420;
 let shake=0;
 function tryStep(){if(modalOpen||!started||S.transition||S.drive||S.moving||held.size===0)return;
   if(!S.flags.has("dayStarted")){pulseNotif();return;}
+  if(S.train)return;
   const dir=[...held][held.size-1];S.dir=dir;
   const[dx,dy]=DIRV[dir],nx=S.x+dx,ny=S.y+dy;
   if(S.map==="apartment"&&doorAt(nx,ny)&&!S.flags.has("hasBag")){shake=2;blip(false,true);setBanner("Grab your go-bag first!");return;}
@@ -2399,7 +2478,7 @@ function tryStep(){if(modalOpen||!started||S.transition||S.drive||S.moving||held
 function updateMove(now){if(!S.moving)return;let t=(now-S.moveStart)/MOVE_MS;
   if(t>=1){t=1;S.moving=false;}
   S.px=S.fromX+(S.toX-S.fromX)*t;S.py=S.fromY+(S.toY-S.fromY)*t;S.stepFrame=Math.floor(now/90)%2;
-  if(!S.moving){savePos();const d=doorAt(S.x,S.y);if(d)startTransition(d);
+  if(!S.moving){savePos();checkTrash();const d=doorAt(S.x,S.y);if(d)startTransition(d);
     if(S.map==="stoopset"&&LK&&LK.state==="rolling"&&inFrame(S.x,S.y))lkBlow("You walked into the shot!");}}
 function startTransition(d){S.transition={t:0,door:d,swapped:false};held.clear();}
 function applyWarp(d){S.map=d.to;S.x=d.tx;S.y=d.ty;S.dir=d.dir||"down";S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;savePos();setBanner(MAPS[d.to].name);}
@@ -2409,7 +2488,7 @@ function updateTransition(dt){if(!S.transition)return;S.transition.t+=dt/TRANS_M
 
 // car fast-travel — now an interactive traffic-dodge run
 function startDrive(to){if(S.drive||!MAPS[to]||!S.unlocked.has(to)||to===S.map)return;
-  const d=DRIVABLE[to],tolled=to!=="homeblock";
+  const d=DRIVABLE[to],tolled=to!=="homeblock"&&to!=="rentalblock";
   S.drive={to,label:d?d.label:MAPS[to].name,tolled,start:performance.now(),
     dist:0,goal:2600,v:0,vmax:270,px:VIEW_W*TILE/2,traffic:[],nextSpawn:0.7,
     hits:0,inv:0,shake:0,done:false,arriveT:0,gapLane:1};
@@ -2475,11 +2554,12 @@ function screech(){tone(340,0.16,"sawtooth",0.05);setTimeout(()=>tone(190,0.20,"
 let lastTs=0,lastDt=16;
 function loop(now){const dt=Math.min(now-lastTs,50);lastTs=now;lastDt=dt;
   tryStep();updateMove(now);updateTransition(dt);updateDrive(now,dt);
-  if(started&&!S.drive){updateAmbient(dt,now);updateLockup(dt);}updateFx(dt);updateWalkie(dt);
+  updateTrain(now);if(started&&S.trash.phase!==S.phase){genTrash(true);updateHUD();}
+  if(started&&!S.drive&&!S.train){updateAmbient(dt,now);updateLockup(dt);}updateFx(dt);updateWalkie(dt);
   if(banner.t>0)banner.t-=dt/1000;
   let faced=null;peekProp=null;
   const hint=document.getElementById("hint");
-  if(started&&!modalOpen&&!S.transition&&!S.drive){faced=facedTarget();
+  if(started&&!modalOpen&&!S.transition&&!S.drive&&!S.train){faced=facedTarget();
     if(faced&&faced.type==="prop"&&faced.ent.kind==="knock"&&faced.ent.resident==="noanswer"&&!S.flags.has("nb_noanswer"))peekProp=faced.ent;
     if(faced){hint.style.display="flex";const f=faced.ent;let txt="Look";
       if(faced.type==="walker")txt="Say hi";
@@ -2488,6 +2568,7 @@ function loop(now){const dt=Math.min(now-lastTs,50);lastTs=now;lastDt=dt;
       else if(faced.type==="npc"&&f.special==="receipts"&&pendingReceipts().length)txt="Code receipts";
       else if(faced.type==="npc"&&f.special==="lockupAD")txt="Talk to Keisha";
       else if(faced.type==="prop"&&f.id==="gobag"&&!S.flags.has("hasBag"))txt="Grab your go-bag";
+      else if(faced.type==="prop"&&f.kind==="subway")txt="Take the train";
       else if(faced.type==="prop"&&f.kind==="signspot")txt=!S.signs.has(f.id)?"Post sign":(pullPhase()&&!S.pulled.has(f.id))?"Pull sign":"Check sign";
       else if(faced.type==="npc"){
         if(f.special==="boss")txt=S.flags.has("kit")?(f.ticket&&!S.solved.has(f.ticket)?"Take the job":"Talk to "+f.name):"Get your kit";
@@ -2532,7 +2613,7 @@ function startGame(){
     const yes=el("button","act","Yes, reset");yes.onclick=()=>{clearAll();
       S.map=PLAYER_START.map;S.x=PLAYER_START.x;S.y=PLAYER_START.y;S.dir=PLAYER_START.dir;S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;S.transition=null;S.drive=null;
       S.phase="PREP";S.solved=new Set();S.sqSolved=new Set();S.flags=new Set();S.finds=new Set();S.coins=0;S.rep=0;S.name="";S.hasCar=false;S.charIdx=0;S.unlocked=new Set(["homeblock"]);
-      S.signs=new Set();S.pulled=new Set();S.receipts=[];S.stats={};S.lingo=new Set();S.badges=new Set();S.bought={};LK=null;triedWrong.clear();AMB.map=null;hideNotif();
+      S.signs=new Set();S.pulled=new Set();S.receipts=[];S.stats={};S.lingo=new Set();S.badges=new Set();S.bought={};LK=null;triedWrong.clear();AMB.map=null;hideNotif();S.trash={phase:null,spots:[],paid:false};
       pendingCard=null;updateHUD();closeModal();started=false;document.getElementById("name-in").value="";showTitle();};
     const no=el("button","act ghost","Cancel");no.onclick=closeModal;mbody.appendChild(yes);mbody.appendChild(no);};
   requestAnimationFrame(loop);}
@@ -2607,7 +2688,7 @@ function lifelineBtn(wrap,key){
 function npcVisible(n){return !n.needPhase||S.phase===n.needPhase;}
 
 /* ========================= OBJECTIVE TRACKER ========================== */
-const PARENT={apartment:"homeblock",rental:"homeblock",office:"officeblock",cityoffice:"cityblock",brownstone:"scoutblock",stoopset:"scoutblock"};
+const PARENT={apartment:"homeblock",rental:"rentalblock",office:"officeblock",cityoffice:"cityblock",brownstone:"scoutblock",stoopset:"scoutblock"};
 function blockOf(m){return MAPS[m].drivable?m:PARENT[m];}
 function findEnt(mapId,id){const m=MAPS[mapId];return (m.npcs||[]).find(n=>n.id===id)||(m.props||[]).find(p=>p.id===id);}
 function routeStep(goalMap,goalId,label){
@@ -2629,6 +2710,7 @@ function objective(){
   if(!S.flags.has("dayStarted"))return {text:"You've got a new email",sub:"Open it to start the day",tgt:null};
   if(S.map==="apartment"&&!S.flags.has("hasBag"))return {text:"Grab your go-bag",sub:"Can't leave without it",tgt:{x:2,y:6}};
   if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
+    if(S.map==="homeblock")return {text:"Take the N train to Outerprise Rent-A-Car",sub:"30 Av station, end of the block",tgt:{x:21,y:11}};
     return routeStep("rental","trevor","Pick up your rental from Trevor");}
   if(!S.flags.has("kit"))return routeStep("office","caitlin","Get your kit from Caitlin — Locations office");
   for(const [id] of PHASE_LIST){if(S.solved.has(id))continue;
@@ -2812,6 +2894,7 @@ function drawPigeon(x,y,face,fly,now){
   else{ctx.fillStyle="#c96a5a";ctx.fillRect(-1,2,1,1);ctx.fillRect(1,2,1,1);}
   ctx.restore();}
 function ambientDraws(draws,camX,camY,now){
+  if(S.trash&&S.trash.phase===S.phase)for(const b of S.trash.spots)if(!b.got&&b.map===S.map)draws.push({y:b.y-0.1,fn:()=>drawTrashBag(b.x*TILE-camX,b.y*TILE-camY,now,b.x+b.y)});
   if(AMB.map!==S.map)return;
   for(const w of AMB.walkers)draws.push({y:w.y,fn:()=>drawPerson(w.px-camX,w.py-camY,w.pal,w.face,w.mv?Math.floor(now/110)%2:0,now)});
   for(const c of AMB.cars)draws.push({y:c.row,fn:()=>drawTrafficCar(c.px-camX,c.row*TILE-camY,c.col,c.dir,c.kind,isNight())});
@@ -2830,6 +2913,7 @@ const BARKS={
   benny:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
   courierL:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
   sal:["Leave it better than you found it.","Where's Caitlin?","Twenty years, kid."],
+  ines:["Manhattan-bound's delayed again.","Outerprise is right there!"],
   caitlin:["Did you read my email?","Photograph everything!","Car's gassed up, right?"],
   gaby:["If it isn't in the folder…","COI's in!","Photograph everything."],
   renata:["Receipts.","Code it right.","Is that on the P-Card?"],
@@ -3190,6 +3274,7 @@ function rollCredits(){const c=document.getElementById("credits");const ch=CHARS
     <div class="ch">— CAST & CREW —</div>${cast.map(n=>`<div class="cr"><span>${n.role}</span><b>${n.name}</b></div>`).join("")}
     <div class="ch">— THE BLOCK —</div><div class="cr"><span>Neighbors met</span><b>${["nb_driveway","nb_negotiate","nb_noanswer","nb_skeptic","nb_fan"].filter(f=>S.flags.has(f)).length} / 5</b></div>
     <div class="cr"><span>Pigeons scattered</span><b>${statGet("pigeons")}</b></div><div class="cr"><span>Times honked at</span><b>${statGet("honks")}</b></div>
+    <div class="cr"><span>Trash bags hauled</span><b>${statGet("trash")}</b></div>
     <div class="cr"><span>Polite holds</span><b>${statGet("holds")}</b></div><div class="cr"><span>Film lingo learned</span><b>${S.lingo.size}</b></div>
     <div class="ch">—</div><div class="cs">No hydrants were opened below 32°F.<br>No trees were taped.<br>Every sign came down.</div>
     <div class="ch">—</div><div class="cs">Filmed on location in New York City.</div><div class="ct" style="margin-top:40px">ON <span style="color:#ffce3a">LOCATION</span> · NYC</div><div class="cs">Game #4 in Moon's educational RPG series</div><div class="cs" style="margin-top:30px">(click to close)</div></div>`;
@@ -3205,6 +3290,34 @@ function openGuide(tab){tab=tab||"finds";openModal("Field Guide","Keepsakes · l
     for(const k in LINGO){const L=LINGO[k],has=S.lingo.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?"📻":"❔"}</div><div><div class="nm">${has?L.t:"— not heard yet —"}</div><div class="nt">${has?L.d:""}</div></div>`));}}
   else{for(const k in BADGES){const B=BADGES[k],has=S.badges.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?B.icon:"🔒"}</div><div><div class="nm">${B.name}</div><div class="nt">${B.note}</div></div>`));}}}
 
+/* ============================ trash_v65.js ============================ */
+const TRASH_MAPS={PREP:["homeblock","rentalblock","officeblock","cityblock","scoutblock"],
+  SHOOT:["scoutblock","setblock","officeblock","cityblock","homeblock"],WRAP:["setblock","scoutblock","officeblock","cityblock","rentalblock"]};
+const TRASH_PRIZE={PREP:50,SHOOT:75,WRAP:100};
+function genTrash(announce){const ph=S.phase,maps=TRASH_MAPS[ph];S.trash={phase:ph,spots:[],paid:false};
+  if(maps){const used=new Set();
+    for(let i=0;i<10;i++){const mid=maps[i%maps.length],m=MAPS[mid],H=m.tiles.length,W=m.tiles[0].length;
+      const occ=new Set([...(m.npcs||[]),...(m.props||[])].map(e=>e.x+","+e.y));
+      if(m.arrive)occ.add(m.arrive.x+","+m.arrive.y);(m.props||[]).forEach(q=>{if(q.exit)occ.add(q.exit.x+","+q.exit.y);});
+      for(let t=0;t<300;t++){const x=1+Math.floor(Math.random()*(W-2)),y=1+Math.floor(Math.random()*(H-2)),k=mid+":"+x+","+y;
+        if(m.tiles[y][x]!==","||occ.has(x+","+y)||used.has(k)||(m.doors||[]).some(d=>d.x===x&&Math.abs(d.y-y)<=1))continue;
+        used.add(k);S.trash.spots.push({map:mid,x,y,got:false});break;}}}
+  saveJSON("trash",S.trash);
+  if(announce&&maps&&S.flags.has("dayStarted")&&ph!=="PREP")toast("\uD83D\uDDD1\uFE0F","New phase, new mess",`${S.trash.spots.length} loose trash bags are out there. Haul them all for the clean-block bonus.`);}
+function checkTrash(){if(!S.trash||S.trash.phase!==S.phase)return;
+  const b=S.trash.spots.find(q=>!q.got&&q.map===S.map&&q.x===S.x&&q.y===S.y);if(!b)return;
+  b.got=true;statAdd("trash");const n=S.trash.spots.filter(q=>q.got).length,tot=S.trash.spots.length;
+  addFloat(`\uD83D\uDDD1\uFE0F ${n}/${tot}`,"#c9ccd4");tone(240,0.06,"triangle",0.05);setTimeout(()=>tone(170,0.09,"triangle",0.04),60);
+  if(n===tot&&!S.trash.paid){S.trash.paid=true;const prize=TRASH_PRIZE[S.phase]||50;S.addCoins(prize);S.addRep(1);award("sweep");confetti(40);chime();
+    toast("\uD83D\uDDD1\uFE0F",`Clean sweep \u2014 all ${tot} bags!`,`Hauled to the production dumpster (never the corner can). +$${prize} clean-block bonus from Ryan.`);}
+  saveJSON("trash",S.trash);updateHUD();}
+function drawTrashBag(sx,sy,now,seed){const w=Math.sin(now/300+seed)*0.6;
+  ctx.fillStyle="rgba(0,0,0,.28)";ctx.beginPath();ctx.ellipse(sx+16,sy+27,10,3,0,0,7);ctx.fill();
+  ctx.fillStyle="#15171c";ctx.beginPath();ctx.ellipse(sx+16,sy+20,9,8,0,0,7);ctx.fill();
+  ctx.fillStyle="#1f2229";ctx.beginPath();ctx.ellipse(sx+15,sy+18,6,5,0,0,7);ctx.fill();
+  ctx.fillStyle="#15171c";ctx.fillRect(sx+14,sy+9+w,4,5);ctx.fillRect(sx+11,sy+8+w,4,2);ctx.fillRect(sx+17,sy+8-w,4,2);
+  ctx.fillStyle="rgba(255,255,255,.35)";ctx.fillRect(sx+11,sy+15,2,4);ctx.fillRect(sx+13,sy+14,1,1);
+  if(Math.sin(now/400+seed*1.7)>0.93){ctx.fillStyle="#fff7c2";ctx.fillRect(sx+22,sy+10,1,5);ctx.fillRect(sx+20,sy+12,5,1);}}
 /* ============================ bedroom_v63.js ========================== */
 const notifEl=document.getElementById("notif");
 function showNotif(){document.getElementById("notif-t").textContent="Welcome to Mission Implausible: The Pridwin";notifEl.classList.add("on");
