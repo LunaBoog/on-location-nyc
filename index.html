@@ -133,6 +133,18 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .stat .sub{font-size:10px;color:var(--dim)}
 @media (max-width:520px){.slate h1{font-size:22px}#cs-preview{width:104px}}
 /* ---------------- v6 additions ---------------- */
+#notif{position:absolute;left:50%;top:18%;transform:translate(-50%,-30px);z-index:28;display:flex;gap:14px;align-items:center;cursor:pointer;
+  background:rgba(246,245,241,.97);color:#1a1d24;border-radius:14px;padding:14px 20px 14px 16px;box-shadow:0 18px 50px rgba(0,0,0,.6);
+  border:2px solid var(--yellow);opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;max-width:min(460px,92vw)}
+#notif.on{opacity:1;pointer-events:auto;transform:translate(-50%,0);animation:nbob 2.4s ease-in-out infinite}
+#notif.nudge{animation:nshake .45s}
+#notif:hover{filter:brightness(1.04)}
+#notif .n-ic{font-size:34px}
+#notif .n-h{font-size:10px;letter-spacing:.16em;color:#8a6a10;font-weight:800}
+#notif .n-t{font-size:16px;font-weight:800;margin:3px 0 2px;font-family:ui-sans-serif,system-ui,-apple-system,sans-serif}
+#notif .n-s{font-size:11px;color:#6b6f7a}
+@keyframes nbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-5px)}}
+@keyframes nshake{0%,100%{transform:translate(-50%,0)}25%{transform:translate(calc(-50% - 8px),0)}75%{transform:translate(calc(-50% + 8px),0)}}
 .email{background:#f6f5f1;color:#1a1d24;border-radius:10px;overflow:hidden;margin-bottom:12px;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
 .email .em-h{background:#e9e7e0;padding:10px 14px;font-size:12px;line-height:1.7;border-bottom:1px solid #d6d3ca}
 .email .em-h span{display:inline-block;width:58px;color:#6b6f7a;font-size:11px}
@@ -197,7 +209,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
   </div>
   <div id="viewport">
     <canvas id="world" width="480" height="352"></canvas>
-    <div id="toasts"></div><div id="radio"></div><div id="credits"></div>
+    <div id="notif"><div class="n-ic">📧</div><div><div class="n-h">NEW EMAIL · 5:42 AM</div><div class="n-t" id="notif-t">Welcome</div><div class="n-s">From Caitlin (ALM) · click or press E to open</div></div></div><div id="toasts"></div><div id="radio"></div><div id="credits"></div>
     <div id="hint"><kbd id="hint-key">E</kbd><span id="hint-text">Look</span></div>
     <div id="touch">
       <div class="dpad">
@@ -332,17 +344,42 @@ function buildApartment(){
   const t=mk(12,9,"."); frame(t,"#");
   box(t,3,3,8,5,"R");                     // rug
   t[8][6]="X";                            // door out
+  const BED="Unmade. You barely slept \u2014 first day as a Locations Assistant on a real feature. The alarm went off at 5:30 and you were already awake.";
   return {id:"apartment",name:"YOUR APARTMENT",theme:"home",tiles:t,
     doors:[{x:6,y:8,to:"homeblock",tx:4,ty:5,dir:"down"}],
     npcs:[],
     props:[
-      {id:"phone",kind:"phone",x:9,y:2,solid:true,label:"Your phone"},
-      {id:"bed",kind:"look",art:"bed",x:2,y:2,solid:true,label:"Your bed",
-       body:"Unmade. You barely slept \u2014 first day as a Locations Assistant on a real feature. The alarm went off at 5:30 and you were already awake."},
-      {id:"gobag",kind:"look",art:"duffel",x:2,y:6,solid:true,label:"Your go-bag",
-       body:"Gaffer tape, Sharpies, a measuring wheel, a rain poncho, snacks, a charger and a backup battery. Locations lives out of this bag. You sling it over your shoulder."},
+      /* on the walls (not solid \u2014 face them from the floor to look) */
+      {id:"winA",kind:"decor",art:"window",x:4,y:0,solid:false,label:"Bedroom window",
+       body:"Astoria at dawn. The N train rattles past on the elevated tracks, pink sky behind the Hell Gate Bridge. Good light. You'd scout it."},
+      {id:"posterA",kind:"decor",art:"filmposter",x:6,y:0,solid:false,label:"Framed movie poster",
+       body:"A one-sheet from the first show you ever worked, signed by the whole Locations department. Somebody wrote 'LEAVE IT BETTER' across the bottom in Sharpie."},
+      {id:"winB",kind:"decor",art:"window",x:7,y:0,solid:false,label:"Bedroom window",
+       body:"Across the street, a neighbor is already walking a very small, very fluffy dog. Everyone's up early today."},
+      {id:"clockA",kind:"decor",art:"clock",x:9,y:0,solid:false,label:"Wall clock",body:"5:42 AM. Call time at the office is 8:00. Plenty of time, if you get the car first."},
+      /* the bed: 2x2, drawn from its top-left corner */
+      {id:"bedTop",kind:"blocker",art:"bigbed",x:1,y:1,solid:true},
+      {id:"bedTR",kind:"blocker",x:2,y:1,solid:true},
+      {id:"bedBL",kind:"look",art:"none",x:1,y:2,solid:true,label:"Your bed",body:BED},
+      {id:"bed",kind:"look",art:"none",x:2,y:2,solid:true,label:"Your bed",body:BED},
+      {id:"phone",kind:"phone",x:3,y:1,solid:true,label:"Your phone"},
+      {id:"dresser",kind:"decor",art:"dresser",x:5,y:1,solid:true,label:"Dresser",
+       body:"Top drawer: socks, a spare walkie earpiece, and every production T-shirt you've ever been given. Today's pick: the one that doesn't say 'CREW' in giant letters."},
+      {id:"deskA",kind:"decor",art:"laptopdesk",x:8,y:1,solid:true,label:"Your desk",
+       body:"Your laptop, 47 tabs open: street-view scouts, the Code of Conduct, three parking regulation PDFs, and a sandwich place near the office."},
+      {id:"shelfA",kind:"decor",art:"bookshelf",x:10,y:1,solid:true,label:"Bookshelf",
+       body:"A five-borough street atlas with every page dog-eared, a thick book about the man who built half of New York's highways, and a row of old scout binders you can't bring yourself to throw out."},
+      {id:"closetA",kind:"decor",art:"closet",x:10,y:3,solid:true,label:"Closet",
+       body:"Rain gear, the good boots, three hi-vis vests, and a winter coat you'll definitely need on the shoot (it's going to be 28\u00b0F)."},
+      {id:"clothes",kind:"decor",art:"clothes",x:7,y:3,solid:false,label:"Pile of clothes",
+       body:"Yesterday's jeans and a hoodie. The floor is a perfectly valid dresser. Your roommate disagrees."},
+      {id:"boots",kind:"decor",art:"boots",x:8,y:7,solid:false,label:"Your boots by the door",
+       body:"Waterproof, broken in, laced. Locations walks ten miles a day. These are the most important thing you own."},
+      {id:"gobag",kind:"look",art:"duffel",x:2,y:6,solid:true,hideFlag:"hasBag",label:"Your go-bag",
+       body:"Gaffer tape, Sharpies, a measuring wheel, a rain poncho, snacks, a charger and a backup battery. Locations lives out of this bag."},
       {id:"coffeeA",kind:"search",art:"coffee",x:9,y:6,solid:true,label:"Coffee maker",
        body:"You down a cup standing up. The day has officially started.",doneFlag:"sawHomeCoffee"},
+      {id:"plantA",kind:"plant",x:10,y:7,solid:true},
     ]};
 }
 
@@ -1394,7 +1431,7 @@ function drawTruckTop(c2,x,y,w,l,cab){
   c2.fillStyle="rgba(0,0,0,.12)";for(let i=0;i<3;i++)c2.fillRect(x+2,y+15+i*6,w-4,1);  // roof ribs
   c2.fillStyle="#d23a3a";c2.fillRect(x+1,y+l-2,3,2);c2.fillRect(x+w-4,y+l-2,3,2);
 }
-function drawPropX(p,sx,sy){drawProp(p,sx,sy);
+function drawPropX(p,sx,sy){if(p.kind==="decor"||p.art==="none"||p.art==="bigbed"){drawDecor(p,sx,sy);return;}drawProp(p,sx,sy);
   if(p.signTree&&S.signs.has(p.id)&&!S.pulled.has(p.id)){ctx.fillStyle="#f4f2ec";ctx.fillRect(sx+10,sy+14,13,9);ctx.fillStyle="#cf3a3a";ctx.fillRect(sx+10,sy+14,13,3);ctx.fillStyle="#c9ccd4";ctx.fillRect(sx+9,sy+18,15,1);}}
 function drawProp(p,sx,sy){
   const k=p.kind, art=p.art;
@@ -1872,7 +1909,7 @@ function draw(faced,now){
   for(const p of (m.props||[])){if(propVisible(p)){if(p.kind==="light"){draws.push({y:-99,fn:()=>drawProp(p,p.x*TILE-camX,p.y*TILE-camY)});}else draws.push({y:p.y,fn:()=>drawPropX(p,p.x*TILE-camX,p.y*TILE-camY)});}}
   for(const n of (m.npcs||[]))if(npcVisible(n))draws.push({y:n.y,fn:()=>drawPerson(n.x*TILE-camX,n.y*TILE-camY,n.sprite,n._dir||"down",0,now)});
   ambientDraws(draws,camX,camY,now);
-  draws.push({y:S.y,fn:()=>drawPerson(S.px-camX,S.py-camY,CHARS[S.charIdx].sprite,S.dir,S.stepFrame,now)});
+  draws.push({y:S.y,fn:()=>{drawPerson(S.px-camX,S.py-camY,CHARS[S.charIdx].sprite,S.dir,S.stepFrame,now);if(S.flags.has("hasBag"))drawBagOn(S.px-camX,S.py-camY,S.dir,now);}});
   draws.sort((a,b)=>a.y-b.y).forEach(d=>d.fn());
   ctx.fillStyle=tint();ctx.fillRect(0,0,VIEW_W*TILE,VIEW_H*TILE);
   for(const p of (m.props||[]))if(p.kind==="light"&&propVisible(p))lightGlow(p.x*TILE-camX,p.y*TILE-camY);
@@ -1935,7 +1972,8 @@ function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
     <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
     <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
   if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>E</b> or Space to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
-  actBtn(first?"\uD83D\uDEAA Head out to get the car":"Close",closeModal);}
+  if(first)actBtn("\u2600\uFE0F Start the day",()=>{S.setFlag("dayStarted");hideNotif();closeModal();setBanner("PREP DAY 1 \u00b7 5:45 AM");chime();});
+  else actBtn("Close",closeModal);}
 function openIntro(){openEmail(true);return;openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
   p(`Morning, <b>${S.name||"boss"}</b>. Today's your first day as a <b>Locations Assistant</b> on the feature <b>Mission Implausible: The Pridwin</b>. The block is yours to run.`);
   p(`Move with <b>arrow keys / WASD</b>; face someone or something and press <b>E</b> (or Space) to interact.`,"muted");
@@ -2235,6 +2273,7 @@ function restore(){
   S.signs=loadSet("signs");S.pulled=loadSet("pulled");S.receipts=loadJSON("receipts",[]);S.stats=loadJSON("stats",{});
   S.lingo=loadSet("lingo");S.badges=loadSet("badges");S.bought=loadJSON("bought",{});S.musicOn=loadBool("musicOn",true);
   if(S.map==="stoopset"){S.map="scoutblock";S.x=5;S.y=5;S.px=S.x*TILE;S.py=S.y*TILE;}
+  if(S.hasCar||S.flags.has("kit")||S.solved.size){S.flags.add("dayStarted");S.flags.add("hasBag");saveSet("flags",S.flags);}
   S.drive=null;advancePhaseAfter();
   if(S.phase!=="PREP")S.unlocked.add("setblock");
 }
@@ -2254,6 +2293,7 @@ function tileAt(x,y){const m=curMap();return (y<0||y>=m.tiles.length||x<0||x>=m.
 function isWalkable(x,y){return !SOLID.has(tileAt(x,y));}
 function npcAt(x,y){return (curMap().npcs||[]).find(n=>n.x===x&&n.y===y&&npcVisible(n));}
 function propVisible(p){
+  if(p.hideFlag&&S.flags.has(p.hideFlag))return false;
   if(p.kind==="signspot")return S.flags.has("signsTask")&&!S.pulled.has(p.id);
   if(p.needCar&&!S.hasCar)return false;
   if(p.needPhase&&!(S.phase===p.needPhase||(p.needPhase==="WRAP"&&S.phase==="DONE")))return false;
@@ -2270,8 +2310,10 @@ function facedTarget(){const[dx,dy]=DIRV[S.dir],fx=S.x+dx,fy=S.y+dy;
   return null;}
 const OPP={up:"down",down:"up",left:"right",right:"left"};
 function interact(){
+  if(!S.flags.has("dayStarted")){openEmail(true);return;}
   if(S.map==="stoopset"&&LK&&LK.active&&lockAsk())return;
   const f=facedTarget();if(!f)return;
+  if(f.type==="prop"&&f.ent.id==="gobag"&&!S.flags.has("hasBag")){openGrabBag();return;}
   if(f.type==="walker"){openWalker(f.ent);return;}
   if(f.type==="ped")return;
   if(f.type==="npc"){const n=f.ent;n._dir=OPP[S.dir];AMB.look=4;
@@ -2348,8 +2390,10 @@ if("ontouchstart" in window)document.getElementById("touch").style.display="bloc
 const MOVE_MS=140, TRANS_MS=420;
 let shake=0;
 function tryStep(){if(modalOpen||!started||S.transition||S.drive||S.moving||held.size===0)return;
+  if(!S.flags.has("dayStarted")){pulseNotif();return;}
   const dir=[...held][held.size-1];S.dir=dir;
   const[dx,dy]=DIRV[dir],nx=S.x+dx,ny=S.y+dy;
+  if(S.map==="apartment"&&doorAt(nx,ny)&&!S.flags.has("hasBag")){shake=2;blip(false,true);setBanner("Grab your go-bag first!");return;}
   if(blocked(nx,ny)){shake=Math.min(shake+2,4);blip(false,true);return;}
   S.moving=true;S.fromX=S.px;S.fromY=S.py;S.toX=nx*TILE;S.toY=ny*TILE;S.moveStart=performance.now();S.x=nx;S.y=ny;step();}
 function updateMove(now){if(!S.moving)return;let t=(now-S.moveStart)/MOVE_MS;
@@ -2476,7 +2520,7 @@ function startGame(){
   document.getElementById("start-btn").onclick=()=>{const nm=document.getElementById("name-in").value.trim();
     S.name=nm||CHARS[S.charIdx].name;saveStr("playerName",S.name);
     document.getElementById("title").style.display="none";started=true;ac();setBanner(curMap().name);
-    if(S.solved.size===0&&S.sqSolved.size===0&&!S.hasCar)openIntro();};
+    if(!S.flags.has("dayStarted"))showNotif();};
   document.getElementById("name-in").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("start-btn").click();});
   document.getElementById("b-map").onclick=()=>{if(started)openWhereAmI();};
   document.getElementById("b-guide").onclick=()=>{if(started)openGuide();};
@@ -2487,7 +2531,7 @@ function startGame(){
     const yes=el("button","act","Yes, reset");yes.onclick=()=>{clearAll();
       S.map=PLAYER_START.map;S.x=PLAYER_START.x;S.y=PLAYER_START.y;S.dir=PLAYER_START.dir;S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;S.transition=null;S.drive=null;
       S.phase="PREP";S.solved=new Set();S.sqSolved=new Set();S.flags=new Set();S.finds=new Set();S.coins=0;S.rep=0;S.name="";S.hasCar=false;S.charIdx=0;S.unlocked=new Set(["homeblock"]);
-      S.signs=new Set();S.pulled=new Set();S.receipts=[];S.stats={};S.lingo=new Set();S.badges=new Set();S.bought={};LK=null;triedWrong.clear();AMB.map=null;
+      S.signs=new Set();S.pulled=new Set();S.receipts=[];S.stats={};S.lingo=new Set();S.badges=new Set();S.bought={};LK=null;triedWrong.clear();AMB.map=null;hideNotif();
       pendingCard=null;updateHUD();closeModal();started=false;document.getElementById("name-in").value="";showTitle();};
     const no=el("button","act ghost","Cancel");no.onclick=closeModal;mbody.appendChild(yes);mbody.appendChild(no);};
   requestAnimationFrame(loop);}
@@ -2581,6 +2625,8 @@ function pendingReceipts(){return S.receipts.filter(r=>!r.coded);}
 const KNOCKS=[["h_drive","nb_driveway"],["h_negotiate","nb_negotiate"],["h_noanswer","nb_noanswer"],["h_skeptic","nb_skeptic"]];
 function objective(){
   if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:"Face walkers + E to ask them to hold · Keisha (by camera) to step away",tgt:null};
+  if(!S.flags.has("dayStarted"))return {text:"You've got a new email",sub:"Open it to start the day",tgt:null};
+  if(S.map==="apartment"&&!S.flags.has("hasBag"))return {text:"Grab your go-bag",sub:"Can't leave without it",tgt:{x:2,y:6}};
   if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
     return routeStep("rental","trevor","Pick up your rental from Trevor");}
   if(!S.flags.has("kit"))return routeStep("office","caitlin","Get your kit from Caitlin — Locations office");
@@ -3158,6 +3204,71 @@ function openGuide(tab){tab=tab||"finds";openModal("Field Guide","Keepsakes · l
     for(const k in LINGO){const L=LINGO[k],has=S.lingo.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?"📻":"❔"}</div><div><div class="nm">${has?L.t:"— not heard yet —"}</div><div class="nt">${has?L.d:""}</div></div>`));}}
   else{for(const k in BADGES){const B=BADGES[k],has=S.badges.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?B.icon:"🔒"}</div><div><div class="nm">${B.name}</div><div class="nt">${B.note}</div></div>`));}}}
 
+/* ============================ bedroom_v63.js ========================== */
+const notifEl=document.getElementById("notif");
+function showNotif(){document.getElementById("notif-t").textContent="Welcome to Mission Implausible: The Pridwin";notifEl.classList.add("on");
+  tone(988,0.07,"triangle",0.04);setTimeout(()=>tone(1319,0.1,"triangle",0.04),110);}
+function hideNotif(){notifEl.classList.remove("on");}
+function pulseNotif(){notifEl.classList.remove("nudge");void notifEl.offsetWidth;notifEl.classList.add("nudge");}
+notifEl.onclick=()=>{if(started&&!modalOpen)openEmail(true);};
+function openGrabBag(){openModal("Your go-bag","Don't leave home without it",{pal:CHARS[S.charIdx].sprite});
+  p("You sling it over your shoulder. Quick inventory: <b>gaffer tape</b>, <b>Sharpies</b>, a <b>measuring wheel</b>, a <b>rain poncho</b>, snacks, a phone charger and a backup battery.");
+  p("A Locations Assistant lives out of this bag: signs get taped, curbs get measured, and somebody always needs a Sharpie.","muted");
+  S.setFlag("hasBag");mbody.appendChild(el("div","banner ok","\uD83C\uDF92 <b>Go-bag packed.</b> Now head out the door and get the car at Outerprise."));
+  actBtn("Let's go",closeModal);blip(true);}
+function drawBagOn(sx,sy,dir,now){const idle=Math.round(Math.sin((now||0)/520+sx)*0.5);
+  if(dir==="up"){ctx.fillStyle="#3e4a30";ctx.fillRect(sx+10,sy+13+idle,12,10);ctx.fillStyle="#56663f";ctx.fillRect(sx+10,sy+13+idle,12,2);ctx.fillStyle="#ffce3a";ctx.fillRect(sx+15,sy+17+idle,2,2);return;}
+  ctx.fillStyle="#2a2f3a";ctx.fillRect(sx+(dir==="left"?19:12),sy+13+idle,2,6);
+  ctx.fillStyle="#4a5a3a";ctx.fillRect(sx+(dir==="left"?20:6),sy+17+idle,7,7);ctx.fillStyle="#5d704a";ctx.fillRect(sx+(dir==="left"?20:6),sy+17+idle,7,2);}
+function drawDecor(p,sx,sy){const a=p.art;
+  if(a==="none")return;
+  if(a==="bigbed"){ // 2x2 double bed, top-left anchored
+    ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(sx+3,sy+60,60,3);
+    ctx.fillStyle="#5e3f26";ctx.fillRect(sx+2,sy+2,60,9);ctx.fillStyle="#7a5234";ctx.fillRect(sx+2,sy+2,60,3);
+    ctx.fillStyle="#e9ecf4";ctx.fillRect(sx+4,sy+10,56,50);
+    ctx.fillStyle="#fff";ctx.fillRect(sx+8,sy+13,20,10);ctx.fillRect(sx+36,sy+13,20,10);
+    ctx.fillStyle="rgba(0,0,0,.10)";ctx.fillRect(sx+8,sy+20,20,3);ctx.fillRect(sx+36,sy+20,20,3);
+    ctx.fillStyle="#3f5d8a";ctx.beginPath();ctx.moveTo(sx+4,sy+30);ctx.lineTo(sx+60,sy+26);ctx.lineTo(sx+60,sy+60);ctx.lineTo(sx+4,sy+60);ctx.closePath();ctx.fill();
+    ctx.fillStyle="#4a6ea0";ctx.beginPath();ctx.moveTo(sx+4,sy+30);ctx.lineTo(sx+60,sy+26);ctx.lineTo(sx+60,sy+30);ctx.lineTo(sx+4,sy+34);ctx.closePath();ctx.fill();
+    ctx.fillStyle="#ffce3a";for(let i=0;i<4;i++)ctx.fillRect(sx+10+i*13,sy+42+(i%2)*6,6,2);
+    ctx.fillStyle="rgba(0,0,0,.14)";ctx.fillRect(sx+30,sy+34,1,26);ctx.fillRect(sx+4,sy+48,56,1);
+    ctx.fillStyle="#5e3f26";ctx.fillRect(sx+2,sy+58,60,4);return;}
+  if(a==="window"){ctx.fillStyle="#6b5040";ctx.fillRect(sx+4,sy+5,24,23);
+    const g=ctx.createLinearGradient(0,sy+7,0,sy+26);g.addColorStop(0,isNight()?"#101a38":"#f2a07a");g.addColorStop(1,isNight()?"#2a3558":"#ffd9a0");ctx.fillStyle=g;ctx.fillRect(sx+6,sy+7,20,19);
+    ctx.fillStyle="#2a2f3a";ctx.fillRect(sx+6,sy+19,20,7);ctx.fillRect(sx+9,sy+15,4,4);ctx.fillRect(sx+18,sy+13,5,6);
+    ctx.fillStyle="#e9e0d0";ctx.fillRect(sx+15,sy+7,2,19);ctx.fillRect(sx+6,sy+16,20,1);
+    ctx.fillStyle="#c95a5a";ctx.fillRect(sx+3,sy+4,5,24);ctx.fillRect(sx+24,sy+4,5,24);ctx.fillStyle="#a84444";ctx.fillRect(sx+3,sy+4,5,2);ctx.fillRect(sx+24,sy+4,5,2);
+    ctx.fillStyle="#8a6a50";ctx.fillRect(sx+3,sy+27,26,3);return;}
+  if(a==="filmposter"){ctx.fillStyle="#1a1410";ctx.fillRect(sx+7,sy+3,18,26);ctx.fillStyle="#12151d";ctx.fillRect(sx+8,sy+4,16,24);
+    ctx.fillStyle="#e8743b";ctx.fillRect(sx+8,sy+4,16,11);ctx.fillStyle="#ffce3a";ctx.beginPath();ctx.arc(sx+16,sy+13,4,0,7);ctx.fill();
+    ctx.fillStyle="#12151d";ctx.fillRect(sx+9,sy+11,3,4);ctx.fillRect(sx+13,sy+9,3,6);ctx.fillRect(sx+19,sy+10,4,5);
+    ctx.fillStyle="#e9ecf4";ctx.fillRect(sx+10,sy+18,12,2);ctx.fillRect(sx+11,sy+22,10,1);ctx.fillRect(sx+11,sy+24,10,1);return;}
+  if(a==="clock"){ctx.fillStyle="#1a1410";ctx.beginPath();ctx.arc(sx+16,sy+16,9,0,7);ctx.fill();ctx.fillStyle="#f4f2ec";ctx.beginPath();ctx.arc(sx+16,sy+16,7.5,0,7);ctx.fill();
+    ctx.strokeStyle="#1a1d24";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(sx+16,sy+16);ctx.lineTo(sx+19,sy+17);ctx.moveTo(sx+16,sy+16);ctx.lineTo(sx+14,sy+10);ctx.stroke();ctx.lineWidth=1;
+    ctx.fillStyle="#cf3a3a";ctx.fillRect(sx+15,sy+15,2,2);return;}
+  if(a==="dresser"){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(sx+3,sy+27,26,3);
+    ctx.fillStyle="#7a5234";ctx.fillRect(sx+3,sy+9,26,19);ctx.fillStyle="#8e6440";ctx.fillRect(sx+3,sy+9,26,3);
+    ctx.fillStyle="rgba(0,0,0,.25)";ctx.fillRect(sx+4,sy+18,24,1);ctx.fillRect(sx+4,sy+23,24,1);
+    ctx.fillStyle="#ffce3a";ctx.fillRect(sx+14,sy+14,4,1);ctx.fillRect(sx+14,sy+20,4,1);ctx.fillRect(sx+14,sy+25,4,1);
+    ctx.fillStyle="#e3bd96";ctx.fillRect(sx+6,sy+5,6,4);ctx.fillStyle="#3a6ea5";ctx.fillRect(sx+18,sy+3,7,6);ctx.fillStyle="#9aa0ab";ctx.fillRect(sx+19,sy+4,5,4);return;}
+  if(a==="laptopdesk"){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(sx+2,sy+27,28,3);
+    ctx.fillStyle="#6a4a2e";ctx.fillRect(sx+2,sy+12,28,5);ctx.fillRect(sx+3,sy+17,3,11);ctx.fillRect(sx+26,sy+17,3,11);
+    ctx.fillStyle="#2a2e38";ctx.fillRect(sx+8,sy+3,16,10);ctx.fillStyle="#5fd08a";ctx.fillRect(sx+9,sy+4,14,8);
+    ctx.fillStyle="#3a6ea5";ctx.fillRect(sx+10,sy+5,6,3);ctx.fillStyle="#e9ecf4";ctx.fillRect(sx+17,sy+6,5,1);ctx.fillRect(sx+17,sy+8,4,1);
+    ctx.fillStyle="#9aa0ab";ctx.fillRect(sx+7,sy+12,18,2);ctx.fillStyle="#e8e6e0";ctx.fillRect(sx+25,sy+9,4,4);ctx.fillStyle="#6a3a1e";ctx.fillRect(sx+26,sy+10,2,2);return;}
+  if(a==="bookshelf"){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(sx+3,sy+27,26,3);
+    ctx.fillStyle="#5e3f26";ctx.fillRect(sx+4,sy+2,24,26);ctx.fillStyle="#3a2718";ctx.fillRect(sx+6,sy+4,20,22);
+    const cols=["#b03a3a","#3a6ea5","#ffce3a","#3f7d4f","#7a4f9c","#e8743b","#e9ecf4"];
+    for(let r=0;r<3;r++){ctx.fillStyle="#5e3f26";ctx.fillRect(sx+6,sy+10+r*8,20,1);for(let i=0;i<6;i++){ctx.fillStyle=cols[(i+r*2)%cols.length];ctx.fillRect(sx+7+i*3,sy+4+r*8+(i%3),2,6-(i%3));}}return;}
+  if(a==="closet"){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(sx+3,sy+27,26,3);
+    ctx.fillStyle="#8e6440";ctx.fillRect(sx+4,sy+1,24,27);ctx.fillStyle="#7a5234";ctx.fillRect(sx+5,sy+2,11,25);ctx.fillRect(sx+17,sy+2,10,25);
+    ctx.fillStyle="#ffce3a";ctx.fillRect(sx+14,sy+13,1,3);ctx.fillRect(sx+18,sy+13,1,3);
+    ctx.fillStyle="#ffd84a";ctx.fillRect(sx+22,sy+4,4,6);return;}
+  if(a==="clothes"){ctx.fillStyle="#3a6ea5";ctx.fillRect(sx+6,sy+16,14,7);ctx.fillRect(sx+8,sy+22,4,5);ctx.fillRect(sx+15,sy+22,4,5);
+    ctx.fillStyle="#6a6f7a";ctx.fillRect(sx+14,sy+12,12,9);ctx.fillRect(sx+11,sy+14,4,3);ctx.fillStyle="#565a64";ctx.fillRect(sx+18,sy+12,4,3);return;}
+  if(a==="boots"){ctx.fillStyle="#4a3424";ctx.fillRect(sx+8,sy+14,6,10);ctx.fillRect(sx+8,sy+21,9,4);ctx.fillRect(sx+18,sy+14,6,10);ctx.fillRect(sx+18,sy+21,9,4);
+    ctx.fillStyle="#2a1d14";ctx.fillRect(sx+8,sy+25,9,2);ctx.fillRect(sx+18,sy+25,9,2);ctx.fillStyle="#caa074";ctx.fillRect(sx+9,sy+15,4,1);ctx.fillRect(sx+19,sy+15,4,1);return;}
+  drawProp(p,sx,sy);}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",startGame);else startGame();
 
 </script>
