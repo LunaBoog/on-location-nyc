@@ -133,6 +133,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .stat .sub{font-size:10px;color:var(--dim)}
 @media (max-width:520px){.slate h1{font-size:22px}#cs-preview{width:104px}}
 /* ---------------- v6 additions ---------------- */
+.email{background:#f6f5f1;color:#1a1d24;border-radius:10px;overflow:hidden;margin-bottom:12px;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.email .em-h{background:#e9e7e0;padding:10px 14px;font-size:12px;line-height:1.7;border-bottom:1px solid #d6d3ca}
+.email .em-h span{display:inline-block;width:58px;color:#6b6f7a;font-size:11px}
+.email .em-s{margin-top:3px;font-size:13px}
+.email .em-b{padding:12px 16px 6px;font-size:13.5px;line-height:1.55}
+.email .em-b p{color:#1a1d24!important;font-size:13.5px!important;margin:0 0 10px}
+.email .em-b .muted{color:#6b6f7a!important;font-size:11.5px!important}
+.email .em-b ul{margin:0 0 10px;padding-left:18px}.email .em-b li{margin-bottom:5px}
+.email .em-sec{font-size:10.5px!important;letter-spacing:.14em;font-weight:800;color:#8a6a10!important;margin:12px 0 4px!important}
 .slate .new{font-size:10px;color:var(--ok);margin:-4px 0 12px;letter-spacing:.04em}
 .opt.struck{text-decoration:line-through;opacity:.35}
 .act.life{display:block;margin:4px 0 10px;font-size:11px;padding:8px 12px;border-style:dashed}
@@ -204,15 +213,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
         <div class="sticks"></div>
         <div class="slate-body">
           <h1>ON <span class="y">LOCATION</span></h1>
-          <div class="tag">A locations-department RPG. You're the new <b>Assistant Location Manager</b> on a NYC shoot. Wake up, get your wheels, work the office — then work the city: scouts, permits, hydrants, neighbors, wrap.</div>
+          <div class="tag">A locations-department RPG. You're the new <b>Locations Assistant</b> on a NYC shoot. Wake up, get your wheels, work the office — then work the city: scouts, permits, hydrants, neighbors, wrap.</div>
           <div class="new">★ v6: lock-ups · No Parking signs · the bodega · badges · film lingo · music · end credits</div>
           <div class="grid">
-            <div class="fld"><span>PRODUCTION</span><b>Crooked Block</b></div>
-            <div class="fld"><span>ROLE</span><b>ALM</b></div>
+            <div class="fld"><span>PRODUCTION</span><b>Mission Implausible: The Pridwin</b></div>
+            <div class="fld"><span>ROLE</span><b>Locations Asst.</b></div>
             <div class="fld"><span>CITY</span><b>New York</b></div>
             <div class="fld"><span>DAY</span><b>Prep · 1</b></div>
           </div>
-          <div class="cs-head">Choose your ALM</div>
+          <div class="cs-head">Choose your Locations Assistant</div>
           <div id="charsel">
             <div id="cs-grid"></div>
             <div id="cs-preview"><canvas id="cs-big" width="32" height="32"></canvas><div id="cs-name"></div><div id="cs-vibe"></div></div>
@@ -270,16 +279,16 @@ function box(t,x0,y0,x1,y1,c){for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)t[y]
 function frame(t,c){const h=t.length,w=t[0].length;box(t,0,0,w-1,0,c);box(t,0,h-1,w-1,h-1,c);box(t,0,0,0,h-1,c);box(t,w-1,0,w-1,h-1,c);}
 const sp=(body,body2,hair,skin,extra)=>Object.assign({body,body2,hair,skin,accent:"#ffce3a"},extra||{});
 
-/* -- the playable ALMs (Mortal-Kombat-style roster; palettes drive both
+/* -- the playable Locations Assistants (Mortal-Kombat-style roster; palettes drive both
       the walking sprite and the big portrait) -- */
 const CHARS=[
-  {id:"rio",   name:"Rio",     vibe:"Queens native. Knows every curb cut in the borough.",
+  {id:"rio",   name:"Moon",    vibe:"Astoria native. Knows every curb cut in Queens.",
    sprite:sp("#e8743b","#c95a26","#2a2118","#e9b48c",{vest:true,walkie:true})},
-  {id:"marisol",name:"Marisol",vibe:"Ex-bike messenger. Finds parking where none exists.",
+  {id:"marisol",name:"Christina",vibe:"Ex-bike messenger. Finds parking where none exists.",
    sprite:sp("#2f8f83","#1f665d","#12100e","#c98d64",{vest:true,walkie:true})},
-  {id:"deshawn",name:"Deshawn",vibe:"Calm on channel 1. Neighbors trust him on sight.",
+  {id:"deshawn",name:"Jaime",  vibe:"Calm on channel 1. Neighbors trust Jaime on sight.",
    sprite:sp("#6b5bd2","#4a3da3","#141414","#7a4a2e",{vest:true,walkie:true,hat:"#23252c"})},
-  {id:"kenji", name:"Kenji",   vibe:"Cut his teeth on indies. Speaks fluent DP.",
+  {id:"kenji", name:"Joey",    vibe:"Cut their teeth on indies. Speaks fluent DP.",
    sprite:sp("#3a6ea5","#274d76","#161616","#e0b48c",{vest:true,walkie:true})},
   {id:"anaya", name:"Anaya",   vibe:"Spreadsheet assassin. Her COI never snags twice.",
    sprite:sp("#c8506b","#9c3a52","#1a1730","#b97a4e",{vest:true,walkie:true})},
@@ -329,20 +338,20 @@ function buildApartment(){
     props:[
       {id:"phone",kind:"phone",x:9,y:2,solid:true,label:"Your phone"},
       {id:"bed",kind:"look",art:"bed",x:2,y:2,solid:true,label:"Your bed",
-       body:"Unmade. You barely slept \u2014 first day running locations as the ALM on a real feature. The alarm went off at 5:30 and you were already awake."},
+       body:"Unmade. You barely slept \u2014 first day as a Locations Assistant on a real feature. The alarm went off at 5:30 and you were already awake."},
       {id:"gobag",kind:"look",art:"duffel",x:2,y:6,solid:true,label:"Your go-bag",
-       body:"Gaffer tape, Sharpies, a measuring wheel, a rain poncho, snacks, a charger and a backup battery. An ALM lives out of this bag. You sling it over your shoulder."},
+       body:"Gaffer tape, Sharpies, a measuring wheel, a rain poncho, snacks, a charger and a backup battery. Locations lives out of this bag. You sling it over your shoulder."},
       {id:"coffeeA",kind:"search",art:"coffee",x:9,y:6,solid:true,label:"Coffee maker",
        body:"You down a cup standing up. The day has officially started.",doneFlag:"sawHomeCoffee"},
     ]};
 }
 
-/* -- your residential block: apartment + Venture Rent-A-Car -- */
+/* -- your residential block: apartment + Outerprise Rent-A-Car -- */
 function buildHomeBlock(){
   return buildBlock({id:"homeblock",name:"YOUR BLOCK \u00b7 ASTORIA",theme:"resid",facade:"h",w:24,h:13,
     carSpot:{x:10,y:6},arrive:{x:10,y:5,dir:"down"},
     doors:[{x:4,y:4,to:"apartment",tx:6,ty:7,dir:"up"},{x:17,y:4,to:"rental",tx:7,ty:8,dir:"up"}],
-    placards:[{x:4,t:"HOME"},{x:17,t:"VENTURE"}],
+    placards:[{x:4,t:"HOME"},{x:17,t:"OUTERPRISE"}],
     npcs:[
       {id:"hector",name:"Hector",role:"Neighbor",x:8,y:5,
        sprite:sp("#6b5bd2","#4a3da3","#1a1a1a","#7a4a2e"),
@@ -360,17 +369,17 @@ function buildHomeBlock(){
     ]});
 }
 
-/* -- Venture Rent-A-Car (a lil name-play on the big green one) -- */
+/* -- Outerprise Rent-A-Car (a lil name-play on the big green one) -- */
 function buildRental(){
   const t=mk(14,10,"."); frame(t,"#");
   box(t,1,1,12,1,"=");                    // counter backdrop
   t[9][7]="X";
-  return {id:"rental",name:"VENTURE RENT-A-CAR",theme:"civic",tiles:t,
+  return {id:"rental",name:"OUTERPRISE RENT-A-CAR",theme:"civic",tiles:t,
     doors:[{x:7,y:9,to:"homeblock",tx:17,ty:5,dir:"down"}],
     npcs:[
-      {id:"trevor",name:"Trevor",role:"Venture Agent",x:5,y:4,special:"rental",
+      {id:"trevor",name:"Trevor",role:"Outerprise Agent",x:5,y:4,special:"rental",
        sprite:sp("#3fae6a","#2c7a4a","#3a2c1a","#e3bd96",{tie:"#fff"}),
-       chat:["Venture Rent-A-Car \u2014 we'll pick you up. Well, your production picked us. Either way, welcome.",
+       chat:["Outerprise Rent-A-Car \u2014 we'll pick you up. Well, your production picked us. Either way, welcome.",
              "Your keys are at the counter whenever you're ready. Drive safe out there."]},
     ],
     props:[
@@ -426,11 +435,15 @@ function buildOffice(){
     doors:[{x:13,y:15,to:"officeblock",tx:4,ty:5,dir:"down"}],
     npcs:[
       /* -- LOCATIONS OFFICE (left) : your department -- */
-      {id:"sal",name:"Sal Mariano",role:"Location Manager (your boss)",x:3,y:3,special:"boss",ticket:"techscout",
+      {id:"sal",name:"Ryan",role:"Location Manager",x:3,y:3,
        sprite:sp("#3f7d6a","#2c5a4c","#3a3a3a","#caa074",{walkie:true}),
        chat:["Twenty years working these streets. Rule one: leave every block better than you found it.",
-             "You're my ALM now \u2014 the block is yours to run. I fight the battles upstairs; you win them on the sidewalk."]},
-      {id:"gaby",name:"Gaby Mercado",role:"Locations Coordinator",x:6,y:3,sideQuest:"holdtiming",
+             "Caitlin runs your day; I fight the battles upstairs. You win them on the sidewalk. Welcome to Locations."]},
+      {id:"caitlin",name:"Caitlin",role:"Assistant Location Manager (your boss)",x:5,y:3,special:"boss",ticket:"techscout",
+       sprite:sp("#7a4f9c","#5c3a78","#6a3a1e","#efcfb0",{walkie:true,longHair:true}),
+       chat:["Did you read my email? Good. Then you already know more than half the crew.",
+             "Your job is to make my job easy, and my job is to make Ryan's job easy. That's the whole org chart."]},
+      {id:"gaby",name:"Amber",role:"Locations Coordinator",x:6,y:3,sideQuest:"holdtiming",
        sprite:sp("#c8506b","#9c3a52","#1a1a1a","#7a4a2e",{walkie:true}),
        chat:["I keep the department's paper moving \u2014 agreements, permits, COIs, the sign log. You break it on the street, I feel it in the files.",
              "Anything you sign or post, photograph it and send it to me. If it isn't in the folder, it didn't happen."]},
@@ -473,7 +486,7 @@ function buildOffice(){
       /* locations office */
       {id:"board",kind:"board",x:7,y:2,solid:true,label:"Call Sheet"},
       {id:"mapwall",kind:"look",x:1,y:1,solid:true,art:"corkboard",label:"The map wall",
-       body:"Sal's wall: a five-borough map furred with pins and marker. Green pins are locked locations, yellow are scouting, red are 'never again.' There are more red pins than you'd like."},
+       body:"Ryan's wall: a five-borough map furred with pins and marker. Green pins are locked locations, yellow are scouting, red are 'never again.' There are more red pins than you'd like."},
       {id:"drawer_sal",kind:"search",x:5,y:1,solid:true,art:"drawer",label:"Scout photo cabinet",
        body:"Decades of scout folders \u2014 thousands of photos per location: every room, every angle, the panel, the parking, the neighbors' curb. A location is photographed before it's ever filmed. Tucked in one folder: petty cash from a wrapped show.",coins:35,doneFlag:"sawSalDrawer"},
       /* UPM office */
@@ -738,8 +751,8 @@ const DRIVABLE={
 };
 /* ============================= scenarios.js =========================== */
 const SCENARIOS={
-  techscout:{phase:"PREP",title:"Tech Scout & Day Plan",tag:"Prep \u00b7 Job 1",giver:"sal",principle:"Locations sits between every department",
-    brief:"Sal just handed you the day. Before anyone touches a permit, run the tech scout in your head: hear what each department needs, then turn it into a plan. The department heads are all here in the office \u2014 go ask them (their offices are along the top).",
+  techscout:{phase:"PREP",title:"Tech Scout & Day Plan",tag:"Prep \u00b7 Job 1",giver:"caitlin",principle:"Locations sits between every department",
+    brief:"Caitlin just handed you the day. Before anyone touches a permit, run the tech scout in your head: hear what each department needs, then turn it into a plan. The department heads are all here in the office \u2014 go ask them (their offices are along the top).",
     pois:[
       {id:"dir",label:"Ask the Director",who:"vance",body:"Vance wants the Halloran interior for two days plus a stoop scene that spills onto the public sidewalk.",ev:"Interior (private) + stoop on the sidewalk (public)."},
       {id:"dp",label:"Ask the DP",who:"iris",body:"Iris has no house power \u2014 she needs a generator on the street, and there's a rain sequence coming.",ev:"Generator needed; rain sequence flagged for later."},
@@ -813,13 +826,13 @@ const SCENARIOS={
     ],
     diagnoses:[
       {key:"a",label:"Borrow a wrench and tap it quick \u2014 in and out.",correct:false,fb:"Illegal three ways: no DEP permit, no RPZ, and it's below freezing. Quick is how you get fined."},
-      {key:"b",label:"File the DEP permit for H-2214 + RPZ + approved wrench \u2014 but with 28\u00b0F forecast, bring a water truck instead.",correct:true,fb:"Right read. You did every step by the book \u2014 exact hydrant, permit, RPZ, wrench \u2014 AND you caught that the freeze rule kills it that day, so you switch to a water truck. That's an ALM earning the rate."},
+      {key:"b",label:"File the DEP permit for H-2214 + RPZ + approved wrench \u2014 but with 28\u00b0F forecast, bring a water truck instead.",correct:true,fb:"Right read. You did every step by the book \u2014 exact hydrant, permit, RPZ, wrench \u2014 AND you caught that the freeze rule kills it that day, so you switch to a water truck. That's how you earn the rate."},
       {key:"c",label:"Get the DEP permit and run the hydrant on the cold day as planned.",correct:false,fb:"Paperwork's right, weather isn't \u2014 hydrant use is prohibited below 32\u00b0F. You'd hold a permit you can't legally use."},
     ],
     principleText:"Drawing hydrant water needs a DEP Hydrant Water Use permit for the specific hydrant (paid per day), an RPZ backflow preventer, and an approved wrench \u2014 and it's prohibited below 32\u00b0F, so a freezing forecast means a water truck instead. Sometimes the job is doing all the paperwork right and STILL changing the plan.",
     reward:{find:"wrench",coins:150,rep:1,flag:"hydrantDone"}},
 
-  wrap:{phase:"WRAP",title:"Wrap-Out",tag:"Wrap \u00b7 Job 6",giver:"sal",principle:"Leave it better than you found it",
+  wrap:{phase:"WRAP",title:"Wrap-Out",tag:"Wrap \u00b7 Job 7",giver:"sal",principle:"Leave it better than you found it",
     brief:"Last day. Strike the block and wrap out clean \u2014 this is the reputation you carry to the next show. (Run this from the Call Sheet board at the office, or the wrap checklist at set.)",
     pois:[
       {id:"signs",label:"The signage",body:"Every No Parking sign comes down, every set sign off the route, and all the string with them. (You used string on the trees, never tape.)",ev:"Pull every sign \u2014 parking AND directional."},
@@ -893,7 +906,7 @@ const SIDE_QUESTS={
       {key:"b",label:"Acknowledge the bad experience, walk him through the Code of Conduct \u2014 access kept, trash hauled, a number to call \u2014 and don't push for a yes.",correct:true,fb:"That's the repair. You can't undo the last crew, but you can show him this one's different \u2014 and leave the door open."},
       {key:"c",label:"Offer him double whatever the last crew paid, to make it go away.",correct:false,fb:"Throwing money at a trust problem reads as a bribe. He doesn't want cash, he wants to not get burned again."}],
     fact:"The Film Code of Conduct \u2014 access, cleanup, a contact number \u2014 exists precisely to rebuild this kind of trust.",reward:{coins:55,rep:3,flag:"nb_skeptic"}},
-  setsigns:{title:"Printing the Set Signs",tag:"Field call \u00b7 copy room",body:"Gaby texts: shoot day needs directional set signs printed and posted so a hundred crew, trucks and cast vans can find set, base camp and crew parking. Priya's at the copier, ready. What does she print?",
+  setsigns:{title:"Printing the Set Signs",tag:"Field call \u00b7 copy room",body:"Amber texts: shoot day needs directional set signs printed and posted so a hundred crew, trucks and cast vans can find set, base camp and crew parking. Priya's at the copier, ready. What does she print?",
     options:[{key:"a",label:"Big posters with the movie's real title, so everyone can find us easily.",correct:false,fb:"Everyone WOULD find you \u2014 including crowds. That's exactly why productions don't put the real title on the street."},
       {key:"b",label:"Arrow signs with the production's code name \u2014 posted along the route with string or zip ties (never taped to trees), locations logged, all pulled at wrap.",correct:true,fb:"That's the pack. A cryptic code name keeps onlookers away, arrows chain from the highway to base camp, string beats tape on every pole and tree \u2014 and the log is what guarantees every last one comes down at wrap."},
       {key:"c",label:"Skip the signs \u2014 the crew has GPS.",correct:false,fb:"GPS finds an address; a shoot isn't an address. Set, base camp and crew parking are three different spots, and the signs are what keep 40 trucks from circling the block at 5am."}],
@@ -960,7 +973,7 @@ Object.assign(SCENARIOS,{
     reward:{find:"slate",coins:160,rep:3}},
 });
 Object.assign(SIDE_QUESTS,{
-  holdtiming:{title:"48 Hours vs. 24 Hours",tag:"Field call · Locations office",body:"Gaby's building the sign schedule for the stoop day. 'Quick check before I send it — signs up 48 hours out. So we start holding the curb 48 hours out too, right?'",
+  holdtiming:{title:"48 Hours vs. 24 Hours",tag:"Field call · Locations office",body:"Amber's building the sign schedule for the stoop day. 'Quick check before I send it — signs up 48 hours out. So we start holding the curb 48 hours out too, right?'",
     options:[{key:"a",label:"Right — once the signs are up, the curb is ours.",correct:false,fb:"Signs and holding run on different clocks. Holding two full days early punishes the block for nothing."},
       {key:"b",label:"No — signs go up at least 48 hours ahead, but we can't start holding parking more than 24 hours before the permit starts.",correct:true,fb:"Exactly. Notice early, hold late. Signs give the block two days' warning; actual holding waits until the last 24 hours."},
       {key:"c",label:"We hold a full week early so nobody can sneak in.",correct:false,fb:"That's a fast way to become the most hated crew in Brooklyn — and it's against the Code. Hold no more than 24 hours prior."}],
@@ -1022,10 +1035,10 @@ const LINGO={
 /* walkie chatter pools (phase-aware). {k} marks the lingo key this line teaches */
 const WALKIE={
   PREP:[
-    {who:"Gaby",line:"Locations, copy? Halloran's COI just landed in my inbox.",k:"copy"},
+    {who:"Amber",line:"Locations, copy? Halloran's COI just landed in my inbox.",k:"copy"},
     {who:"Joon",line:"Office to Locations — can you go to two?",k:"goto2"},
     {who:"Mabel",line:"Anyone want anything from the deli? I'm flying in lunch at noon.",k:"flying"},
-    {who:"Sal",line:"What's your 20? Need you to measure the curb on Halloran's block.",k:"twenty"},
+    {who:"Caitlin",line:"What's your 20? Need you to measure the curb on Halloran's block.",k:"twenty"},
     {who:"Ozzie",line:"Office PA is 10-1, back in five.",k:"ten1"},
     {who:"Priya",line:"Hot bricks are on the charger in the copy room if anybody's dying.",k:"hotbrick"},
   ],
@@ -1044,7 +1057,7 @@ const WALKIE={
   WRAP:[
     {who:"Tom",line:"This is the Abby Singer, folks.",k:"abby"},
     {who:"Tom",line:"Martini shot! Last one of the day!",k:"martini"},
-    {who:"Sal",line:"Company move tomorrow — but first we give this block back.",k:"compmove"},
+    {who:"Ryan",line:"Company move tomorrow — but first we give this block back.",k:"compmove"},
     {who:"Big Mike",line:"Copy that, trucks rolling out of base camp.",k:"copy"},
   ],
 };
@@ -1064,7 +1077,7 @@ const BADGES={
   books:{icon:"📒",name:"Clean Books",note:"Code every P-Card receipt correctly."},
   doors:{icon:"🚪",name:"Every Door",note:"Knock on all five doors on Halloran's block."},
   signs:{icon:"🚧",name:"No Sign Left Behind",note:"Pull every No Parking sign you posted."},
-  nolife:{icon:"🧠",name:"No Lifelines",note:"Wrap the show without calling Gaby for help."},
+  nolife:{icon:"🧠",name:"No Lifelines",note:"Wrap the show without calling Amber for help."},
   wrap:{icon:"🍾",name:"That's a Wrap",note:"Finish the show."},
   hotdog:{icon:"🌭",name:"Frankly Excellent",note:"Wrap the show as Frank, in the hotdog suit."},
   lucky:{icon:"🍀",name:"Lucky Scratch",note:"Win on a bodega scratcher. (Then pay the P-Card back.)"},
@@ -1423,7 +1436,7 @@ function drawProp(p,sx,sy){
     ctx.fillStyle="rgba(0,0,0,.22)";ctx.fillRect(sx+3,sy+26,26,3);
     const cse=(x,y,w,h)=>{ctx.fillStyle="#12141a";ctx.fillRect(x,y,w,h);ctx.fillStyle="#9aa0ab";ctx.fillRect(x,y,w,2);ctx.fillRect(x,y+h-2,w,2);ctx.fillRect(x,y,2,h);ctx.fillRect(x+w-2,y,2,h);ctx.fillStyle="#3a3f4d";ctx.fillRect(x+w/2-2,y+h/2-1,4,2);};
     cse(sx+3,sy+15,14,11);cse(sx+18,sy+15,11,11);cse(sx+6,sy+5,14,10);
-    ctx.fillStyle="#ffce3a";ctx.font="bold 5px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("CB",sx+13,sy+11);
+    ctx.fillStyle="#ffce3a";ctx.font="bold 5px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("MI",sx+13,sy+11);
     return;}
   if(k==="hydrant"||(k==="look"&&(p.id==="hydrant"||p.id==="hydrantS"))){
     ctx.fillStyle="rgba(0,0,0,.22)";ctx.beginPath();ctx.ellipse(sx+16,sy+27,8,3,0,0,7);ctx.fill();
@@ -1854,7 +1867,7 @@ function draw(faced,now){
   }
   if(m.placards){ctx.font="bold 7px ui-monospace,monospace";ctx.textAlign="center";
     for(const pc of m.placards){const sx=pc.x*TILE-camX, sy=4*TILE-camY;drawDoorPlate(sx,sy,pc.t);
-      ctx.fillStyle="#0b0e15";ctx.fillRect(sx-6,sy-9,TILE+12,9);ctx.fillStyle="#ffce3a";ctx.fillText(pc.t,sx+16,sy-2);}}
+      const pw=Math.max(TILE+12,ctx.measureText(pc.t).width+8);ctx.fillStyle="#0b0e15";ctx.fillRect(sx+16-pw/2,sy-9,pw,9);ctx.fillStyle="#ffce3a";ctx.fillText(pc.t,sx+16,sy-2);}}
   const draws=[];
   for(const p of (m.props||[])){if(propVisible(p)){if(p.kind==="light"){draws.push({y:-99,fn:()=>drawProp(p,p.x*TILE-camX,p.y*TILE-camY)});}else draws.push({y:p.y,fn:()=>drawPropX(p,p.x*TILE-camX,p.y*TILE-camY)});}}
   for(const n of (m.npcs||[]))if(npcVisible(n))draws.push({y:n.y,fn:()=>drawPerson(n.x*TILE-camX,n.y*TILE-camY,n.sprite,n._dir||"down",0,now)});
@@ -1902,10 +1915,31 @@ function actBtn(label,fn,cls){const b=el("button",cls||"act",label);b.onclick=fn
 function rewardChips(r){let s="";if(r.coins)s+=`<span class="reward">\uD83D\uDCB5 +$${r.coins}</span>`;if(r.rep)s+=`<span class="reward">\u2B50 +${r.rep} rep</span>`;if(r.find)s+=`<span class="reward">${FINDS[r.find].icon} ${FINDS[r.find].name}</span>`;return s;}
 function castPal(id){return CAST[id]?CAST[id].sprite:null;}
 
-function openIntro(){openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
-  p(`Morning, <b>${S.name||"boss"}</b>. Today's your first day as the <b>Assistant Location Manager</b> on the indie feature <b>Crooked Block</b>. The block is yours to run.`);
+function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
+  openModal("\uD83D\uDCE7 New email","Inbox \u00b7 5:42 AM",{pal:CAST.caitlin.sprite});
+  mbody.appendChild(el("div","email",`
+    <div class="em-h"><div><span>From</span><b>Caitlin</b> \u00b7 Assistant Location Manager, <i>Mission Implausible: The Pridwin</i></div>
+    <div><span>To</span>${nm}</div><div><span>Cc</span>Ryan (Location Manager), Amber (Locations Coordinator)</div>
+    <div class="em-s"><span>Subject</span><b>Welcome to Mission Implausible: The Pridwin \u2014 Prep Day 1 (read before you leave!)</b></div></div>
+    <div class="em-b">
+    <p>Hi ${nm},</p>
+    <p>Welcome to the Locations Department! You're our new <b>Locations Assistant</b> on <b>Mission Implausible: The Pridwin</b>, a feature shooting in Brooklyn. Our hero location is <b>Mr. Halloran's brownstone</b>: two days inside, plus a big stoop scene out on the public sidewalk. Lots of permits, lots of neighbors, one very old fireplace.</p>
+    <p class="em-sec">TODAY \u00b7 PREP DAY 1</p>
+    <ul><li><b>First:</b> pick up your rental at <b>Outerprise Rent-A-Car</b>, right on your block. It's booked on the production account; just ask for Trevor.</li>
+    <li><b>Then:</b> drive to the <b>production office in LIC</b> and find me in the Locations office. I've got your <b>E-ZPass</b>, <b>P-Card</b> and a float of petty cash.</li>
+    <li><b>After that:</b> the tech scout with the department heads, scouting the brownstone, meeting the neighbors, and pulling our <b>City film permit</b>.</li></ul>
+    <p class="em-sec">THE REST OF THE WEEK</p>
+    <ul><li><b>Shoot:</b> the rain sequence (a water question for DEP), posting our No Parking signs, and lock-ups on the stoop day.</li>
+    <li><b>Wrap:</b> we give the block back cleaner than we found it. Every sign, every bag, every thank-you.</li></ul>
+    <p>Ryan's only rule: <i>leave every block better than you found it.</i> Keep your phone on and your walkie charged once you get one.</p>
+    <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
+    <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
+  if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>E</b> or Space to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
+  actBtn(first?"\uD83D\uDEAA Head out to get the car":"Close",closeModal);}
+function openIntro(){openEmail(true);return;openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
+  p(`Morning, <b>${S.name||"boss"}</b>. Today's your first day as a <b>Locations Assistant</b> on the feature <b>Mission Implausible: The Pridwin</b>. The block is yours to run.`);
   p(`Move with <b>arrow keys / WASD</b>; face someone or something and press <b>E</b> (or Space) to interact.`,"muted");
-  p(`Grab your go-bag and head out. First stop is <b>Venture Rent-A-Car</b> on your block \u2014 you can't run locations without wheels. Then drive to the <b>production office</b> and find your boss, <b>Sal</b>, in the Locations office.`,"muted");
+  p(`Grab your go-bag and head out. First stop is <b>Outerprise Rent-A-Car</b> on your block \u2014 you can't run locations without wheels. Then drive to the <b>production office</b> and find your boss, <b>Ryan</b>, in the Locations office.`,"muted");
   actBtn("Let's go to work",closeModal);}
 
 function openChat(n){openModal(n.name,n.role,{pal:n.sprite});let i=0;const line=p("");const next=el("button","act","Next");
@@ -1941,13 +1975,13 @@ function openHydrantProp(){openModal("Fire hydrant","Halloran's corner");
   mbody.appendChild(el("div","banner fact",`Logged for the DEP application. ${rewardChips({find:"hydrantTag"})}`));
   actBtn("Close",closeModal);blip(true);}
 
-function openPhone(){openModal("Your Phone","Texts \u00b7 call sheet");
-  p(`<b>Sal (LM):</b> Welcome aboard, ALM. Get the rental, then come find me in the Locations office \u2014 I've got your E-ZPass, P-Card and today's list. \uD83D\uDE97`);
+function openPhone(){if(!S.flags.has("kit")){openEmail(false);return;}openModal("Your Phone","Texts \u00b7 call sheet");
+  p(`<b>Caitlin (ALM):</b> Welcome aboard! My email has the whole day. Car first, then come find me in the Locations office. \uD83D\uDE97`);
   p(`<b>Crew thread:</b> office is in LIC, the working trucks stage at the SET block in Greenpoint, brownstone scout is deeper in Brooklyn. Big day. \u2615`,"muted");
   if(S.hasCar)p(`Reminder: tap your rental car to drive between unlocked blocks. New places unlock as the job opens up.`,"muted");
   actBtn("Close",closeModal);}
 
-function openRental(){const tr=CAST.trevor;openModal("Venture Rent-A-Car","Pick up your wheels",tr?{pal:tr.sprite}:null);
+function openRental(){const tr=CAST.trevor;openModal("Outerprise Rent-A-Car","Pick up your wheels",tr?{pal:tr.sprite}:null);
   if(S.hasCar){p("Trevor waves. 'You're all set \u2014 keys are yours for the shoot. Drive safe.'");actBtn("Close",closeModal);return;}
   p(`Trevor slides a key fob across the counter. "Booked on the production's account \u2014 one <b>compact sedan</b>, nothing fancy. Perfect for hauling cones and signs around the boroughs."`);
   p(`You sign once and it's yours for the shoot.`,"muted");
@@ -1956,7 +1990,7 @@ function openRental(){const tr=CAST.trevor;openModal("Venture Rent-A-Car","Pick 
     if(!S.unlocked.has("officeblock"))S.unlock("officeblock");
     mbody.innerHTML="";
     p(`Keys in hand. Your silver sedan's parked right outside.`);
-    mbody.appendChild(el("div","banner ok","\uD83D\uDE97 <b>Rental car unlocked.</b> Head outside, tap the car, and drive to the <b>Production Office</b> to meet Sal."));
+    mbody.appendChild(el("div","banner ok","\uD83D\uDE97 <b>Rental car unlocked.</b> Head outside, tap the car, and drive to the <b>Production Office</b> to meet Caitlin."));
     actBtn("Close",closeModal);blip(true);
   });}
 
@@ -1965,8 +1999,8 @@ function openBoss(n){
     if(!S.solved.has("techscout"))openScenario("techscout");
     else openChat(n);
     return;}
-  openModal("Sal Mariano","Location Manager \u00b7 first-day kit",{pal:n.sprite});
-  p(`Sal looks up from the map wall. "There's my new ALM. Twenty years I've worked these streets \u2014 as of today, the sidewalk is yours. Kit first, then the day."`);
+  openModal("Caitlin","Assistant Location Manager \u00b7 first-day kit",{pal:n.sprite});
+  p(`Caitlin looks up from the map wall. "There's my new Locations Assistant. You made it \u2014 and with the car, even. Kit first, then the day."`);
   p(`He hands you two things: an <b>E-ZPass</b> for the tolls ("you'll cross a lot of bridges running this scout") and a <b>production P-Card</b> for petty cash ("every charge goes back to Renata with a coded receipt \u2014 don't make me hear about it").`,"muted");
   mbody.appendChild(el("div","banner kit",`\uD83D\uDEE3\uFE0F <b>E-ZPass</b> + \uD83D\uDCB3 <b>P-Card</b> added to your Field Guide \u00b7 petty cash funded.`));
   actBtn("Take the kit \u2014 what's first?",()=>{
@@ -2008,7 +2042,7 @@ function openCarMenu(){openModal("Your Rental Car","Where to?");
   actBtn("Stay here",closeModal,"act ghost");}
 function lockReason(id){
   if(id==="officeblock")return "Pick up your rental first";
-  if(id==="cityblock"||id==="scoutblock")return "Unlocks once Sal gives you the day's list";
+  if(id==="cityblock"||id==="scoutblock")return "Unlocks once Caitlin gives you the day's list";
   if(id==="setblock")return "Unlocks when the company starts shooting (finish Prep)";
   return "Locked";}
 
@@ -2076,7 +2110,7 @@ function openScenario(id){const sc=SCENARIOS[id], already=S.solved.has(id);
     if(!already)life=lifelineBtn(dWrap,"job_"+id);};}
 
 const PHASE_LIST=[["techscout","Tech scout & day plan"],["scout","Scout the brownstone"],["neighborhood","Work the neighborhood"],["permit","Pull the permit"],["hydrant","Run the hydrant / rain day"],["lockup","Lock it up on the stoop"],["wrap","Wrap out clean"]];
-function openBoard(){openModal("Call Sheet \u2014 Crooked Block","Production status");
+function openBoard(){openModal("Call Sheet \u2014 Mission Implausible: The Pridwin","Production status");
   p(`Current phase: <b>${S.phase}</b> \u00b7 Reputation on the block: <b>${S.rep}</b>`);
   const list=el("div");mbody.appendChild(list);
   PHASE_LIST.forEach(([id,desc])=>{const done=S.solved.has(id), ph=SCENARIOS[id].phase, cur=ph===S.phase&&!done;
@@ -2085,12 +2119,12 @@ function openBoard(){openModal("Call Sheet \u2014 Crooked Block","Production sta
     mbody.appendChild(el("div","banner ok","\uD83C\uDF1B It's the wrap. Run the wrap-out from right here \u2014 or from the wrap checklist at set."));
     actBtn("Run the wrap-out",()=>{closeModal();openScenario("wrap");});}
   else if(S.phase==="DONE"){
-    mbody.appendChild(el("div","banner ok","\uD83C\uDFAC That's a wrap on Crooked Block \u2014 onboarding to clean wrap-out."));
+    mbody.appendChild(el("div","banner ok","\uD83C\uDFAC That's a wrap on Mission Implausible: The Pridwin \u2014 onboarding to clean wrap-out."));
     actBtn("View your scorecard",()=>{closeModal();openScorecard();});}
   else{const next=PHASE_LIST.find(([id])=>!S.solved.has(id));
     if(next){const b=el("button","act",`Where to: ${nextHint(next[0])}`);b.onclick=closeModal;mbody.appendChild(b);}}
   mbody.appendChild(el("div","banner fact","<b>Reminder:</b> the City film permit isn't free \u2014 $500 per 14-day window. Police assistance and parking privileges are the free part."));}
-function nextHint(id){return id==="techscout"?"the Locations office \u2014 talk to Sal":id==="scout"?"the brownstone (drive to the scout block)":id==="neighborhood"?"the scout block \u2014 knock the doors, then your clipboard":id==="permit"?"the City Film Office":id==="hydrant"?"the City Film Office \u2014 DEP water desk":id==="lockup"?"Halloran's block \u2014 post the No Parking signs, then find Keisha (2nd AD) at 126":"the Call Sheet board here, or the wrap checklist at set";}
+function nextHint(id){return id==="techscout"?"the Locations office \u2014 talk to Caitlin":id==="scout"?"the brownstone (drive to the scout block)":id==="neighborhood"?"the scout block \u2014 knock the doors, then your clipboard":id==="permit"?"the City Film Office":id==="hydrant"?"the City Film Office \u2014 DEP water desk":id==="lockup"?"Halloran's block \u2014 post the No Parking signs, then find Keisha (2nd AD) at 126":"the Call Sheet board here, or the wrap checklist at set";}
 
 function openDiscoveries(){openModal("Field Guide","Keepsakes & lessons");
   p(`${S.finds.size} of ${FINDTOTAL} collected.`,"muted");
@@ -2100,10 +2134,10 @@ function openDiscoveries(){openModal("Field Guide","Keepsakes & lessons");
 function openWhereAmI(){const m=curMap();openModal("Where am I?",m.name);
   const here={
     apartment:"Your apartment. Grab your stuff and head out to the block \u2014 the rental counter is your first stop.",
-    homeblock:"Your block in Astoria. Venture Rent-A-Car is here; pick up the car, then drive to the office.",
-    rental:"Venture Rent-A-Car. Take the keys from Trevor, then go tap your car outside.",
+    homeblock:"Your block in Astoria. Outerprise Rent-A-Car is here; pick up the car, then drive to the office.",
+    rental:"Outerprise Rent-A-Car. Take the keys from Trevor, then go tap your car outside.",
     officeblock:"The production office district in LIC. The office door is up top; the working trucks stage at the SET block now.",
-    office:"The production office. Private offices along the top: Locations (Sal & Gaby), the UPM, the director's suite. Cubicles in the middle, copy room bottom-left (Priya & the set signs), kitchen bottom-right. Poke around \u2014 the drawers are worth it.",
+    office:"The production office. Private offices along the top: Locations (Ryan, Caitlin & Amber), the UPM, the director's suite. Cubicles in the middle, copy room bottom-left (Priya & the set signs), kitchen bottom-right. Poke around \u2014 the drawers are worth it.",
     cityblock:"The civic center in Manhattan. The City Film Office is the door up top.",
     cityoffice:"The City Film Office \u2014 one-stop shop: Doris (permits), Marcus (DEP water), plus COI, Letter-in-Lieu, Parks/MTA and the tax-credit desks.",
     setblock:"Set & base camp in Greenpoint \u2014 the truck line, staged camera gear, video village, and the crew who run it (Big Mike, Dee, Ofc. Reyes). At wrap, the wrap checklist lives here too.",
@@ -2120,7 +2154,7 @@ function openWhereAmI(){const m=curMap();openModal("Where am I?",m.name);
 /* -- phase interstitials & the final scorecard -- */
 function openPhaseCard(ph){
   if(ph==="SHOOT"){openModal("The Company Is Up","Phase \u00b7 SHOOT");
-    p("Prep's done \u2014 <b>Crooked Block</b> is shooting. The trucks rolled in before dawn, base camp's humming, and the rain sequence is on the schedule.");
+    p("Prep's done \u2014 <b>Mission Implausible: The Pridwin</b> is shooting. The trucks rolled in before dawn, base camp's humming, and the rain sequence is on the schedule.");
     mbody.appendChild(el("div","banner ok","\uD83D\uDE9A <b>SET & BASE CAMP unlocked.</b> Drive over and walk the truck line \u2014 the shoot-day field calls live out there."));
     mbody.appendChild(el("div","banner fact","\uD83D\uDCA7 <b>Shoot-week list:</b> (1) the rain-day water question \u2014 Marcus at the DEP desk; (2) post your No Parking signs on Halloran's block; (3) the stoop scene \u2014 <b>lock it up</b> with Keisha, the 2nd AD."));
     mbody.appendChild(el("div","banner no","\u2744\uFE0F It's 28\u00b0F and flurrying. Sammy's bodega has hand warmers."));
@@ -2138,10 +2172,10 @@ function openScorecard(){
   if(S.phase==="DONE"){award("wrap");if(CHARS[S.charIdx].id==="frank")award("hotdog");if(!statGet("lifelines"))award("nolife");}
   let g;
   if(pct>=0.95&&S.rep>=40)g="S";else if(pct>=0.85)g="A";else if(pct>=0.7)g="B";else if(pct>=0.5)g="C";else g="D";
-  const rank=S.rep>=40?"Location Manager material":S.rep>=24?"Key ALM":"Working ALM";
+  const rank=S.rep>=40?"ALM material":S.rep>=24?"Key Locations Assistant":"Working Locations Assistant";
   const score=jobs*100+sq*50+finds*25+S.rep*10+S.badges.size*40+Math.round(acc*300);
-  openModal("That's a Wrap!","Crooked Block \u00b7 final scorecard");
-  mbody.appendChild(el("div","score-grade",`<div class="big">${g}</div><div><div class="rk">${rank}</div><div class="rs">${S.name||"You"} \u00b7 Assistant Location Manager<br>Final score: <b>${score}</b> pts \u00b7 ${Math.round(pct*100)}% of the show worked</div></div>`));
+  openModal("That's a Wrap!","Mission Implausible: The Pridwin \u00b7 final scorecard");
+  mbody.appendChild(el("div","score-grade",`<div class="big">${g}</div><div><div class="rk">${rank}</div><div class="rs">${S.name||"You"} \u00b7 Locations Assistant<br>Final score: <b>${score}</b> pts \u00b7 ${Math.round(pct*100)}% of the show worked</div></div>`));
   const grid=el("div","stat-grid");mbody.appendChild(grid);
   const stat=(l,v,sub)=>grid.appendChild(el("div","stat",`<span>${l}</span><b>${v}</b>${sub?`<div class="sub">${sub}</div>`:""}`));
   stat("Jobs closed",`${jobs}/${JOBTOTAL}`,"scout \u2192 permit \u2192 wrap");
@@ -2155,7 +2189,7 @@ function openScorecard(){
   stat("Receipts coded",`${S.receipts.filter(r=>r.ok).length}/${S.receipts.length}`,"clean books");
   stat("Badges",`${S.badges.size}/${Object.keys(BADGES).length}`,`${S.lingo.size} lingo \u00b7 ${statGet("drives")} drives`);
   if(pct<0.95)mbody.appendChild(el("div","banner fact","\uD83D\uDD0D The city's still open \u2014 anything you missed (field calls, drawers, doors, finds) is still out there. Finish the list and check this scorecard again from the Call Sheet board."));
-  else mbody.appendChild(el("div","banner ok","\uD83C\uDFC6 A perfect show. Every job, every call, every keepsake \u2014 Sal's already talking about the next one."));
+  else mbody.appendChild(el("div","banner ok","\uD83C\uDFC6 A perfect show. Every job, every call, every keepsake \u2014 Ryan's already talking about the next one."));
   p("You left every block better than you found it. In this department, that IS the job \u2014 a clean wrap is the audition for the next show.","muted");
   actBtn("\uD83C\uDFAC Roll credits",()=>{closeModal();rollCredits();});
   actBtn("Keep exploring the city",closeModal,"act ghost");
@@ -2449,7 +2483,7 @@ function startGame(){
   document.getElementById("b-music").onclick=()=>{S.musicOn=!S.musicOn;saveBool("musicOn",S.musicOn);updateHUD();};
   document.getElementById("b-sound").onclick=()=>{S.soundOn=!S.soundOn;saveBool("soundOn",S.soundOn);updateHUD();};
   document.getElementById("b-reset").onclick=()=>{openModal("Reset everything?","This can't be undone");
-    p("This wipes your name, ALM, progress, budget, rep, car and Field Guide on this device, and starts day one over.");
+    p("This wipes your name, character, progress, budget, rep, car and Field Guide on this device, and starts day one over.");
     const yes=el("button","act","Yes, reset");yes.onclick=()=>{clearAll();
       S.map=PLAYER_START.map;S.x=PLAYER_START.x;S.y=PLAYER_START.y;S.dir=PLAYER_START.dir;S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;S.transition=null;S.drive=null;
       S.phase="PREP";S.solved=new Set();S.sqSolved=new Set();S.flags=new Set();S.finds=new Set();S.coins=0;S.rep=0;S.name="";S.hasCar=false;S.charIdx=0;S.unlocked=new Set(["homeblock"]);
@@ -2517,7 +2551,7 @@ function recordAnswer(key,correct){
   if(first&&S.rep>0){S.addRep(-1);return 1;}return 0;}
 function lifelineBtn(wrap,key){
   if(S.coins<25)return;
-  const b=el("button","act ghost life","📞 Call Gaby — $25 (strikes one wrong answer)");
+  const b=el("button","act ghost life","📞 Call Amber — $25 (strikes one wrong answer)");
   b.onclick=()=>{const wrong=[...wrap.querySelectorAll(".opt")].filter(x=>!x.disabled&&x.dataset.ok!=="1");
     if(!wrong.length)return;const w=wrong[Math.floor(Math.random()*wrong.length)];
     w.disabled=true;w.classList.add("struck");S.addCoins(-25);statAdd("lifelines");b.remove();
@@ -2547,11 +2581,11 @@ function pendingReceipts(){return S.receipts.filter(r=>!r.coded);}
 const KNOCKS=[["h_drive","nb_driveway"],["h_negotiate","nb_negotiate"],["h_noanswer","nb_noanswer"],["h_skeptic","nb_skeptic"]];
 function objective(){
   if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:"Face walkers + E to ask them to hold · Keisha (by camera) to step away",tgt:null};
-  if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Venture Rent-A-Car",tgt:{x:6,y:8}};
+  if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
     return routeStep("rental","trevor","Pick up your rental from Trevor");}
-  if(!S.flags.has("kit"))return routeStep("office","sal","Get your kit from Sal — Locations office");
+  if(!S.flags.has("kit"))return routeStep("office","caitlin","Get your kit from Caitlin — Locations office");
   for(const [id] of PHASE_LIST){if(S.solved.has(id))continue;
-    if(id==="techscout")return routeStep("office","sal","Take the day's plan from Sal");
+    if(id==="techscout")return routeStep("office","caitlin","Take the day's plan from Caitlin");
     if(id==="scout")return routeStep("brownstone","halloran","Scout Halloran's brownstone");
     if(id==="neighborhood"){const left=KNOCKS.filter(k=>!S.flags.has(k[1]));
       if(left.length)return Object.assign(routeStep("scoutblock",left[0][0],`Knock the doors on Halloran's block (${4-left.length}/4)`),{});
@@ -2748,7 +2782,8 @@ const BARKS={
   trevor:["Drive safe!","Full tank, please!","We'll pick you up. Figuratively."],
   benny:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
   courierL:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
-  sal:["Leave it better than you found it.","Where's my ALM?","Twenty years, kid."],
+  sal:["Leave it better than you found it.","Where's Caitlin?","Twenty years, kid."],
+  caitlin:["Did you read my email?","Photograph everything!","Car's gassed up, right?"],
   gaby:["If it isn't in the folder…","COI's in!","Photograph everything."],
   renata:["Receipts.","Code it right.","Is that on the P-Card?"],
   vance:["Make it look effortless.","The light! Look at that light."],
@@ -2918,7 +2953,7 @@ function openReceipts(n){const pend=pendingReceipts();
   if(!pend.length){p(`"All coded. Look at that. Go away before I find something."`);actBtn("Close",closeModal);return;}
   const r=pend[0];
   p(`Renata holds out her hand. "Receipts. Each one gets an account code off this show's chart of accounts." <span class="muted">(${pend.length} to go)</span>`);
-  mbody.appendChild(el("div","receipt",`<div class="rc-h">SAMMY'S BODEGA · BKLYN</div><div class="rc-i">${r.icon} ${r.item}</div><div class="rc-a">$${r.amt}.00</div><div class="rc-f">P-CARD •••• · CROOKED BLOCK LLC</div>`));
+  mbody.appendChild(el("div","receipt",`<div class="rc-h">SAMMY'S BODEGA · BKLYN</div><div class="rc-i">${r.icon} ${r.item}</div><div class="rc-a">$${r.amt}.00</div><div class="rc-f">P-CARD •••• · PRIDWIN PRODUCTIONS LLC</div>`));
   const w=el("div");mbody.appendChild(w);
   ACCOUNTS.forEach((acc,i)=>{const b=el("button","opt",`<span class="k">${i+1}</span> ${acc}`);
     b.onclick=()=>{w.querySelectorAll(".opt").forEach(x=>x.disabled=true);const ok=acc===r.code;r.coded=true;r.ok=ok;saveJSON("receipts",S.receipts);
@@ -3103,8 +3138,8 @@ function drawLockup(camX,camY,now){
 /* ============================= CREDITS ================================ */
 function rollCredits(){const c=document.getElementById("credits");const ch=CHARS[S.charIdx];
   const seen=new Set(),cast=[];for(const id in CAST){const n=CAST[id];if(seen.has(n.name))continue;seen.add(n.name);cast.push(n);}
-  c.innerHTML=`<div class="croll"><div class="ct">CROOKED BLOCK</div><div class="cs">a film you just helped make</div>
-    <div class="cr"><span>Assistant Location Manager</span><b>${S.name||ch.name}</b></div><div class="cs">(played as ${ch.name})</div>
+  c.innerHTML=`<div class="croll"><div class="ct">MISSION IMPLAUSIBLE:<br>THE PRIDWIN</div><div class="cs">a film you just helped make</div>
+    <div class="cr"><span>Locations Assistant</span><b>${S.name||ch.name}</b></div><div class="cs">(played as ${ch.name})</div>
     <div class="ch">— CAST & CREW —</div>${cast.map(n=>`<div class="cr"><span>${n.role}</span><b>${n.name}</b></div>`).join("")}
     <div class="ch">— THE BLOCK —</div><div class="cr"><span>Neighbors met</span><b>${["nb_driveway","nb_negotiate","nb_noanswer","nb_skeptic","nb_fan"].filter(f=>S.flags.has(f)).length} / 5</b></div>
     <div class="cr"><span>Pigeons scattered</span><b>${statGet("pigeons")}</b></div><div class="cr"><span>Times honked at</span><b>${statGet("honks")}</b></div>
@@ -3119,7 +3154,7 @@ function openGuide(tab){tab=tab||"finds";openModal("Field Guide","Keepsakes · l
     const b=el("button","tab"+(k===tab?" on":""),l);b.onclick=()=>openGuide(k);tabs.appendChild(b);});mbody.appendChild(tabs);
   if(tab==="finds"){for(const id in FINDS){const f=FINDS[id],has=S.finds.has(id);
     mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?f.icon:"❔"}</div><div><div class="nm">${has?f.name:"— locked —"}</div><div class="nt">${has?f.note:"Keep working the show to unlock this."}</div></div>`));}}
-  else if(tab==="lingo"){p(S.finds.has("walkie")?"Heard over the walkie and on set. Keep your ears on channel 1.":"Get your walkie from Sal's first job — then the lingo starts flowing.","muted");
+  else if(tab==="lingo"){p(S.finds.has("walkie")?"Heard over the walkie and on set. Keep your ears on channel 1.":"Get your walkie from Caitlin's first job — then the lingo starts flowing.","muted");
     for(const k in LINGO){const L=LINGO[k],has=S.lingo.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?"📻":"❔"}</div><div><div class="nm">${has?L.t:"— not heard yet —"}</div><div class="nt">${has?L.d:""}</div></div>`));}}
   else{for(const k in BADGES){const B=BADGES[k],has=S.badges.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?B.icon:"🔒"}</div><div><div class="nm">${B.name}</div><div class="nt">${B.note}</div></div>`));}}}
 
