@@ -209,8 +209,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
   </div>
   <div id="viewport">
     <canvas id="world" width="480" height="352"></canvas>
-    <div id="notif"><div class="n-ic">📧</div><div><div class="n-h">NEW EMAIL · 5:42 AM</div><div class="n-t" id="notif-t">Welcome</div><div class="n-s">From Caitlin (ALM) · click or press E to open</div></div></div><div id="toasts"></div><div id="radio"></div><div id="credits"></div>
-    <div id="hint"><kbd id="hint-key">E</kbd><span id="hint-text">Look</span></div>
+    <div id="notif"><div class="n-ic">📧</div><div><div class="n-h">NEW EMAIL · 5:42 AM</div><div class="n-t" id="notif-t">Welcome</div><div class="n-s">From Caitlin (ALM) · click or press Space to open</div></div></div><div id="toasts"></div><div id="radio"></div><div id="credits"></div>
+    <div id="hint"><kbd id="hint-key">SPACE</kbd><span id="hint-text">Look</span></div>
     <div id="touch">
       <div class="dpad">
         <button class="dbtn" id="tu">▲</button>
@@ -218,7 +218,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
         <button class="dbtn" id="tl">◀</button>
         <button class="dbtn" id="tr">▶</button>
       </div>
-      <button id="ta">E</button>
+      <button id="ta">ACT</button>
     </div>
     <div id="title">
       <div class="slate">
@@ -1914,9 +1914,9 @@ function draw(faced,now){
   ctx.fillStyle=tint();ctx.fillRect(0,0,VIEW_W*TILE,VIEW_H*TILE);
   for(const p of (m.props||[]))if(p.kind==="light"&&propVisible(p))lightGlow(p.x*TILE-camX,p.y*TILE-camY);
   if(faced){const t=faced.ent, sx=t.x*TILE-camX+16, sy=t.y*TILE-camY-6;
-    ctx.fillStyle="rgba(16,20,29,.92)";roundRect(sx-13,sy-18,26,18,5);ctx.fill();
-    ctx.fillStyle="#ffce3a";roundRect(sx-9,sy-14,18,11,3);ctx.fill();
-    ctx.fillStyle="#1a1300";ctx.font="bold 9px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("E",sx,sy-5);}
+    ctx.fillStyle="rgba(16,20,29,.92)";roundRect(sx-22,sy-18,44,18,5);ctx.fill();
+    ctx.fillStyle="#ffce3a";roundRect(sx-18,sy-14,36,11,3);ctx.fill();
+    ctx.fillStyle="#1a1300";ctx.font="bold 8px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("SPACE",sx,sy-5.5);}
   curFaced=faced;drawMarkers(camX,camY,now);drawBark(camX,camY);drawFx(camX,camY);
   const g=ctx.createRadialGradient(VIEW_W*TILE/2,VIEW_H*TILE/2,VIEW_H*TILE*0.35,VIEW_W*TILE/2,VIEW_H*TILE/2,VIEW_H*TILE*0.8);
   g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.34)");ctx.fillStyle=g;ctx.fillRect(0,0,VIEW_W*TILE,VIEW_H*TILE);
@@ -1971,12 +1971,12 @@ function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
     <p>Ryan's only rule: <i>leave every block better than you found it.</i> Keep your phone on and your walkie charged once you get one.</p>
     <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
     <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
-  if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>E</b> or Space to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
+  if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>Space</b> to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
   if(first)actBtn("\u2600\uFE0F Start the day",()=>{S.setFlag("dayStarted");hideNotif();closeModal();setBanner("PREP DAY 1 \u00b7 5:45 AM");chime();});
   else actBtn("Close",closeModal);}
 function openIntro(){openEmail(true);return;openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
   p(`Morning, <b>${S.name||"boss"}</b>. Today's your first day as a <b>Locations Assistant</b> on the feature <b>Mission Implausible: The Pridwin</b>. The block is yours to run.`);
-  p(`Move with <b>arrow keys / WASD</b>; face someone or something and press <b>E</b> (or Space) to interact.`,"muted");
+  p(`Move with <b>arrow keys / WASD</b>; face someone or something and press <b>Space</b> to interact.`,"muted");
   p(`Grab your go-bag and head out. First stop is <b>Outerprise Rent-A-Car</b> on your block \u2014 you can't run locations without wheels. Then drive to the <b>production office</b> and find your boss, <b>Ryan</b>, in the Locations office.`,"muted");
   actBtn("Let's go to work",closeModal);}
 
@@ -2093,7 +2093,7 @@ function openSideQuest(id,portrait){const q=SIDE_QUESTS[id];openModal(q.title,q.
       mbody.insertBefore(el("div","banner "+(o.correct?"ok":"no"),o.fb+(pen?" <b>(\u22121 rep)</b>":"")),opts);
       if(o.correct){S.recordSideQuest(id);const r=q.reward;if(r.find)S.addFind(r.find);if(r.coins)S.addCoins(r.coins);if(r.rep)S.addRep(r.rep);if(r.flag)S.setFlag(r.flag);
         mbody.insertBefore(el("div","banner fact",`<b>Field note:</b> ${q.fact}<br>${rewardChips(r)}`),opts);
-        if(id==="signs")mbody.insertBefore(el("div","banner kit","\uD83D\uDEA7 <b>Now post them.</b> Five poles along Halloran's curb are glowing \u2014 walk up and press E on each. Watch for a tree and the hydrant while you're at it."),opts);
+        if(id==="signs")mbody.insertBefore(el("div","banner kit","\uD83D\uDEA7 <b>Now post them.</b> Five poles along Halloran's curb are glowing \u2014 walk up and press Space on each. Watch for a tree and the hydrant while you're at it."),opts);
         opts.remove();actBtn("Close",closeModal);blip(true);}
       else{blip(false);const retry=el("button","act ghost","Try again");retry.onclick=()=>openSideQuest(id,portrait);mbody.appendChild(retry);opts.remove();}};
     opts.appendChild(btn);});
@@ -2369,12 +2369,12 @@ window.addEventListener("keydown",e=>{if(!started)return;
     const k=e.key.toLowerCase();const opts=[...mbody.querySelectorAll(".opt")].filter(b=>!b.disabled);
     if(/^[1-9]$/.test(k)){const b=opts[+k-1];if(b){e.preventDefault();b.click();}return;}
     if(/^[a-d]$/.test(k)){const b=opts.find(x=>{const kk=x.querySelector(".k");return kk&&kk.textContent.trim().toLowerCase()===k;});if(b){e.preventDefault();b.click();}return;}
-    if(k==="enter"||k===" "||k==="e"){const acts=[...mbody.querySelectorAll(".act")].filter(b=>!b.disabled&&!b.classList.contains("life"));
+    if(k==="enter"||k===" "){const acts=[...mbody.querySelectorAll(".act")].filter(b=>!b.disabled&&!b.classList.contains("life"));
       const b=acts.find(x=>!x.classList.contains("ghost"))||acts[0];if(b){e.preventDefault();b.click();}}
     return;}
   const dir=KEYMAP[e.key];
   if(dir){e.preventDefault();if(!S.drive)S.dir=dir;held.add(dir);}   // held keys also steer the car
-  else if(e.key==="e"||e.key==="E"||e.key===" "||e.key==="Enter"){if(S.drive)return;e.preventDefault();interact();}});
+  else if(e.key===" "){if(S.drive)return;e.preventDefault();interact();}});
 window.addEventListener("keyup",e=>{const dir=KEYMAP[e.key];if(dir)held.delete(dir);});
 function bindHold(id,dir){const b=document.getElementById(id);
   const on=e=>{e.preventDefault();if(!modalOpen){if(!S.drive)S.dir=dir;held.add(dir);}};
@@ -2487,6 +2487,7 @@ function loop(now){const dt=Math.min(now-lastTs,50);lastTs=now;lastDt=dt;
       else if(faced.type==="npc"&&f.special==="shop"&&S.sqSolved.has("bodega"))txt="Shop";
       else if(faced.type==="npc"&&f.special==="receipts"&&pendingReceipts().length)txt="Code receipts";
       else if(faced.type==="npc"&&f.special==="lockupAD")txt="Talk to Keisha";
+      else if(faced.type==="prop"&&f.id==="gobag"&&!S.flags.has("hasBag"))txt="Grab your go-bag";
       else if(faced.type==="prop"&&f.kind==="signspot")txt=!S.signs.has(f.id)?"Post sign":(pullPhase()&&!S.pulled.has(f.id))?"Pull sign":"Check sign";
       else if(faced.type==="npc"){
         if(f.special==="boss")txt=S.flags.has("kit")?(f.ticket&&!S.solved.has(f.ticket)?"Take the job":"Talk to "+f.name):"Get your kit";
@@ -2624,7 +2625,7 @@ function pendingPulls(){return [...S.signs].filter(i=>!S.pulled.has(i));}
 function pendingReceipts(){return S.receipts.filter(r=>!r.coded);}
 const KNOCKS=[["h_drive","nb_driveway"],["h_negotiate","nb_negotiate"],["h_noanswer","nb_noanswer"],["h_skeptic","nb_skeptic"]];
 function objective(){
-  if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:"Face walkers + E to ask them to hold · Keisha (by camera) to step away",tgt:null};
+  if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:"Face walkers + Space to ask them to hold · Keisha (by camera) to step away",tgt:null};
   if(!S.flags.has("dayStarted"))return {text:"You've got a new email",sub:"Open it to start the day",tgt:null};
   if(S.map==="apartment"&&!S.flags.has("hasBag"))return {text:"Grab your go-bag",sub:"Can't leave without it",tgt:{x:2,y:6}};
   if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
@@ -3020,7 +3021,7 @@ function openLockupAD(){const k=CAST.keisha;
   openModal("Keisha Grant","2nd AD · the stoop scene",k?{pal:k.sprite}:null);
   if(S.map!=="stoopset"){
     p(`"Stoop scene's up. Three takes, I need two clean. Your post is the sidewalk in front of 126."`);
-    mbody.appendChild(el("div","banner fact",`<b>How it plays:</b><br>• People walk the sidewalk toward the taped <b>FRAME</b>. Face them and press <b>E</b> to politely ask them to hold — they'll wait a few seconds (watch their patience bar).<br>• Standing in someone's way is body-blocking — it works for a second and costs you.<br>• <b>Never</b> walk into the frame while rolling. Cross <b>behind the camera</b> on the far sidewalk.<br>• 🏠 Residents going home: don't make them wait — <b>hold the roll</b>.`));
+    mbody.appendChild(el("div","banner fact",`<b>How it plays:</b><br>• People walk the sidewalk toward the taped <b>FRAME</b>. Face them and press <b>Space</b> to politely ask them to hold — they'll wait a few seconds (watch their patience bar).<br>• Standing in someone's way is body-blocking — it works for a second and costs you.<br>• <b>Never</b> walk into the frame while rolling. Cross <b>behind the camera</b> on the far sidewalk.<br>• 🏠 Residents going home: don't make them wait — <b>hold the roll</b>.`));
     actBtn("🎬 Take your post",()=>{closeModal();startLockup();});actBtn("Not yet",closeModal,"act ghost");return;}
   if(LK&&LK.state==="done"){p(`"We didn't get two clean. Reset and go again?"`);actBtn("🔁 Go again",()=>{closeModal();startLockup();});}
   else{p(`"You good? Say the word and we'll step away — we can come back to it."`);actBtn("Keep going",closeModal);}
@@ -3179,7 +3180,7 @@ function drawLockup(camX,camY,now){
   if(LK.state==="intro"){ctx.fillStyle="rgba(10,13,20,.85)";roundRect(60,110,W-120,92,8);ctx.fill();ctx.strokeStyle="#ffce3a";ctx.strokeRect(60.5,110.5,W-121,91);
     ctx.fillStyle="#ffce3a";ctx.font="bold 12px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("LOCK IT UP",W/2,130);
     ctx.fillStyle="#e9ecf4";ctx.font="9px ui-monospace,monospace";
-    ["Face walkers + E = politely ask them to hold.","Keep people OUT of the taped FRAME while rolling.","Cross BEHIND camera (bottom sidewalk) — never through.","🏠 Residents: hold the roll, walk them home."].forEach((l,i)=>ctx.fillText(l,W/2,150+i*13));}}
+    ["Face walkers + SPACE = politely ask them to hold.","Keep people OUT of the taped FRAME while rolling.","Cross BEHIND camera (bottom sidewalk) — never through.","🏠 Residents: hold the roll, walk them home."].forEach((l,i)=>ctx.fillText(l,W/2,150+i*13));}}
 
 /* ============================= CREDITS ================================ */
 function rollCredits(){const c=document.getElementById("credits");const ch=CHARS[S.charIdx];
