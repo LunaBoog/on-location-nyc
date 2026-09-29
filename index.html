@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="On Location" />
+<meta name="theme-color" content="#0e1119" />
 <title>ON LOCATION · NYC</title>
 <style>
 /* ============================== styles.css ============================== */
@@ -133,6 +138,36 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .stat .sub{font-size:10px;color:var(--dim)}
 @media (max-width:520px){.slate h1{font-size:22px}#cs-preview{width:104px}}
 /* ---------------- v6 additions ---------------- */
+/* pop-up focus ring (arrow keys) */
+.opt.kf{border-color:#fff;background:#2d3448;box-shadow:inset 5px 0 0 var(--yellow),0 0 0 3px rgba(255,206,58,.28)}
+.opt.kf .k{color:#fff}
+.act.kf,.tab.kf{outline:2px solid #fff;outline-offset:2px}
+#b-menu{display:none}
+/* ---- phone edition ---- */
+body.touch{-webkit-touch-callout:none}
+body.touch #topbar{flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:6px 8px;padding-top:max(6px,env(safe-area-inset-top));scrollbar-width:none;touch-action:pan-x}
+body.touch #topbar::-webkit-scrollbar{display:none}
+body.touch #topbar .tbtn{display:none}
+body.touch #topbar #b-menu{display:inline-flex;order:-1;background:var(--yellow);color:#1a1300;border:none;font-weight:800;padding:6px 10px}
+body.touch #brand,body.touch #topbar .spacer{display:none}
+body.touch .pill{flex:none}
+body.touch #touch{z-index:15}
+body.touch.portrait #touch{top:auto;bottom:0;height:calc(184px + env(safe-area-inset-bottom));background:linear-gradient(#151a27,#0b0e15);border-top:1px solid var(--line)}
+body.touch .dpad{width:162px;height:162px;left:18px;bottom:calc(18px + env(safe-area-inset-bottom))}
+body.touch .dpad::before{content:"";position:absolute;inset:6px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+body.touch .dbtn{width:54px;height:54px;font-size:20px;border-radius:12px}
+body.touch #tu{left:54px;top:0}body.touch #td{left:54px;top:108px}body.touch #tl{left:0;top:54px}body.touch #tr{left:108px;top:54px}
+body.touch #ta{width:92px;height:92px;right:26px;bottom:calc(50px + env(safe-area-inset-bottom));font-size:18px;box-shadow:0 6px 0 #a8841c,0 10px 24px rgba(0,0,0,.4)}
+body.touch #ta:active{box-shadow:0 2px 0 #a8841c}
+body.touch.portrait #touch::after{content:"Tip: tap the map to walk there";position:absolute;left:0;right:0;top:8px;text-align:center;font-size:10px;color:var(--dim);letter-spacing:.06em}
+body.touch.portrait #hint{bottom:calc(192px + env(safe-area-inset-bottom))}
+body.touch.portrait #radio{bottom:calc(192px + env(safe-area-inset-bottom));max-width:92vw}
+body.touch #hint{pointer-events:none}
+body.touch #toasts{top:6px;right:6px}
+body.touch #modalbg{align-items:flex-end;padding:0}
+body.touch #modal{width:100vw;max-height:84vh;border-radius:16px 16px 0 0;touch-action:pan-y;padding-bottom:env(safe-area-inset-bottom)}
+body.touch .opt{padding:13px 14px}
+body.touch #title{padding:8px}
 #notif{position:absolute;left:50%;top:18%;transform:translate(-50%,-30px);z-index:28;display:flex;gap:14px;align-items:center;cursor:pointer;
   background:rgba(246,245,241,.97);color:#1a1d24;border-radius:14px;padding:14px 20px 14px 16px;box-shadow:0 18px 50px rgba(0,0,0,.6);
   border:2px solid var(--yellow);opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;max-width:min(460px,92vw)}
@@ -193,6 +228,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 <body>
 <div id="app">
   <div id="topbar">
+    <button class="tbtn" id="b-menu">☰ Menu</button>
     <div id="brand">ON <b>LOCATION</b> · NYC</div>
     <span class="pill">PHASE <b id="p-phase">PREP</b></span>
     <span class="pill">Jobs <b id="p-jobs">0/7</b></span>
@@ -285,7 +321,10 @@ function clearAll(){try{if(LS){const rm=[];for(let i=0;i<LS.length;i++){const ke
  * MAPS registry connected by door warps (walk into buildings) and a CAR
  * fast-travel layer between drivable "blocks". Tile builders guarantee
  * rectangular maps. */
-const TILE=32, VIEW_W=15, VIEW_H=11;
+const TILE=32;let VIEW_W=15, VIEW_H=11;
+const COARSE=!!(window.matchMedia&&matchMedia("(pointer: coarse)").matches);   // phones & tablets
+if(COARSE&&document.body)document.body.classList.add("touch");
+const ACTK=COARSE?"ACT":"SPACE";
 const SOLID=new Set(["#","=","b","T","W","F","P","h","f"]);  // non-walkable tiles
 function mk(w,h,f){const t=[];for(let y=0;y<h;y++)t.push(new Array(w).fill(f));return t;}
 function box(t,x0,y0,x1,y1,c){for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)t[y][x]=c;}
@@ -1168,12 +1207,19 @@ const JOBTOTAL=Object.keys(SCENARIOS).length, SQTOTAL=Object.keys(SIDE_QUESTS).l
 /* =============================== render.js ============================ */
 const cv=document.getElementById("world"), ctx=cv.getContext("2d");
 ctx.imageSmoothingEnabled=false;
-let VSCALE=1;
+let VSCALE=1;const PAD_H=184;
+function viewFor(){if(!(COARSE&&innerHeight>innerWidth))return [15,11];
+  if(S.map==="stoopset"||S.train)return [15,11];
+  const vp=document.getElementById("viewport");const aw=vp.clientWidth-4,ah=vp.clientHeight-PAD_H-4;const sc=Math.max(0.5,aw/(11*TILE));
+  return [11,Math.max(9,Math.min(15,Math.floor(ah/(sc*TILE))))];}
 function sizeCanvas(){
   // v6: scale the 480x352 world up to fill the window (crisp, pixelated)
   const dpr=Math.min(window.devicePixelRatio||1,2), vw=VIEW_W*TILE, vh=VIEW_H*TILE;
-  const vp=document.getElementById("viewport");const aw=(vp&&vp.clientWidth)||vw, ah=(vp&&vp.clientHeight)||vh;
-  let sc=Math.min((aw-16)/vw,(ah-16)/vh);sc=sc>=1?Math.floor(sc*4)/4:Math.max(0.5,sc);VSCALE=sc;
+  const vp=document.getElementById("viewport");const portrait=COARSE&&innerHeight>innerWidth;
+  document.body.classList.toggle("portrait",portrait);document.body.classList.toggle("landscape",COARSE&&!portrait);
+  const padH=portrait?PAD_H:0;const aw=(vp&&vp.clientWidth)||vw, ah=((vp&&vp.clientHeight)||vh)-padH;
+  cv.style.marginBottom=padH+"px";
+  let sc=Math.min((aw-(COARSE?4:16))/vw,(ah-(COARSE?4:16))/vh);const scRaw=sc;sc=COARSE?Math.max(0.5,scRaw):(sc>=1?Math.floor(sc*4)/4:Math.max(0.5,sc));VSCALE=sc;
   cv.width=Math.round(vw*sc*dpr); cv.height=Math.round(vh*sc*dpr); cv.style.width=Math.round(vw*sc)+"px"; cv.style.height=Math.round(vh*sc)+"px";
   ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0); ctx.imageSmoothingEnabled=false;
 }
@@ -1918,7 +1964,7 @@ function drawDriving(now){
   const el=(now-dr.start)/1000;
   if(el<3&&!dr.done){ctx.fillStyle="rgba(10,13,20,.8)";ctx.fillRect(W/2-118,H-46,236,20);
     ctx.fillStyle="#e9ecf4";ctx.font="bold 10px ui-monospace,monospace";ctx.textAlign="center";
-    ctx.fillText("\u25C0 \u25B6 steer \u00b7 \u25B2 gas \u00b7 \u25BC brake",W/2,H-32);}
+    ctx.fillText(COARSE?"Hold left / right side of the screen to steer":"\u25C0 \u25B6 steer \u00b7 \u25B2 gas \u00b7 \u25BC brake",W/2,H-32);}
   const prog=Math.min(1,dr.dist/dr.goal);
   ctx.fillStyle="#1f2636";ctx.fillRect(W*0.2,H-18,W*0.6,6);ctx.fillStyle="#5fd08a";ctx.fillRect(W*0.2,H-18,W*0.6*prog,6);
   ctx.fillStyle="#ffce3a";ctx.fillRect(W*0.2+W*0.6*Math.min(1,0.55)-1,H-20,2,10); // toll tick
@@ -1937,6 +1983,7 @@ function draw(faced,now){
   camY=Math.max(0,Math.min(camY,MH*TILE-VIEW_H*TILE));
   if(MW*TILE<VIEW_W*TILE)camX=Math.round((MW*TILE-VIEW_W*TILE)/2);
   if(MH*TILE<VIEW_H*TILE)camY=Math.round((MH*TILE-VIEW_H*TILE)/2);
+  lastCam.x=camX;lastCam.y=camY;
   if(shake>0){camX+=(Math.random()*2-1)*shake;camY+=(Math.random()*2-1)*shake;shake-=0.5;}
   ctx.fillStyle="#0b0e15";ctx.fillRect(0,0,VIEW_W*TILE,VIEW_H*TILE);
   const x0=Math.floor(camX/TILE), y0=Math.floor(camY/TILE);
@@ -1958,8 +2005,8 @@ function draw(faced,now){
   if(faced){const t=faced.ent, sx=t.x*TILE-camX+16, sy=t.y*TILE-camY-6;
     ctx.fillStyle="rgba(16,20,29,.92)";roundRect(sx-22,sy-18,44,18,5);ctx.fill();
     ctx.fillStyle="#ffce3a";roundRect(sx-18,sy-14,36,11,3);ctx.fill();
-    ctx.fillStyle="#1a1300";ctx.font="bold 8px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("SPACE",sx,sy-5.5);}
-  curFaced=faced;drawMarkers(camX,camY,now);drawEmailBubble(camX,camY,now);drawBark(camX,camY);drawFx(camX,camY);
+    ctx.fillStyle="#1a1300";ctx.font="bold 8px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText(ACTK,sx,sy-5.5);}
+  curFaced=faced;drawMarkers(camX,camY,now);drawEmailBubble(camX,camY,now);drawTapMark(camX,camY);drawBark(camX,camY);drawFx(camX,camY);
   const g=ctx.createRadialGradient(VIEW_W*TILE/2,VIEW_H*TILE/2,VIEW_H*TILE*0.35,VIEW_W*TILE/2,VIEW_H*TILE/2,VIEW_H*TILE*0.8);
   g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.34)");ctx.fillStyle=g;ctx.fillRect(0,0,VIEW_W*TILE,VIEW_H*TILE);
   drawLockup(camX,camY,now);drawSnow(lastDt);drawTracker(now);drawGuideArrow(camX,camY,now);
@@ -1984,7 +2031,8 @@ function openModal(title,tag,portrait){
   if(portrait&&portrait.pal){drawPortraitInto(mportCv,portrait.pal);mport.style.display="block";}
   else if(portrait&&portrait.door){drawDoorPortraitInto(mportCv,portrait.door.hc,portrait.door.num);mport.style.display="block";}
   else mport.style.display="none";
-  modalbg.style.display="flex";modalOpen=true;const md=document.getElementById("modal");if(md)md.scrollTop=0;}
+  modalbg.style.display="flex";modalOpen=true;const md=document.getElementById("modal");if(md)md.scrollTop=0;
+  kfFresh=true;if(kfEl)kfEl.classList.remove("kf");kfEl=null;}
 function closeModal(){modalbg.style.display="none";modalOpen=false;
   if(pendingCard){const c=pendingCard;pendingCard=null;c();}
   if(!modalOpen){flushFx();checkBadges();}}
@@ -2014,7 +2062,7 @@ function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
     <p><b>P.S.</b> Ryan's paying a clean-block bonus this show: see a loose trash bag anywhere we work, haul it. Find all ten in a phase and there's cash in it.</p>
     <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
     <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
-  if(first)p(`<b>Controls:</b> arrow keys / WASD to move \u00b7 <b>Space</b> to interact \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
+  if(first)p(`<b>Controls:</b> ${COARSE?"<b>tap</b> where you want to walk \u00b7 <b>tap</b> people & things to use them (or the D-pad + <b>ACT</b>)":"arrow keys / WASD to move \u00b7 <b>Space</b> to interact \u00b7 \u2191\u2193 + Space in pop-ups"} \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
   if(first)actBtn("\u2600\uFE0F Start the day",()=>{S.setFlag("dayStarted");hideNotif();closeModal();setBanner("PREP DAY 1 \u00b7 5:45 AM");chime();});
   else actBtn("Close",closeModal);}
 function openIntro(){openEmail(true);return;openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
@@ -2137,7 +2185,7 @@ function openSideQuest(id,portrait){const q=SIDE_QUESTS[id];openModal(q.title,q.
       mbody.insertBefore(el("div","banner "+(o.correct?"ok":"no"),o.fb+(pen?" <b>(\u22121 rep)</b>":"")),opts);
       if(o.correct){S.recordSideQuest(id);const r=q.reward;if(r.find)S.addFind(r.find);if(r.coins)S.addCoins(r.coins);if(r.rep)S.addRep(r.rep);if(r.flag)S.setFlag(r.flag);
         mbody.insertBefore(el("div","banner fact",`<b>Field note:</b> ${q.fact}<br>${rewardChips(r)}`),opts);
-        if(id==="signs")mbody.insertBefore(el("div","banner kit","\uD83D\uDEA7 <b>Now post them.</b> Five poles along Halloran's curb are glowing \u2014 walk up and press Space on each. Watch for a tree and the hydrant while you're at it."),opts);
+        if(id==="signs")mbody.insertBefore(el("div","banner kit","\uD83D\uDEA7 <b>Now post them.</b> Five poles along Halloran's curb are glowing \u2014 walk up and "+(COARSE?"tap each one":"press Space on each")+". Watch for a tree and the hydrant while you're at it."),opts);
         opts.remove();actBtn("Close",closeModal);blip(true);}
       else{blip(false);const retry=el("button","act ghost","Try again");retry.onclick=()=>openSideQuest(id,portrait);mbody.appendChild(retry);opts.remove();}};
     opts.appendChild(btn);});
@@ -2292,7 +2340,7 @@ const S={
   moving:false,fromX:0,fromY:0,toX:0,toY:0,moveStart:0,stepFrame:0,transition:null,drive:null,
   phase:"PREP",solved:new Set(),sqSolved:new Set(),flags:new Set(),finds:new Set(),
   coins:0,rep:0,name:"",soundOn:true,hasCar:false,charIdx:0,unlocked:new Set(["homeblock"]),
-  trash:{phase:null,spots:[],paid:false},signs:new Set(),pulled:new Set(),receipts:[],stats:{},lingo:new Set(),badges:new Set(),bought:{},musicOn:true,
+  path:null,pathTarget:null,pathBlocked:0,tapMark:null,trash:{phase:null,spots:[],paid:false},signs:new Set(),pulled:new Set(),receipts:[],stats:{},lingo:new Set(),badges:new Set(),bought:{},musicOn:true,
   setFlag(f){this.flags.add(f);saveSet("flags",this.flags);},
   addFind(f){if(!this.finds.has(f)){this.finds.add(f);saveSet("finds",this.finds);updateHUD();if(started&&FINDS[f])addFloat(FINDS[f].icon+" "+FINDS[f].name,"#e9ecf4");}},
   addCoins(n){this.coins=Math.max(0,this.coins+n);saveNum("coins",this.coins);updateHUD();if(started&&n&&!this.drive)addFloat((n>0?"+$":"\u2212$")+Math.abs(n),n>0?"#5fd08a":"#e8743b");},
@@ -2449,35 +2497,43 @@ window.addEventListener("keydown",e=>{if(!started)return;
     const k=e.key.toLowerCase();const opts=[...mbody.querySelectorAll(".opt")].filter(b=>!b.disabled);
     if(/^[1-9]$/.test(k)){const b=opts[+k-1];if(b){e.preventDefault();b.click();}return;}
     if(/^[a-d]$/.test(k)){const b=opts.find(x=>{const kk=x.querySelector(".k");return kk&&kk.textContent.trim().toLowerCase()===k;});if(b){e.preventDefault();b.click();}return;}
-    if(k==="enter"||k===" "){const acts=[...mbody.querySelectorAll(".act")].filter(b=>!b.disabled&&!b.classList.contains("life"));
-      const b=acts.find(x=>!x.classList.contains("ghost"))||acts[0];if(b){e.preventDefault();b.click();}}
+    if(k==="arrowdown"||k==="arrowright"){e.preventDefault();kbMode=true;kfMove(1);return;}
+    if(k==="arrowup"||k==="arrowleft"){e.preventDefault();kbMode=true;kfMove(-1);return;}
+    if(k==="enter"||k===" "){e.preventDefault();kbMode=true;kfSync();
+      if(kfEl&&!kfEl.disabled&&document.body.contains(kfEl)){const b=kfEl;b.click();return;}
+      const acts=[...mbody.querySelectorAll(".act")].filter(b=>!b.disabled&&!b.classList.contains("life"));
+      const b=acts.find(x=>!x.classList.contains("ghost"))||acts[0];if(b)b.click();}
     return;}
   const dir=KEYMAP[e.key];
   if(dir){e.preventDefault();if(!S.drive)S.dir=dir;held.add(dir);}   // held keys also steer the car
   else if(e.key===" "){if(S.drive)return;e.preventDefault();interact();}});
 window.addEventListener("keyup",e=>{const dir=KEYMAP[e.key];if(dir)held.delete(dir);});
 function bindHold(id,dir){const b=document.getElementById(id);
-  const on=e=>{e.preventDefault();if(!modalOpen){if(!S.drive)S.dir=dir;held.add(dir);}};
+  const on=e=>{e.preventDefault();cancelPath();if(!modalOpen){if(!S.drive)S.dir=dir;held.add(dir);}};
   const off=e=>{e.preventDefault();held.delete(dir);};
   b.addEventListener("touchstart",on);b.addEventListener("touchend",off);b.addEventListener("touchcancel",off);
   b.addEventListener("mousedown",on);b.addEventListener("mouseup",off);b.addEventListener("mouseleave",off);}
 bindHold("tu","up");bindHold("td","down");bindHold("tl","left");bindHold("tr","right");
 document.getElementById("ta").addEventListener("touchstart",e=>{e.preventDefault();if(S.drive)return;if(!modalOpen)interact();else closeModal();});
 document.getElementById("ta").addEventListener("click",()=>{if(!modalOpen&&!S.drive)interact();});
-if("ontouchstart" in window)document.getElementById("touch").style.display="block";
+if(COARSE)document.getElementById("touch").style.display="block";
 
 // movement + warps
 const MOVE_MS=140, TRANS_MS=420;
 let shake=0;
 let bumpT=0;
 function bump(msg){const n=performance.now();if(n-bumpT<320)return;bumpT=n;shake=Math.max(shake,1.5);blip(false,true);if(msg)setBanner(msg);}
-function tryStep(startAt){if(modalOpen||!started||S.transition||S.drive||S.moving||held.size===0)return;
+function tryStep(startAt){if(modalOpen||!started||S.transition||S.drive||S.moving||(held.size===0&&!autoDir))return;
   if(S.train)return;
-  const dir=[...held][held.size-1];S.dir=dir;
+  const dir=autoDir||[...held][held.size-1];S.dir=dir;
   const[dx,dy]=DIRV[dir],nx=S.x+dx,ny=S.y+dy;
+  if(S.map==="apartment"&&doorAt(nx,ny)&&(!S.flags.has("dayStarted")||!S.flags.has("hasBag"))&&autoDir)cancelPath();
   if(S.map==="apartment"&&doorAt(nx,ny)&&!S.flags.has("dayStarted")){bump("Check your email first \u2014 it's on your laptop");return;}
   if(S.map==="apartment"&&doorAt(nx,ny)&&!S.flags.has("hasBag")){bump("Grab your go-bag first!");return;}
-  if(blocked(nx,ny)){bump();return;}
+  if(blocked(nx,ny)){if(autoDir){S.pathBlocked++;
+      if(S.pathBlocked%18===0&&S.pathGoal){const np=findPath(S.pathGoal.x,S.pathGoal.y,S.pathGoal.adj);if(np&&np.length){S.path=np;autoStep();}}
+      if(S.pathBlocked>160)cancelPath();return;}bump();return;}
+  S.pathBlocked=0;
   S.moving=true;S.fromX=S.x*TILE;S.fromY=S.y*TILE;S.px=S.fromX;S.py=S.fromY;S.toX=nx*TILE;S.toY=ny*TILE;S.moveStart=startAt||performance.now();S.x=nx;S.y=ny;step();}
 function updateMove(now){if(!S.moving)return;let t=(now-S.moveStart)/MOVE_MS;
   if(t>=1){t=1;S.moving=false;}
@@ -2486,7 +2542,8 @@ function updateMove(now){if(!S.moving)return;let t=(now-S.moveStart)/MOVE_MS;
   if(!S.moving){savePos();checkTrash();const d=doorAt(S.x,S.y);if(d)startTransition(d);
     if(S.map==="stoopset"&&LK&&LK.state==="rolling"&&inFrame(S.x,S.y))lkBlow("You walked into the shot!");
     // keep walking without a hitch: start the next tile exactly where this one ended
-    if(!S.transition&&held.size&&!modalOpen){const carry=S.moveStart+MOVE_MS;tryStep(now-carry<MOVE_MS?carry:now);
+    if(S.path)autoStep();
+    if(!S.transition&&(held.size||autoDir)&&!modalOpen){const carry=S.moveStart+MOVE_MS;tryStep(now-carry<MOVE_MS?carry:now);
       if(S.moving){const t2=Math.min(1,(now-S.moveStart)/MOVE_MS);S.px=S.fromX+(S.toX-S.fromX)*t2;S.py=S.fromY+(S.toY-S.fromY)*t2;}}}}
 function startTransition(d){S.transition={t:0,door:d,swapped:false};held.clear();}
 function applyWarp(d){S.map=d.to;S.x=d.tx;S.y=d.ty;S.dir=d.dir||"down";S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;savePos();setBanner(MAPS[d.to].name);}
@@ -2561,7 +2618,8 @@ function screech(){tone(340,0.16,"sawtooth",0.05);setTimeout(()=>tone(190,0.20,"
 // loop
 let lastTs=0,lastDt=16;
 function loop(now){const dt=Math.min(now-lastTs,50);lastTs=now;lastDt=dt;
-  tryStep();updateMove(now);updateTransition(dt);updateDrive(now,dt);
+  {const v=viewFor();if(v[0]!==VIEW_W||v[1]!==VIEW_H){VIEW_W=v[0];VIEW_H=v[1];sizeCanvas();}}
+  autoStep();tryStep();updateMove(now);updateTransition(dt);updateDrive(now,dt);if(S.tapMark){S.tapMark.t-=dt/1000;if(S.tapMark.t<=0)S.tapMark=null;}
   updateTrain(now);if(started&&S.trash.phase!==S.phase){genTrash(true);updateHUD();}
   if(started&&!S.drive&&!S.train){updateAmbient(dt,now);updateLockup(dt);}updateFx(dt);updateWalkie(dt);
   if(banner.t>0)banner.t-=dt/1000;
@@ -2715,7 +2773,7 @@ function pendingPulls(){return [...S.signs].filter(i=>!S.pulled.has(i));}
 function pendingReceipts(){return S.receipts.filter(r=>!r.coded);}
 const KNOCKS=[["h_drive","nb_driveway"],["h_negotiate","nb_negotiate"],["h_noanswer","nb_noanswer"],["h_skeptic","nb_skeptic"]];
 function objective(){
-  if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:"Face walkers + Space to ask them to hold · Keisha (by camera) to step away",tgt:null};
+  if(S.map==="stoopset")return {text:"Lock it up — keep the FRAME clean",sub:(COARSE?"Tap walkers to ask them to hold":"Face walkers + Space to ask them to hold")+" · Keisha (by camera) to step away",tgt:null};
   if(!S.flags.has("dayStarted"))return {text:"You've got a new email",sub:"Check it on your laptop (desk by the window)",tgt:{x:8,y:1}};
   if(S.map==="apartment"&&!S.flags.has("hasBag"))return {text:"Grab your go-bag",sub:"Can't leave without it",tgt:{x:2,y:6}};
   if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
@@ -2763,7 +2821,7 @@ function drawTracker(now){
   sub.forEach((l,i)=>ctx.fillText(l,14,27+lines.length*11+i*10));
   ctx.fillStyle="#5fd08a";extra.forEach((l,i)=>ctx.fillText(l,14,27+lines.length*11+sub.length*10+i*10));}
 function e2isNpc(t){return (curMap().npcs||[]).some(n=>n.x===t.x&&n.y===t.y);}
-function drawGuideArrow(camX,camY,now){
+function drawGuideArrow(camX,camY,now){if(S.map==="apartment"&&!S.flags.has("dayStarted"))return;
   if(!started||S.drive||!objCache||!objCache.tgt)return;
   const W=VIEW_W*TILE,H=VIEW_H*TILE,t=objCache.tgt;
   const tx=t.x*TILE-camX+16, ty=t.y*TILE-camY;
@@ -3114,7 +3172,7 @@ function openLockupAD(){const k=CAST.keisha;
   openModal("Keisha Grant","2nd AD · the stoop scene",k?{pal:k.sprite}:null);
   if(S.map!=="stoopset"){
     p(`"Stoop scene's up. Three takes, I need two clean. Your post is the sidewalk in front of 126."`);
-    mbody.appendChild(el("div","banner fact",`<b>How it plays:</b><br>• People walk the sidewalk toward the taped <b>FRAME</b>. Face them and press <b>Space</b> to politely ask them to hold — they'll wait a few seconds (watch their patience bar).<br>• Standing in someone's way is body-blocking — it works for a second and costs you.<br>• <b>Never</b> walk into the frame while rolling. Cross <b>behind the camera</b> on the far sidewalk.<br>• 🏠 Residents going home: don't make them wait — <b>hold the roll</b>.`));
+    mbody.appendChild(el("div","banner fact",`<b>How it plays:</b><br>• People walk the sidewalk toward the taped <b>FRAME</b>. ${COARSE?"Tap them (or stand next to them and hit <b>ACT</b>)":"Face them and press <b>Space</b>"} to politely ask them to hold — they'll wait a few seconds (watch their patience bar).<br>• Standing in someone's way is body-blocking — it works for a second and costs you.<br>• <b>Never</b> walk into the frame while rolling. Cross <b>behind the camera</b> on the far sidewalk.<br>• 🏠 Residents going home: don't make them wait — <b>hold the roll</b>.`));
     actBtn("🎬 Take your post",()=>{closeModal();startLockup();});actBtn("Not yet",closeModal,"act ghost");return;}
   if(LK&&LK.state==="done"){p(`"We didn't get two clean. Reset and go again?"`);actBtn("🔁 Go again",()=>{closeModal();startLockup();});}
   else{p(`"You good? Say the word and we'll step away — we can come back to it."`);actBtn("Keep going",closeModal);}
@@ -3273,7 +3331,7 @@ function drawLockup(camX,camY,now){
   if(LK.state==="intro"){ctx.fillStyle="rgba(10,13,20,.85)";roundRect(60,110,W-120,92,8);ctx.fill();ctx.strokeStyle="#ffce3a";ctx.strokeRect(60.5,110.5,W-121,91);
     ctx.fillStyle="#ffce3a";ctx.font="bold 12px ui-monospace,monospace";ctx.textAlign="center";ctx.fillText("LOCK IT UP",W/2,130);
     ctx.fillStyle="#e9ecf4";ctx.font="9px ui-monospace,monospace";
-    ["Face walkers + SPACE = politely ask them to hold.","Keep people OUT of the taped FRAME while rolling.","Cross BEHIND camera (bottom sidewalk) — never through.","🏠 Residents: hold the roll, walk them home."].forEach((l,i)=>ctx.fillText(l,W/2,150+i*13));}}
+    [COARSE?"Tap a walker = politely ask them to hold.":"Face walkers + SPACE = politely ask them to hold.","Keep people OUT of the taped FRAME while rolling.","Cross BEHIND camera (bottom sidewalk) — never through.","🏠 Residents: hold the roll, walk them home."].forEach((l,i)=>ctx.fillText(l,W/2,150+i*13));}}
 
 /* ============================= CREDITS ================================ */
 function rollCredits(){const c=document.getElementById("credits");const ch=CHARS[S.charIdx];
@@ -3327,6 +3385,89 @@ function drawTrashBag(sx,sy,now,seed){const w=Math.sin(now/300+seed)*0.6;
   ctx.fillStyle="#15171c";ctx.fillRect(sx+14,sy+9+w,4,5);ctx.fillRect(sx+11,sy+8+w,4,2);ctx.fillRect(sx+17,sy+8-w,4,2);
   ctx.fillStyle="rgba(255,255,255,.35)";ctx.fillRect(sx+11,sy+15,2,4);ctx.fillRect(sx+13,sy+14,1,1);
   if(Math.sin(now/400+seed*1.7)>0.93){ctx.fillStyle="#fff7c2";ctx.fillRect(sx+22,sy+10,1,5);ctx.fillRect(sx+20,sy+12,5,1);}}
+/* ============================ input_v67.js ============================ */
+/* -- pop-up focus: arrows move the highlight, Space/Enter choose, mouse still clicks -- */
+let kfEl=null,kfFresh=false,kfIdx=0,kbMode=!COARSE;
+function kfList(){return [...mbody.querySelectorAll("button")].filter(b=>!b.disabled&&b.offsetParent!==null);}
+function kfPick(list){return list.find(b=>b.classList.contains("opt"))||list.find(b=>b.classList.contains("act")&&!b.classList.contains("ghost")&&!b.classList.contains("life"))||list[0]||null;}
+function kfSet(b){if(kfEl&&kfEl!==b)kfEl.classList.remove("kf");kfEl=b||null;if(!kfEl)return;const L=kfList();kfIdx=Math.max(0,L.indexOf(kfEl));
+  if(kbMode){kfEl.classList.add("kf");try{kfEl.scrollIntoView({block:"nearest"});}catch(e){}}}
+function kfSync(){if(!modalOpen)return;const L=kfList();if(!kfEl||!L.includes(kfEl))kfSet(L[Math.min(kfIdx,L.length-1)]||kfPick(L));}
+function kfMove(d){const L=kfList();if(!L.length)return;let i=L.indexOf(kfEl);if(i<0){kfSet(kfPick(L));return;}kfSet(L[(i+d+L.length)%L.length]);tone(620,0.02,"square",0.012);}
+new MutationObserver(recs=>{if(!modalOpen)return;
+  if(kfFresh){kfFresh=false;kfSet(kfPick(kfList()));return;}
+  const added=[];for(const r of recs)for(const n of r.addedNodes){if(n.nodeType!==1)continue;if(n.matches("button"))added.push(n);added.push(...n.querySelectorAll("button"));}
+  const live=added.filter(b=>!b.disabled&&document.body.contains(b));
+  if(live.length){kfSet(kfPick(live));return;}
+  kfSync();}).observe(mbody,{childList:true,subtree:true,attributes:true,attributeFilter:["disabled"]});
+mbody.addEventListener("mousemove",e=>{const b=e.target.closest&&e.target.closest("button");if(b&&!b.disabled&&b!==kfEl&&kbMode)kfSet(b);});
+window.addEventListener("pointerdown",e=>{if(e.pointerType==="touch"){kbMode=false;if(kfEl)kfEl.classList.remove("kf");}},true);
+
+/* -- tap to walk (phones & tablets): tap a spot to go there, tap a person/thing to walk up and use it -- */
+const lastCam={x:0,y:0};let autoDir=null;
+function cancelPath(){S.path=null;S.pathTarget=null;S.pathGoal=null;autoDir=null;S.pathBlocked=0;}
+function goPath(tx,ty,adj,target){const p=findPath(tx,ty,adj);if(!p)return false;S.path=p;S.pathTarget=target||null;S.pathGoal={x:tx,y:ty,adj};S.pathBlocked=0;return true;}
+function faceTo(t){const dx=t.x-S.x,dy=t.y-S.y;S.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?"right":"left"):(dy>0?"down":"up");}
+function autoStep(){if(!S.path)return;
+  if(modalOpen||S.transition||S.drive||S.train){cancelPath();return;}
+  while(S.path.length&&S.path[0].x===S.x&&S.path[0].y===S.y)S.path.shift();
+  if(!S.path.length){autoDir=null;if(!S.moving){const t=S.pathTarget;cancelPath();if(t){faceTo(t);interact();}}return;}
+  const n=S.path[0],dx=n.x-S.x,dy=n.y-S.y;
+  if(Math.abs(dx)+Math.abs(dy)!==1){if(!S.moving)cancelPath();return;}
+  autoDir=dx>0?"right":dx<0?"left":dy>0?"down":"up";}
+function findPath(tx,ty,adjacent){const m=curMap(),W=m.tiles[0].length,H=m.tiles.length;
+  const noFrame=S.map==="stoopset"&&LK&&LK.active&&LK.state!=="done";
+  const pass=(x,y)=>{if(x<1||y<1||x>=W-1||y>=H-1)return tileAt(x,y)==="X"&&x===tx&&y===ty;
+    if(!isWalkable(x,y)||npcAt(x,y)||solidPropAt(x,y)||carAt(x,y))return false;
+    if(!(x===tx&&y===ty)&&(walkerAt(x,y)||pedAt(x,y)))return false;
+    if(noFrame&&inFrame(x,y))return false;if(tileAt(x,y)==="X"&&!(x===tx&&y===ty))return false;return true;};
+  const goal=(x,y)=>adjacent?(Math.abs(x-tx)+Math.abs(y-ty)===1):(x===tx&&y===ty);
+  if(goal(S.x,S.y))return [];
+  const key=(x,y)=>x+","+y,prev=new Map([[key(S.x,S.y),null]]),q=[[S.x,S.y]];
+  while(q.length){const [x,y]=q.shift();
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=key(nx,ny);if(prev.has(k)||!pass(nx,ny))continue;
+      prev.set(k,[x,y]);if(goal(nx,ny)){const path=[];let c=[nx,ny];while(c&&!(c[0]===S.x&&c[1]===S.y)){path.unshift({x:c[0],y:c[1]});c=prev.get(key(c[0],c[1]));}return path;}
+      q.push([nx,ny]);}}
+  return null;}
+function entityAt(tx,ty){
+  const n=npcAt(tx,ty);if(n)return n;
+  const w=walkerAt(tx,ty);if(w)return w;
+  const pr=(curMap().props||[]).find(p=>p.x===tx&&p.y===ty&&propVisible(p)&&p.kind!=="light");
+  if(pr&&pr.kind==="blocker"){const tk=(curMap().props||[]).find(p=>p.kind==="truck"&&p.x===tx-1&&p.y===ty);if(tk)return tk;
+    const bed=(curMap().props||[]).find(p=>p.id==="bed");return pr.id&&pr.id.startsWith("bed")&&bed?bed:null;}
+  return pr||null;}
+function tapWorld(e){
+  const r=cv.getBoundingClientRect();const lx=(e.clientX-r.left)/r.width*VIEW_W*TILE,ly=(e.clientY-r.top)/r.height*VIEW_H*TILE;
+  const tx=Math.floor((lx+lastCam.x)/TILE),ty=Math.floor((ly+lastCam.y)/TILE);
+  if(tx===S.x&&ty===S.y){interact();return;}
+  S.tapMark={x:tx,y:ty,t:0.7};
+  if(S.map==="stoopset"&&LK&&LK.active){ // lock-up: tap a walker near you to ask them to hold
+    const q=LK.peds.filter(o=>!o.gone&&Math.abs(o.px/TILE-tx+0.5)<1.3&&Math.abs(o.py/TILE-ty+0.5)<1.3)[0];
+    if(q){if(Math.abs(q.x-S.x)<=1&&Math.abs(q.y-S.y)<=1){faceTo(q);lockAsk();return;}
+      goPath(q.x,q.y,true,{x:q.x,y:q.y});return;}}
+  const ent=entityAt(tx,ty);
+  if(ent){if(Math.abs(ent.x-S.x)+Math.abs(ent.y-S.y)===1&&!S.moving){faceTo(ent);interact();return;}
+    if(!goPath(ent.x,ent.y,true,{x:ent.x,y:ent.y}))bump();return;}
+  goPath(tx,ty,false,null);}
+function drawTapMark(camX,camY){const m=S.tapMark;if(!m)return;const x=m.x*TILE-camX+16,y=m.y*TILE-camY+16,k=m.t/0.7;
+  ctx.globalAlpha=k;ctx.strokeStyle="#ffce3a";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+8,14-8*k+6,6-3*k+3,0,0,7);ctx.stroke();ctx.lineWidth=1;ctx.globalAlpha=1;}
+let driveTouch=null;
+cv.addEventListener("pointerdown",e=>{if(!COARSE||!started)return;
+  if(S.drive){const r=cv.getBoundingClientRect();driveTouch=(e.clientX-r.left)<r.width/2?"left":"right";held.add(driveTouch);e.preventDefault();return;}
+  if(modalOpen||S.train||S.transition)return;e.preventDefault();tapWorld(e);});
+const endDrive=()=>{if(driveTouch){held.delete(driveTouch);driveTouch=null;}};
+window.addEventListener("pointerup",endDrive);window.addEventListener("pointercancel",endDrive);
+/* -- phone menu: the topbar buttons live in one sheet -- */
+function openMenu(){openModal("Menu","Mission Implausible: The Pridwin");
+  const b=(label,fn,cls)=>{const x=el("button",cls||"opt dest",label);x.onclick=fn;mbody.appendChild(x);};
+  b(`<span class="di">\uD83D\uDCCD</span><span><b>Where am I?</b></span>`,()=>{closeModal();openWhereAmI();});
+  b(`<span class="di">\uD83D\uDCD6</span><span><b>Field Guide</b><div class="muted">Keepsakes, lingo & badges</div></span>`,()=>{closeModal();openGuide();});
+  b(`<span class="di">${S.soundOn?"\uD83D\uDD0A":"\uD83D\uDD07"}</span><span><b>Sound: ${S.soundOn?"On":"Off"}</b></span>`,()=>{S.soundOn=!S.soundOn;saveBool("soundOn",S.soundOn);updateHUD();openMenu();});
+  b(`<span class="di">\uD83C\uDFB5</span><span><b>Music: ${S.musicOn?"On":"Off"}</b></span>`,()=>{S.musicOn=!S.musicOn;saveBool("musicOn",S.musicOn);updateHUD();openMenu();});
+  b(`<span class="di">\u21BA</span><span><b>Reset game</b><div class="muted">Start over from day one</div></span>`,()=>{closeModal();document.getElementById("b-reset").onclick();});
+  actBtn("Back to the game",closeModal,"act ghost");}
+document.getElementById("b-menu").onclick=()=>{if(started)openMenu();};
+if(COARSE){document.getElementById("hint-key").textContent="ACT";}
 /* ============================ email_bubble_v66.js ===================== */
 function drawEmailBubble(camX,camY,now){
   if(S.map!=="apartment"||S.flags.has("dayStarted")||!started)return;
