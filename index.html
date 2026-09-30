@@ -5440,6 +5440,147 @@ openCh2=function(c){const who=CAST[c.who]||{name:"Crew",sprite:null},text=!onSet
     chatPost("Kaitlin","Permit's in! 🎉 Hang the No Parking signs on Halloran's block NOW. They have to be up 48 hours before we shoot. The sign stack's at the far end of the block.");}
   if(V9.sgMap!==S.map){V9.sgMap=S.map;if(S.map==="scoutblock")setBanner("🚧 HANG THE NO PARKING SIGNS");}};}
 
+/* ============================== flow_v73.js =========================== *
+ * v7.3: the Trash Plan pop-up on your first bag, an arcade-style final
+ * score with 3-letter initials + a high-score board, and a Start screen
+ * (PRESS START + HIGH SCORES) in front of the character select.
+ * The board lives in this browser's localStorage under "onloc_hiscores"
+ * (outside the save prefix, so Reset never wipes it). */
+
+{const st=document.createElement("style");st.textContent=`
+#start{position:absolute;inset:0;z-index:32;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto;
+  background:radial-gradient(120% 90% at 50% 0%,#1d2440 0%,#07090f 70%)}
+#start.off{display:none}
+.st-box{width:min(520px,96vw);text-align:center;margin:auto}
+.st-logo{font-size:44px;font-weight:900;letter-spacing:.06em;line-height:1;color:#fff;text-shadow:0 0 18px rgba(255,206,58,.35),0 4px 0 #000}
+.st-logo .y{color:#ffce3a}.st-sub{color:#9aa3b8;font-size:12px;letter-spacing:.2em;margin:10px 0 4px;text-transform:uppercase}
+.st-show{color:#e9ecf4;font-size:13px;margin-bottom:14px}.st-show i{color:#ffce3a}
+.st-crew{display:flex;gap:6px;justify-content:center;margin:6px 0 16px}.st-crew canvas{width:44px;height:44px;image-rendering:pixelated;border-radius:8px;border:2px solid #2a3245;background:#10141d;animation:bob 1.6s ease-in-out infinite}
+.st-crew canvas:nth-child(2n){animation-delay:.4s}.st-crew canvas:nth-child(3n){animation-delay:.8s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.st-go{background:#ffce3a;color:#1a1300;border:none;border-radius:10px;padding:14px 38px;font:inherit;font-weight:900;font-size:18px;letter-spacing:.14em;cursor:pointer;box-shadow:0 5px 0 #a8841c}
+.st-go:active{transform:translateY(3px);box-shadow:0 2px 0 #a8841c}
+.st-blink{color:#ffce3a;font-size:11px;letter-spacing:.3em;margin:12px 0 18px;animation:blink 1s steps(2) infinite}@keyframes blink{50%{opacity:0}}
+.hs{background:#05070c;border:2px solid #2a3245;border-radius:10px;padding:12px 14px 10px;text-align:left}
+.hs h3{margin:0 0 8px;text-align:center;color:#ff5fa2;font-size:14px;letter-spacing:.3em;text-shadow:0 0 10px rgba(255,95,162,.5)}
+.hs .row{display:grid;grid-template-columns:34px 52px 1fr 60px;gap:6px;font-size:13px;padding:3px 2px;color:#e9ecf4}
+.hs .row:nth-child(odd){color:#9fd0ff}.hs .row b{color:#ffce3a}.hs .row.me{background:rgba(255,206,58,.14);border-radius:5px}
+.hs .row .r{color:#6b7389}.hs .row .n{text-align:right;font-weight:800}.hs .empty{color:#6b7389;text-align:center;font-size:12px;padding:8px}
+#arcade{position:absolute;inset:0;z-index:62;background:#03050a;display:none;align-items:center;justify-content:center;padding:14px;overflow:auto}
+#arcade.on{display:flex}.ar-box{width:min(520px,96vw);margin:auto;text-align:center}
+.ar-h{font-size:28px;font-weight:900;color:#ffce3a;letter-spacing:.14em;text-shadow:0 0 16px rgba(255,206,58,.5)}
+.ar-rows{text-align:left;margin:14px 0;background:#070a12;border:1px solid #1f2636;border-radius:10px;padding:10px 12px;max-height:38vh;overflow:auto}
+.ar-rows .r{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:3px 0;color:#c9cfdc;opacity:0;transform:translateX(-8px);transition:.25s}
+.ar-rows .r.in{opacity:1;transform:none}.ar-rows .r span:last-child{font-weight:800;color:#5fd08a}.ar-rows .r.neg span:last-child{color:#e8743b}
+.ar-total{font-size:46px;font-weight:900;color:#fff;letter-spacing:.06em}.ar-grade{color:#ff5fa2;font-size:14px;letter-spacing:.3em;margin-bottom:12px}
+.ini{display:flex;gap:10px;justify-content:center;margin:12px 0}
+.ini .slot{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ini .ch{width:58px;height:70px;border:3px solid #2a3245;border-radius:10px;font-size:44px;font-weight:900;color:#ffce3a;display:flex;align-items:center;justify-content:center;background:#070a12}
+.ini .slot.cur .ch{border-color:#ffce3a;animation:blink 1s steps(2) infinite}
+.ini button{background:#1f2636;color:#e9ecf4;border:1px solid #2a3245;border-radius:7px;width:58px;padding:4px 0;font:inherit;cursor:pointer}
+.ar-btn{background:#ffce3a;color:#1a1300;border:none;border-radius:9px;padding:12px 22px;font:inherit;font-weight:900;letter-spacing:.1em;cursor:pointer;margin:6px}
+.ar-btn.ghost{background:#1f2636;color:#e9ecf4}
+.trashpic{display:flex;gap:14px;align-items:center;background:#10141d;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:12px}
+.trashpic canvas{width:96px;height:96px;image-rendering:pixelated;border-radius:8px;flex:none}`;document.head.appendChild(st);}
+
+/* ---------- 1. the Trash Plan, the first time you pick up a bag ---------- */
+function drawPileIcon(cv2){const c=cv2.getContext("2d");c.imageSmoothingEnabled=false;c.clearRect(0,0,32,32);
+  c.fillStyle="#b7bcc4";c.fillRect(0,0,32,32);c.strokeStyle="rgba(0,0,0,.1)";c.strokeRect(.5,.5,31,31);
+  c.strokeStyle="#3a6ea5";c.setLineDash([3,2]);c.strokeRect(2.5,4.5,27,24);c.setLineDash([]);
+  c.fillStyle="#3a3f4d";c.fillRect(26,1,2,12);c.fillStyle="#f4f2ec";c.fillRect(18,0,12,7);c.fillStyle="#3a6ea5";c.fillRect(18,0,12,2);
+  for(const [x,y] of [[10,21],[20,22],[15,14]]){c.fillStyle="#15171c";c.beginPath();c.ellipse(x,y+3,6,5,0,0,7);c.fill();c.fillStyle="#3a8fe0";c.fillRect(x-6,y+2,12,2);c.fillRect(x-1,y-2,2,9);}}
+function openTrashPlan(){openModal("🗑️ The Trash Plan","Bryan's clean-block rule",{pal:CAST.sal.sprite});
+  p(`"Production trash is OURS. Every day there are <b>10 loose bags</b> around the places we work. You find them, you haul them. Never into the neighbors' cans, never into the city's."`);
+  const pic=el("div","trashpic");const cv2=document.createElement("canvas");cv2.width=32;cv2.height=32;drawPileIcon(cv2);pic.appendChild(cv2);
+  pic.appendChild(el("div","",`<b>This is a TrashMan pickup spot.</b><br><span class="muted">A dashed blue square with a little PICKUP sign on the sidewalk. There's one on the <b>Production Office block</b> (LIC), <b>Halloran's block</b> (Brooklyn) and at <b>base camp</b> (Greenpoint).</span>`));
+  mbody.appendChild(pic);
+  mbody.appendChild(el("div","banner kit",`<b>The plan</b><br>1. 🔵 Have <b>blue tape</b> (Dmitri's Hardware in LIC; it's on Bryan's supply list).<br>2. 🗑️ Walk over loose bags to pick them up. Carry as many as you like.<br>3. 📍 Bring them to a pickup spot and press ${ACTK}: every bag gets blue-taped and piled.<br>4. 🚛 The TrashMan pulls up and hauls it away.`));
+  mbody.appendChild(el("div","banner fact",`<b>The goal:</b> all 10 hauled every day = Bryan's clean-block cash bonus + points on your final score. Missed bags show up in tonight's email and cost you rep. New bags appear each morning.`));
+  if(!S.flags.has("hasBlueTape"))mbody.appendChild(el("div","banner no",`🔵 <b>You don't have blue tape yet.</b> Grab it at <b>Dmitri's Hardware</b> next to the production office before you pile anything. The TrashMan won't touch untaped bags.`));
+  actBtn("Got it: haul 'em all",closeModal);}
+{const _ct=checkTrash;checkTrash=function(){const before=tCarry(),first=!S.flags.has("trashPlan");if(first)S.flags.add("trashTip");
+  _ct();if(first&&tCarry()>before){S.setFlag("trashPlan");openTrashPlan();}};}
+
+/* ---------- 2. final score, initials, high scores ---------- */
+const HS_KEY="onloc_hiscores";
+function loadHS(){try{return JSON.parse(localStorage.getItem(HS_KEY)||"[]");}catch(e){return window.__hs||[];}}
+function saveHS(a){window.__hs=a;try{localStorage.setItem(HS_KEY,JSON.stringify(a));}catch(e){}}
+function finalScore(){const R=[],add=(l,d,pts)=>{if(pts)R.push([l,d,Math.round(pts)]);};
+  const allT=["PREP","SHOOT","WRAP"].flatMap(ph=>tasksFor(ph));const tDone=allT.filter(t=>t.done()).length;
+  add("Day tasks completed",`${tDone} of ${allT.length}`,tDone*100);
+  add("Tasks left undone",`${allT.length-tDone}`,-(allT.length-tDone)*75);
+  add("Field calls answered",`${S.sqSolved.size} of ${SQTOTAL}`,S.sqSolved.size*50);
+  const best=S.v8.best||0,heard=S.v8.heard||0;add("Neighbors: nailed it",`${best}`,best*75);add("Neighbors: heard out",`${Math.max(0,heard-best)}`,Math.max(0,heard-best)*25);
+  add("Walkie & text calls answered",`${S.v8.ch2n||0}`,(S.v8.ch2n||0)*40);
+  const holes=S.v8.notes.filter(n=>n.cat==="hole").length;add("Set-dec holes logged",`${holes}`,holes*50);
+  if(S.flags.has("inspected"))add("City Hall signed off","base camp",200);
+  add("TCD walked back to post",`${S.v8.tcdFound||0}`,(S.v8.tcdFound||0)*100);
+  const rel=["relHalloran","relAdeyemi","relHolding"].filter(f=>S.finds.has(f)).length;add("Location releases",`${rel} of 3`,rel*150);
+  const pur=S.v8.purchases,got=pur.filter(q=>q.rcpt).length,miss=pur.length-got;add("Receipts remembered",`${got} of ${pur.length}`,got*40);add("Receipts forgotten",`${miss}`,-miss*60);
+  let bags=0,missed=0;for(const ph of ["PREP","SHOOT"]){const d=S.v8.days[ph];if(d){bags+=d.gone||0;missed+=d.missed||0;}}
+  if(S.trash&&S.trash.phase==="WRAP"){bags+=S.trash.spots.filter(q=>q.st==="gone").length;missed+=S.trash.spots.filter(q=>q.st!=="gone").length;}
+  add("Trash bags hauled",`${bags}`,bags*15);add("Trash bags missed",`${missed}`,-missed*25);
+  add("Keepsakes found",`${S.finds.size} of ${FINDTOTAL}`,S.finds.size*25);
+  add("Badges earned",`${S.badges.size}`,S.badges.size*40);
+  add("Reputation on the block",`⭐ ${S.rep}`,S.rep*10);
+  const asked=statGet("asked"),acc=asked?statGet("first")/asked:0;add("First-try accuracy",`${Math.round(acc*100)}%`,acc*500);
+  add("Wrong answers",`${statGet("wrong")}`,-statGet("wrong")*20);
+  add("Lifelines used",`${statGet("lifelines")}`,-statGet("lifelines")*50);
+  const total=Math.max(0,R.reduce((a,r)=>a+r[2],0));
+  const grade=total>=9500?"S":total>=8000?"A":total>=6500?"B":total>=5000?"C":"D";
+  return {rows:R,total,grade};}
+function hsTable(highlight,limit){const a=loadHS().slice(0,limit||10);
+  if(!a.length)return `<div class="empty">No scores yet. Be the first!</div>`;
+  return a.map((e,i)=>`<div class="row${highlight&&e.t===highlight?" me":""}"><span class="r">${i+1}.</span><b>${e.i}</b><span>${e.ch} · ${e.g}</span><span class="n">${e.s.toLocaleString()}</span></div>`).join("");}
+function showArcade(){const A=document.getElementById("arcade"),F=finalScore();A.classList.add("on");
+  const done=S.flags.has("scoreSubmitted");
+  A.innerHTML=`<div class="ar-box"><div class="ar-h">FINAL SCORE</div><div class="st-sub">Mission Implausible: The Pridwin · ${S.name||CHARS[S.charIdx].name}</div>
+    <div class="ar-rows" id="ar-rows">${F.rows.map(r=>`<div class="r${r[2]<0?" neg":""}"><span>${r[0]} <span style="color:#6b7389">· ${r[1]}</span></span><span>${r[2]>0?"+":""}${r[2].toLocaleString()}</span></div>`).join("")}</div>
+    <div class="ar-total" id="ar-total">0</div><div class="ar-grade">GRADE ${F.grade}</div><div id="ar-bottom"></div></div>`;
+  const rows=[...A.querySelectorAll(".ar-rows .r")];rows.forEach((r,i)=>setTimeout(()=>{r.classList.add("in");tone(520+i*20,0.03,"square",0.02);},120*i));
+  const tot=A.querySelector("#ar-total"),t0=performance.now(),dur=Math.min(2600,300+rows.length*120);
+  const tick=n=>{const k=Math.min(1,(n-t0)/dur);tot.textContent=Math.round(F.total*k).toLocaleString();if(k<1)requestAnimationFrame(tick);else{chime();bottom();}};requestAnimationFrame(tick);
+  const bottom=()=>{const B=A.querySelector("#ar-bottom");
+    if(done){B.innerHTML=`<div class="hs"><h3>HIGH SCORES</h3>${hsTable(S.v8.hsT)}</div><button class="ar-btn" id="ar-back">🎉 Back to the party</button><button class="ar-btn ghost" id="ar-card">Scorecard</button>`;wireEnd();return;}
+    const ini=["A","A","A"];let cur=0;
+    B.innerHTML=`<div class="st-sub" style="color:#ffce3a">ENTER YOUR INITIALS</div><div class="ini">${[0,1,2].map(i=>`<div class="slot" data-i="${i}"><button data-u="${i}">▲</button><div class="ch">A</div><button data-d="${i}">▼</button></div>`).join("")}</div>
+      <div class="muted" style="color:#6b7389;font-size:11px;margin-bottom:8px">${COARSE?"Tap ▲▼ to pick letters":"Type letters, or ↑↓ to change · ←→ to move · Enter to save"}</div><button class="ar-btn" id="ar-save">SAVE SCORE</button>`;
+    const draw=()=>B.querySelectorAll(".slot").forEach((s,i)=>{s.querySelector(".ch").textContent=ini[i];s.classList.toggle("cur",i===cur);});
+    const bump=(i,d)=>{ini[i]=String.fromCharCode((ini[i].charCodeAt(0)-65+d+26)%26+65);cur=i;draw();tone(700,0.02,"square",0.02);};
+    B.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>bump(+b.dataset.u,1));B.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>bump(+b.dataset.d,-1));
+    B.querySelectorAll(".slot .ch").forEach((c,i)=>c.onclick=()=>{cur=i;draw();});draw();
+    const save=()=>{window.removeEventListener("keydown",key,true);const t=Date.now();
+      const a=loadHS();a.push({i:ini.join(""),s:F.total,g:F.grade,ch:CHARS[S.charIdx].name,t,d:new Date().toISOString().slice(0,10)});a.sort((x,y)=>y.s-x.s);saveHS(a.slice(0,50));
+      S.v8.hsT=t;v8Save();S.setFlag("scoreSubmitted");const rank=a.findIndex(e=>e.t===t)+1;
+      B.innerHTML=`<div class="st-sub" style="color:#5fd08a">${rank<=10?`YOU'RE #${rank} ON THE BOARD!`:`SAVED · RANK #${rank}`}</div><div class="hs"><h3>HIGH SCORES</h3>${hsTable(t)}</div><button class="ar-btn" id="ar-back">🎉 Back to the party</button><button class="ar-btn ghost" id="ar-card">Scorecard</button>`;
+      confetti(60);chime();wireEnd();};
+    const key=e=>{if(!A.classList.contains("on"))return;const k=e.key;
+      if(/^[a-zA-Z]$/.test(k)){ini[cur]=k.toUpperCase();cur=Math.min(2,cur+1);draw();tone(700,0.02,"square",0.02);}
+      else if(k==="ArrowUp")bump(cur,1);else if(k==="ArrowDown")bump(cur,-1);else if(k==="ArrowLeft"){cur=Math.max(0,cur-1);draw();}else if(k==="ArrowRight"){cur=Math.min(2,cur+1);draw();}
+      else if(k==="Backspace"){cur=Math.max(0,cur-1);draw();}else if(k==="Enter"){save();}else return;
+      e.preventDefault();e.stopPropagation();};
+    window.addEventListener("keydown",key,true);B.querySelector("#ar-save").onclick=save;};
+  const wireEnd=()=>{A.querySelector("#ar-back").onclick=()=>{A.classList.remove("on");};A.querySelector("#ar-card").onclick=()=>{A.classList.remove("on");openScorecard();};};}
+{const d=document.createElement("div");d.id="arcade";document.getElementById("viewport").appendChild(d);}
+{const _rc=rollCredits;rollCredits=function(){_rc();const c=document.getElementById("credits");c.onclick=()=>{c.style.display="none";if(S.phase==="DONE")showArcade();};};}
+{const _ob=openBoard;openBoard=function(){_ob();if(S.phase==="DONE"){const b=el("button","act",S.flags.has("scoreSubmitted")?"🕹️ Final score & high scores":"🕹️ Final score: enter your initials");b.onclick=()=>{closeModal();showArcade();};const g=mbody.querySelector(".act.ghost");if(g)g.before(b);else mbody.appendChild(b);}};}
+{const _sc=openScorecard;openScorecard=function(){_sc();if(S.phase!=="DONE")return;{const F=finalScore(),rs=mbody.querySelector(".score-grade .rs"),bg=mbody.querySelector(".score-grade .big");if(rs)rs.innerHTML=rs.innerHTML.replace(/Final score: <b>[^<]*<\/b> pts/,"Final score: <b>"+F.total.toLocaleString()+"</b> pts");if(bg)bg.textContent=F.grade;}const b=el("button","act","🕹️ Final score & high scores");b.onclick=()=>{closeModal();showArcade();};const first=mbody.querySelector(".act");if(first)first.before(b);};}
+
+/* ---------- 3. the Start screen ---------- */
+{const s=document.createElement("div");s.id="start";
+  s.innerHTML=`<div class="st-box"><div class="st-logo">ON <span class="y">LOCATION</span><br><span style="font-size:.55em;letter-spacing:.3em">· NYC ·</span></div>
+    <div class="st-sub">A Locations Department RPG</div><div class="st-show">Three days on <i>Mission Implausible: The Pridwin</i></div>
+    <div class="st-crew" id="st-crew"></div><button class="st-go" id="st-go">▶ START</button><div class="st-blink">PRESS START</div>
+    <div class="hs"><h3>HIGH SCORES</h3><div id="st-hs"></div></div>
+    <div class="st-sub" style="font-size:9px;margin-top:14px">Game #4 in Moon's educational RPG series</div></div>`;
+  document.getElementById("viewport").appendChild(s);
+  const crew=s.querySelector("#st-crew");CHARS.slice(0,6).forEach(ch=>{const c=document.createElement("canvas");c.width=32;c.height=32;drawPortraitInto(c,ch.sprite);crew.appendChild(c);});
+  const go=()=>{s.classList.add("off");tone(660,0.08,"square",0.04);setTimeout(()=>tone(988,0.12,"square",0.04),90);const n=document.getElementById("name-in");if(n&&!COARSE)n.focus();};
+  s.querySelector("#st-go").onclick=go;
+  window.addEventListener("keydown",e=>{if(s.classList.contains("off"))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}},true);}
+function showStart(){document.getElementById("st-hs").innerHTML=hsTable(null,10);document.getElementById("start").classList.remove("off");}
+{const _st=showTitle;showTitle=function(){_st();showStart();};}
+
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",startGame);else startGame();
 
 </script>
