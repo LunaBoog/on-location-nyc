@@ -246,7 +246,7 @@ body.touch #title{padding:8px}
   </div>
   <div id="viewport">
     <canvas id="world" width="480" height="352"></canvas>
-    <div id="notif"><div class="n-ic">📧</div><div><div class="n-h">NEW EMAIL · 5:42 AM</div><div class="n-t" id="notif-t">Welcome</div><div class="n-s">From Kaitlin (ALM) · click or press Space to open</div></div></div><div id="toasts"></div><div id="radio"></div><div id="credits"></div>
+    <div id="notif"><div class="n-ic">📧</div><div><div class="n-h">NEW EMAIL · 5:42 AM</div><div class="n-t" id="notif-t">Welcome</div><div class="n-s">From Caitlin (ALM) · click or press Space to open</div></div></div><div id="toasts"></div><div id="radio"></div><div id="credits"></div>
     <div id="hint"><kbd id="hint-key">SPACE</kbd><span id="hint-text">Look</span></div>
     <div id="touch">
       <div class="dpad">
@@ -512,15 +512,15 @@ function buildOffice(){
     doors:[{x:13,y:15,to:"officeblock",tx:4,ty:5,dir:"down"}],
     npcs:[
       /* -- LOCATIONS OFFICE (left) : your department -- */
-      {id:"sal",name:"Bryan Ferguson",role:"Location Manager",x:3,y:3,
+      {id:"sal",name:"Ryan",role:"Location Manager",x:3,y:3,
        sprite:sp("#3f7d6a","#2c5a4c","#1c140e","#5c3a22",{walkie:true,dreads:true}),
        chat:["Twenty years working these streets. Rule one: leave every block better than you found it.",
-             "Kaitlin runs your day; I fight the battles upstairs. You win them on the sidewalk. Welcome to Locations."]},
-      {id:"caitlin",name:"Kaitlin",role:"Assistant Location Manager (your boss)",x:5,y:3,special:"boss",ticket:"techscout",
+             "Caitlin runs your day; I fight the battles upstairs. You win them on the sidewalk. Welcome to Locations."]},
+      {id:"caitlin",name:"Caitlin",role:"Assistant Location Manager (your boss)",x:5,y:3,special:"boss",ticket:"techscout",
        sprite:sp("#16171c","#0e0f13","#0c0a0d","#f3d5bf",{walkie:true,longHair:true,bangs:true,bandTee:"#cf3a3a",legs:"#0f1014"}),
        chat:["Did you read my email? Good. Then you already know more than half the crew.",
-             "Your job is to make my job easy, and my job is to make Bryan's job easy. That's the whole org chart."]},
-      {id:"gaby",name:"AMBR",role:"Locations Coordinator",x:6,y:3,sideQuest:"holdtiming",
+             "Your job is to make my job easy, and my job is to make Ryan's job easy. That's the whole org chart."]},
+      {id:"gaby",name:"Amber",role:"Locations Coordinator",x:6,y:3,sideQuest:"holdtiming",
        sprite:sp("#c8506b","#9c3a52","#7a4f2e","#f1d0b6",{walkie:true,longHair:true}),
        chat:["I keep the department's paper moving \u2014 agreements, permits, COIs, the sign log. You break it on the street, I feel it in the files.",
              "Anything you sign or post, photograph it and send it to me. If it isn't in the folder, it didn't happen."]},
@@ -563,7 +563,7 @@ function buildOffice(){
       /* locations office */
       {id:"board",kind:"board",x:7,y:2,solid:true,label:"Call Sheet"},
       {id:"mapwall",kind:"look",x:1,y:1,solid:true,art:"corkboard",label:"The map wall",
-       body:"Bryan's wall: a five-borough map furred with pins and marker. Green pins are locked locations, yellow are scouting, red are 'never again.' There are more red pins than you'd like."},
+       body:"Ryan's wall: a five-borough map furred with pins and marker. Green pins are locked locations, yellow are scouting, red are 'never again.' There are more red pins than you'd like."},
       {id:"drawer_sal",kind:"search",x:5,y:1,solid:true,art:"drawer",label:"Scout photo cabinet",
        body:"Decades of scout folders \u2014 thousands of photos per location: every room, every angle, the panel, the parking, the neighbors' curb. A location is photographed before it's ever filmed. Tucked in one folder: petty cash from a wrapped show.",coins:35,doneFlag:"sawSalDrawer"},
       /* UPM office */
@@ -826,7 +826,7 @@ const DRIVABLE={
 /* ============================= scenarios.js =========================== */
 const SCENARIOS={
   techscout:{phase:"PREP",title:"Tech Scout & Day Plan",tag:"Prep \u00b7 Job 1",giver:"caitlin",principle:"Locations sits between every department",
-    brief:"Kaitlin just handed you the day. Before anyone touches a permit, run the tech scout in your head: hear what each department needs, then turn it into a plan. The department heads are all here in the office \u2014 go ask them (their offices are along the top).",
+    brief:"Caitlin just handed you the day. Before anyone touches a permit, run the tech scout in your head: hear what each department needs, then turn it into a plan. The department heads are all here in the office \u2014 go ask them (their offices are along the top).",
     pois:[
       {id:"dir",label:"Ask the Director",who:"vance",body:"Vance wants the Halloran interior for two days plus a stoop scene that spills onto the public sidewalk.",ev:"Interior (private) + stoop on the sidewalk (public)."},
       {id:"dp",label:"Ask the DP",who:"iris",body:"Iris has no house power \u2014 she needs a generator on the street, and there's a rain sequence coming.",ev:"Generator needed; rain sequence flagged for later."},
@@ -980,7 +980,7 @@ const SIDE_QUESTS={
       {key:"b",label:"Acknowledge the bad experience, walk him through the Code of Conduct \u2014 access kept, trash hauled, a number to call \u2014 and don't push for a yes.",correct:true,fb:"That's the repair. You can't undo the last crew, but you can show him this one's different \u2014 and leave the door open."},
       {key:"c",label:"Offer him double whatever the last crew paid, to make it go away.",correct:false,fb:"Throwing money at a trust problem reads as a bribe. He doesn't want cash, he wants to not get burned again."}],
     fact:"The Film Code of Conduct \u2014 access, cleanup, a contact number \u2014 exists precisely to rebuild this kind of trust.",reward:{coins:55,rep:3,flag:"nb_skeptic"}},
-  setsigns:{title:"Printing the Set Signs",tag:"Field call \u00b7 copy room",body:"AMBR texts: shoot day needs directional set signs printed and posted so a hundred crew, trucks and cast vans can find set, base camp and crew parking. Priya's at the copier, ready. What does she print?",
+  setsigns:{title:"Printing the Set Signs",tag:"Field call \u00b7 copy room",body:"Amber texts: shoot day needs directional set signs printed and posted so a hundred crew, trucks and cast vans can find set, base camp and crew parking. Priya's at the copier, ready. What does she print?",
     options:[{key:"a",label:"Big posters with the movie's real title, so everyone can find us easily.",correct:false,fb:"Everyone WOULD find you \u2014 including crowds. That's exactly why productions don't put the real title on the street."},
       {key:"b",label:"Arrow signs with the production's code name \u2014 posted along the route with string or zip ties (never taped to trees), locations logged, all pulled at wrap.",correct:true,fb:"That's the pack. A cryptic code name keeps onlookers away, arrows chain from the highway to base camp, string beats tape on every pole and tree \u2014 and the log is what guarantees every last one comes down at wrap."},
       {key:"c",label:"Skip the signs \u2014 the crew has GPS.",correct:false,fb:"GPS finds an address; a shoot isn't an address. Set, base camp and crew parking are three different spots, and the signs are what keep 40 trucks from circling the block at 5am."}],
@@ -1047,7 +1047,7 @@ Object.assign(SCENARIOS,{
     reward:{find:"slate",coins:160,rep:3}},
 });
 Object.assign(SIDE_QUESTS,{
-  holdtiming:{title:"48 Hours vs. 24 Hours",tag:"Field call · Locations office",body:"AMBR's building the sign schedule for the stoop day. 'Quick check before I send it — signs up 48 hours out. So we start holding the curb 48 hours out too, right?'",
+  holdtiming:{title:"48 Hours vs. 24 Hours",tag:"Field call · Locations office",body:"Amber's building the sign schedule for the stoop day. 'Quick check before I send it — signs up 48 hours out. So we start holding the curb 48 hours out too, right?'",
     options:[{key:"a",label:"Right — once the signs are up, the curb is ours.",correct:false,fb:"Signs and holding run on different clocks. Holding two full days early punishes the block for nothing."},
       {key:"b",label:"No — signs go up at least 48 hours ahead, but we can't start holding parking more than 24 hours before the permit starts.",correct:true,fb:"Exactly. Notice early, hold late. Signs give the block two days' warning; actual holding waits until the last 24 hours."},
       {key:"c",label:"We hold a full week early so nobody can sneak in.",correct:false,fb:"That's a fast way to become the most hated crew in Brooklyn — and it's against the Code. Hold no more than 24 hours prior."}],
@@ -1109,10 +1109,10 @@ const LINGO={
 /* walkie chatter pools (phase-aware). {k} marks the lingo key this line teaches */
 const WALKIE={
   PREP:[
-    {who:"AMBR",line:"Locations, copy? Halloran's COI just landed in my inbox.",k:"copy"},
+    {who:"Amber",line:"Locations, copy? Halloran's COI just landed in my inbox.",k:"copy"},
     {who:"Joon",line:"Office to Locations — can you go to two?",k:"goto2"},
     {who:"Mabel",line:"Anyone want anything from the deli? I'm flying in lunch at noon.",k:"flying"},
-    {who:"Kaitlin",line:"What's your 20? Need you to measure the curb on Halloran's block.",k:"twenty"},
+    {who:"Caitlin",line:"What's your 20? Need you to measure the curb on Halloran's block.",k:"twenty"},
     {who:"Ozzie",line:"Office PA is 10-1, back in five.",k:"ten1"},
     {who:"Priya",line:"Hot bricks are on the charger in the copy room if anybody's dying.",k:"hotbrick"},
   ],
@@ -1131,7 +1131,7 @@ const WALKIE={
   WRAP:[
     {who:"Tom",line:"This is the Abby Singer, folks.",k:"abby"},
     {who:"Tom",line:"Martini shot! Last one of the day!",k:"martini"},
-    {who:"Bryan",line:"Company move tomorrow — but first we give this block back.",k:"compmove"},
+    {who:"Ryan",line:"Company move tomorrow — but first we give this block back.",k:"compmove"},
     {who:"Big Mike",line:"Copy that, trucks rolling out of base camp.",k:"copy"},
   ],
 };
@@ -1151,7 +1151,7 @@ const BADGES={
   books:{icon:"📒",name:"Clean Books",note:"Code every P-Card receipt correctly."},
   doors:{icon:"🚪",name:"Every Door",note:"Knock on all five doors on Halloran's block."},
   signs:{icon:"🚧",name:"No Sign Left Behind",note:"Pull every No Parking sign you posted."},
-  nolife:{icon:"🧠",name:"No Lifelines",note:"Wrap the show without calling AMBR for help."},
+  nolife:{icon:"🧠",name:"No Lifelines",note:"Wrap the show without calling Amber for help."},
   wrap:{icon:"🍾",name:"That's a Wrap",note:"Finish the show."},
   hotdog:{icon:"🌭",name:"Frankly Excellent",note:"Wrap the show as Frank, in the hotdog suit."},
   sweep:{icon:"\uD83D\uDDD1\uFE0F",name:"Clean Sweep",note:"Haul all 10 loose trash bags in a single phase."},
@@ -1278,7 +1278,7 @@ Object.assign(FINDS,{
   holdingKey:{icon:"🗝️",name:"St. Agnes Hall Key",note:"Walt's spare key, on a paper clip, with a tag that says RETURN IT. Holding is a borrowed building: protect it, return it."},
   blueTape:{icon:"🔵",name:"Blue-Taped Bag",note:"Production trash gets wrapped in blue tape so the neighbors and Sanitation know it's the show's, and the TrashMan knows it's his to haul."},
   steveCard:{icon:"📸",name:"Steve Sans's Card",note:"'Steve Sans · Photographer · You didn't see me.' He shoots from the public sidewalk, and he knows the rules better than most ADs."},
-  dayNotes:{icon:"📝",name:"First End-of-Day Email",note:"Every hole, complaint and visitor from the day, in one email to Kaitlin. If it isn't in the email, it didn't happen."},
+  dayNotes:{icon:"📝",name:"First End-of-Day Email",note:"Every hole, complaint and visitor from the day, in one email to Caitlin. If it isn't in the email, it didn't happen."},
 });
 ACCOUNTS.push("WORKING MEALS");
 Object.assign(SHOP,{
@@ -1305,8 +1305,8 @@ Object.assign(LINGO,{
   setdec:{t:"Set dec",d:"Set decoration: they dress the set. Sometimes they hang things on the walls without asking first."},
 });
 WALKIE.PREP.push(
-  {who:"AMBR",line:"Holding's at St. Agnes hall next to 136. Lunch, HMU and wardrobe all live there.",k:"holding"},
-  {who:"Kaitlin",line:"HMU's asking about outlets at Holding. Put their stations on separate circuits.",k:"hmu"},
+  {who:"Amber",line:"Holding's at St. Agnes hall next to 136. Lunch, HMU and wardrobe all live there.",k:"holding"},
+  {who:"Caitlin",line:"HMU's asking about outlets at Holding. Put their stations on separate circuits.",k:"hmu"},
   {who:"Marco",line:"Set dec's rolling to Halloran's with the dressing truck. We'll be gentle. Promise.",k:"setdec"});
 WALKIE.SHOOT.push(
   {who:"Keisha",line:"TCD, hold eastbound please. Picture's up in two.",k:"tcd"},
@@ -1354,7 +1354,7 @@ Object.assign(FINDS,{
   relHalloran:{icon:"📜",name:"Release: Halloran Brownstone",note:"Mr. Halloran's signed location release: property returned in original condition. The couch is back, the holes are patched."},
   relAdeyemi:{icon:"📜",name:"Release: Adeyemi Driveway",note:"The Adeyemis signed off once Transpo power-washed the oil stain out of their driveway."},
   relHolding:{icon:"📜",name:"Release: St. Agnes Hall",note:"Walt signed. Bingo's back on for Thursday."},
-  summerGig:{icon:"🦖",name:"Offer: 'Jurassic Parking'",note:"Bryan wants you back for the summer show. It's about dinosaurs. And parking. Mostly parking."},
+  summerGig:{icon:"🦖",name:"Offer: 'Jurassic Parking'",note:"Ryan wants you back for the summer show. It's about dinosaurs. And parking. Mostly parking."},
 });
 FINDS.cleanBooks.note="Zero missing receipts for the whole show. Deb says she's framing your envelope.";
 BADGES.books.note="Finish the show with zero missing receipts.";
@@ -1419,7 +1419,7 @@ function buildParty(){const t=mk(18,12,".");frame(t,"#");box(t,6,5,11,8,"R");t[1
     doors:[{x:9,y:11,to:"homeblock",tx:4,ty:5,dir:"down"}],
     npcs:[
       P("sal","sal",4,3,["You left every block better than you found it. That's the whole job, kid. Drink's on me.","Jurassic Parking. Summer. Think about it."]),
-      P("caitlin","caitlin",6,3,["You made my job easy. Which made Bryan's job easy. Which is the whole org chart. Cheers.","Next show, you're getting a better walkie. Maybe."]),
+      P("caitlin","caitlin",6,3,["You made my job easy. Which made Ryan's job easy. Which is the whole org chart. Cheers.","Next show, you're getting a better walkie. Maybe."]),
       P("gaby","gaby",8,3,["Three releases, all signed, all in the folder. I could cry.","If it isn't in the folder, it didn't happen. And it's ALL in the folder."]),
       P("deb","deb",2,4,["I brought the envelope. Just kidding. …Mostly.","You know what I love? A receipt. You know what I love more? An open bar."]),
       P("priya","priya",12,3,["The UPA van still smells like ram board. I love it.","Copier's off for the night. First time in three weeks."]),
@@ -1500,11 +1500,11 @@ const ISSUES=[
          ["Say you're with the city.",0,"Never misrepresent yourself. That's how a production ends up in the local paper."],
          ["Say it's for your personal collection.",0,"That's somehow worse."]]},
   {id:"p_away",ph:"PREP",lines:["I'm going upstate for the week and my car's parked right where your signs are.","I leave tomorrow morning. What happens to my car?"],ask:"Do I have to move it?",
-   opts:[["Take their plate and number. Nobody touches the car. If it has to move, the NYPD Movie/TV Unit handles it by the book, and we tell them where it went.",2,"They leave you the spare parking permit and their cell. You log it for AMBR."],
+   opts:[["Take their plate and number. Nobody touches the car. If it has to move, the NYPD Movie/TV Unit handles it by the book, and we tell them where it went.",2,"They leave you the spare parking permit and their cell. You log it for Amber."],
          ["Leave your keys with me and I'll move it.",0,"Never drive a resident's car. Liability nightmare."],
          ["Don't worry, we'll push it out of the way.",0,"You never lay a hand on a civilian vehicle."]]},
   {id:"p_party",ph:"PREP",lines:["We've got a block party permit for Saturday. Did you know that?","Bouncy castle, grills, the whole thing. It's been on the calendar since March."],ask:"So which one of us is moving?",
-   opts:[["Thank them, get the details, and call the office right away. The film office sorts out permit conflicts, and we work around their day.",2,"Kaitlin gets the film office on the phone. You're shooting the other end of the block that day, and the block party goes on."],
+   opts:[["Thank them, get the details, and call the office right away. The film office sorts out permit conflicts, and we work around their day.",2,"Caitlin gets the film office on the phone. You're shooting the other end of the block that day, and the block party goes on."],
          ["We have a film permit, so we win.",0,"Permits don't 'win.' That attitude gets you a block that hates you."],
          ["I'm sure it's fine.",1,"It's probably not fine. Tell the office."]]},
   {id:"p_extra",ph:"PREP",lines:["Hi! I've always wanted to be in a movie.","Can I be an extra? I can do a great 'person walking by.'"],ask:"Well? Can I?",
@@ -1533,7 +1533,7 @@ const ISSUES=[
          ["He's right, we have a permit for the sidewalk.",0,"A film permit never closes the sidewalk to the public."],
          ["Just wait until we're done filming.",1,"'Done' could be ten hours. Asking for a few seconds is fine; blocking them isn't."]]},
   {id:"s_ticket",ph:"SHOOT",lines:["I got a parking ticket this morning.","Because your signs took my spot and I had to park somewhere worse."],ask:"Who pays for this?",
-   opts:[["Take down their info and a photo of the ticket, and pass it to AMBR. If our signs caused it, the production deals with it.",2,"AMBR's on it. They leave with a name and a phone number that actually picks up."],
+   opts:[["Take down their info and a photo of the ticket, and pass it to Amber. If our signs caused it, the production deals with it.",2,"Amber's on it. They leave with a name and a phone number that actually picks up."],
          ["Not our problem.",0,"It might be exactly your problem."],
          ["Here's twenty bucks out of my pocket.",1,"Kind, but it never gets tracked. Run it through the office."]]},
   {id:"s_cups",ph:"SHOOT",lines:["Somebody left your coffee cups in my garden.","Three of them. With lids. In my TULIPS."],ask:"Who raised these people?",
@@ -1621,7 +1621,7 @@ const CH2=[
   {id:"c_find2",ph:"SHOOT",who:"tom",go:true,ask:"A gentleman is standing in the middle of the stoop set asking for 'whoever's in charge of the street.'",
    spawn:{map:"scoutblock",x:7,y:11,where:"the sidewalk across from 126"}},
   {id:"c_capw",ph:"WRAP",who:"gaby",ask:"Halloran wants to do the walkthrough right now, before he leaves for work.",
-   opts:[["Say yes. The walkthrough happens on the owner's schedule, not ours.",2,"'Great, he's expecting you.'"],["Tell him after lunch.",0,"The owner's schedule wins."],["Can AMBR do it?",1,"It's your location. Go."]]},
+   opts:[["Say yes. The walkthrough happens on the owner's schedule, not ours.",2,"'Great, he's expecting you.'"],["Tell him after lunch.",0,"The owner's schedule wins."],["Can Amber do it?",1,"It's your location. Go."]]},
   {id:"c_lens",ph:"WRAP",who:"iris",ask:"Somebody left a lens case at Holding. Can you check before Walt locks up?",
    opts:[["On it. Check Holding before the walkthrough and bring it to camera.",2,"Found it under a lunch table. Iris owes you."],["Not my department.",0,"On wrap day, everything left behind is Locations' department."],["Walt can mail it.",1,"A $40,000 lens. By mail. No."]]},
 ];
@@ -2493,8 +2493,8 @@ function castPal(id){return CAST[id]?CAST[id].sprite:null;}
 function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
   openModal("\uD83D\uDCE7 New email","Inbox \u00b7 5:42 AM",{pal:CAST.caitlin.sprite});
   mbody.appendChild(el("div","email",`
-    <div class="em-h"><div><span>From</span><b>Kaitlin</b> \u00b7 Assistant Location Manager, <i>Mission Implausible: The Pridwin</i></div>
-    <div><span>To</span>${nm}</div><div><span>Cc</span>Bryan Ferguson (Location Manager), AMBR (Locations Coordinator)</div>
+    <div class="em-h"><div><span>From</span><b>Caitlin</b> \u00b7 Assistant Location Manager, <i>Mission Implausible: The Pridwin</i></div>
+    <div><span>To</span>${nm}</div><div><span>Cc</span>Ryan (Location Manager), Amber (Locations Coordinator)</div>
     <div class="em-s"><span>Subject</span><b>Welcome to Mission Implausible: The Pridwin \u2014 Prep Day 1 (read before you leave!)</b></div></div>
     <div class="em-b">
     <p>Hi ${nm},</p>
@@ -2502,23 +2502,23 @@ function openEmail(first){const nm=S.name||CHARS[S.charIdx].name;
     <p class="em-sec">TODAY \u00b7 PREP DAY 1</p>
     <ul><li><b>First:</b> hop on the <b>N train</b> at 30 Av (end of your block) to <b>Queensboro Plaza</b> and pick up your rental at <b>Outerprise Rent-A-Car</b>. It's booked on the production account; just ask for Trevor.</li>
     <li><b>Then:</b> drive to the <b>production office in LIC</b> and find me in the Locations office. I've got your <b>E-ZPass</b>, <b>P-Card</b> and a float of petty cash.</li>
-    <li><b>After that:</b> the tech scout with the department heads, scouting the brownstone, meeting the neighbors, a <b>supply run for Bryan</b> (Dmitri's Hardware \u2192 Priya's UPA van), pulling our <b>City film permit</b>, filing for rain-day water with DEP, and posting our <b>No Parking signs</b>.</li>
+    <li><b>After that:</b> the tech scout with the department heads, scouting the brownstone, meeting the neighbors, a <b>supply run for Ryan</b> (Dmitri's Hardware \u2192 Priya's UPA van), pulling our <b>City film permit</b>, filing for rain-day water with DEP, and posting our <b>No Parking signs</b>.</li>
     <li><b>End of day:</b> send me your <b>end-of-day email</b> (\uD83D\uDCDD Notes), then <b>go home and get some sleep</b>. Tomorrow's marching orders land in your inbox tonight.</li></ul>
     <p class="em-sec">THE REST OF THE WEEK</p>
     <ul><li><b>Shoot day:</b> the trucks land, Holding goes up (catering, HMU, wardrobe), and we keep the block happy while camera rolls: neighbors, TCD, City Hall, all of it.</li>
     <li><b>Wrap day:</b> walkthroughs, fix anything we broke, collect signed release forms, turn everything back in. Then\u2026 wrap party.</li></ul>
-    <p>Bryan's only rule: <i>leave every block better than you found it.</i> Keep your phone on and your walkie charged once you get one.</p>
-    <p><b>P.S.</b> Bryan's paying a clean-block bonus this show: see a loose trash bag anywhere we work, grab it, wrap it in <b>blue tape</b> at a TrashMan pickup spot, and he'll haul it. All ten in a phase and there's cash in it.</p>
+    <p>Ryan's only rule: <i>leave every block better than you found it.</i> Keep your phone on and your walkie charged once you get one.</p>
+    <p><b>P.S.</b> Ryan's paying a clean-block bonus this show: see a loose trash bag anywhere we work, grab it, wrap it in <b>blue tape</b> at a TrashMan pickup spot, and he'll haul it. All ten in a phase and there's cash in it.</p>
     <p><b>P.P.S.</b> Grab <b>shoe booties</b> at Dmitri's Hardware next to the office before you walk Halloran's place. And <b>ALWAYS ask for the receipt</b>. Every coffee, every roll of tape. Deb in Accounting reimburses you, but only with a receipt.</p>
     <p>Grab your go-bag, grab a coffee, and go get that car. See you at the office. \uD83D\uDE97</p>
-    <p>\u2014 Kaitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
+    <p>\u2014 Caitlin<br><span class="muted">ALM \u00b7 Mission Implausible: The Pridwin \u00b7 Locations</span></p></div>`));
   if(first)p(`<b>Controls:</b> ${COARSE?"<b>tap</b> where you want to walk \u00b7 <b>tap</b> people & things to use them (or the D-pad + <b>ACT</b>)":"arrow keys / WASD to move \u00b7 <b>Space</b> to interact \u00b7 \u2191\u2193 + Space in pop-ups"} \u00b7 the <b>NEXT UP</b> card (top-left) always shows where to go.`,"muted");
   if(first)actBtn("\u2600\uFE0F Start the day",()=>{S.setFlag("dayStarted");hideNotif();closeModal();setBanner("PREP DAY 1 \u00b7 5:45 AM");chime();});
   else actBtn("Close",closeModal);}
 function openIntro(){openEmail(true);return;openModal("Day One","Prep \u00b7 your apartment",{pal:CHARS[S.charIdx].sprite});
   p(`Morning, <b>${S.name||"boss"}</b>. Today's your first day as a <b>Locations Assistant</b> on the feature <b>Mission Implausible: The Pridwin</b>. The block is yours to run.`);
   p(`Move with <b>arrow keys / WASD</b>; face someone or something and press <b>Space</b> to interact.`,"muted");
-  p(`Grab your go-bag and head out. First stop is <b>Outerprise Rent-A-Car</b> on your block \u2014 you can't run locations without wheels. Then drive to the <b>production office</b> and find your boss, <b>Bryan</b>, in the Locations office.`,"muted");
+  p(`Grab your go-bag and head out. First stop is <b>Outerprise Rent-A-Car</b> on your block \u2014 you can't run locations without wheels. Then drive to the <b>production office</b> and find your boss, <b>Ryan</b>, in the Locations office.`,"muted");
   actBtn("Let's go to work",closeModal);}
 
 function openChat(n){openModal(n.name,n.role,{pal:n.sprite});let i=0;const line=p("");const next=el("button","act","Next");
@@ -2555,7 +2555,7 @@ function openHydrantProp(){openModal("Fire hydrant","Halloran's corner");
   actBtn("Close",closeModal);blip(true);}
 
 function openPhone(){if(!S.flags.has("kit")){openEmail(false);return;}openModal("Your Phone","Texts \u00b7 call sheet");
-  p(`<b>Kaitlin (ALM):</b> Welcome aboard! My email has the whole day. Car first, then come find me in the Locations office. \uD83D\uDE97`);
+  p(`<b>Caitlin (ALM):</b> Welcome aboard! My email has the whole day. Car first, then come find me in the Locations office. \uD83D\uDE97`);
   p(`<b>Crew thread:</b> office is in LIC, the working trucks stage at the SET block in Greenpoint, brownstone scout is deeper in Brooklyn. Big day. \u2615`,"muted");
   if(S.hasCar)p(`Reminder: tap your rental car to drive between unlocked blocks. New places unlock as the job opens up.`,"muted");
   actBtn("Close",closeModal);}
@@ -2569,7 +2569,7 @@ function openRental(){const tr=CAST.trevor;openModal("Outerprise Rent-A-Car","Pi
     if(!S.unlocked.has("officeblock"))S.unlock("officeblock");S.unlock("rentalblock");
     mbody.innerHTML="";
     p(`Keys in hand. Your silver sedan's parked right outside.`);
-    mbody.appendChild(el("div","banner ok","\uD83D\uDE97 <b>Rental car unlocked.</b> Head outside, tap the car, and drive to the <b>Production Office</b> to meet Kaitlin."));
+    mbody.appendChild(el("div","banner ok","\uD83D\uDE97 <b>Rental car unlocked.</b> Head outside, tap the car, and drive to the <b>Production Office</b> to meet Caitlin."));
     actBtn("Close",closeModal);blip(true);
   });}
 
@@ -2578,8 +2578,8 @@ function openBoss(n){
     if(!S.solved.has("techscout"))openScenario("techscout");
     else openChat(n);
     return;}
-  openModal("Kaitlin","Assistant Location Manager \u00b7 first-day kit",{pal:n.sprite});
-  p(`Kaitlin looks up from the map wall. "There's my new Locations Assistant. You made it \u2014 and with the car, even. Kit first, then the day."`);
+  openModal("Caitlin","Assistant Location Manager \u00b7 first-day kit",{pal:n.sprite});
+  p(`Caitlin looks up from the map wall. "There's my new Locations Assistant. You made it \u2014 and with the car, even. Kit first, then the day."`);
   p(`She hands you two things: an <b>E-ZPass</b> for the tolls ("you'll cross a lot of bridges running this scout") and a <b>production P-Card</b> for petty cash ("every receipt goes to Deb in Accounting \u2014 don't make me hear about it").`,"muted");
   mbody.appendChild(el("div","banner kit",`\uD83D\uDEE3\uFE0F <b>E-ZPass</b> + \uD83D\uDCB3 <b>P-Card</b> added to your Field Guide \u00b7 petty cash funded.`));
   actBtn("Take the kit \u2014 what's first?",()=>{
@@ -2622,7 +2622,7 @@ function openCarMenu(){openModal("Your Rental Car","Where to?");
 function lockReason(id){
   if(id==="officeblock")return "Pick up your rental first";
   if(id==="rentalblock")return "Take the N train there first";
-  if(id==="cityblock"||id==="scoutblock")return "Unlocks once Kaitlin gives you the day's list";
+  if(id==="cityblock"||id==="scoutblock")return "Unlocks once Caitlin gives you the day's list";
   if(id==="setblock")return "Unlocks when the company starts shooting (finish Prep)";
   return "Locked";}
 
@@ -2704,7 +2704,7 @@ function openBoard(){openModal("Call Sheet \u2014 Mission Implausible: The Pridw
   else{const next=PHASE_LIST.find(([id])=>!S.solved.has(id));
     if(next){const b=el("button","act",`Where to: ${nextHint(next[0])}`);b.onclick=closeModal;mbody.appendChild(b);}}
   mbody.appendChild(el("div","banner fact","<b>Reminder:</b> the City film permit isn't free \u2014 $500 per 14-day window. Police assistance and parking privileges are the free part."));}
-function nextHint(id){return id==="techscout"?"the Locations office \u2014 talk to Kaitlin":id==="scout"?"the brownstone (drive to the scout block)":id==="neighborhood"?"the scout block \u2014 knock the doors, then your clipboard":id==="permit"?"the City Film Office":id==="hydrant"?"the City Film Office \u2014 DEP water desk":id==="lockup"?"Halloran's block \u2014 post the No Parking signs, then find Keisha (2nd AD) at 126":"the Call Sheet board here, or the wrap checklist at set";}
+function nextHint(id){return id==="techscout"?"the Locations office \u2014 talk to Caitlin":id==="scout"?"the brownstone (drive to the scout block)":id==="neighborhood"?"the scout block \u2014 knock the doors, then your clipboard":id==="permit"?"the City Film Office":id==="hydrant"?"the City Film Office \u2014 DEP water desk":id==="lockup"?"Halloran's block \u2014 post the No Parking signs, then find Keisha (2nd AD) at 126":"the Call Sheet board here, or the wrap checklist at set";}
 
 function openDiscoveries(){openModal("Field Guide","Keepsakes & lessons");
   p(`${S.finds.size} of ${FINDTOTAL} collected.`,"muted");
@@ -2718,7 +2718,7 @@ function openWhereAmI(){const m=curMap();openModal("Where am I?",m.name);
     rentalblock:"Queensboro Plaza, under the elevated tracks. Outerprise Rent-A-Car is the door up top; the station is on the corner if you need the train home.",
     rental:"Outerprise Rent-A-Car. Take the keys from Trevor, then go tap your car outside.",
     officeblock:"The production office district in LIC. The office door is up top; the working trucks stage at the SET block now.",
-    office:"The production office. Private offices along the top: Locations (Bryan, Kaitlin & AMBR), the UPM, the director's suite. Cubicles in the middle, copy room bottom-left (Priya & the set signs), kitchen bottom-right. Poke around \u2014 the drawers are worth it.",
+    office:"The production office. Private offices along the top: Locations (Ryan, Caitlin & Amber), the UPM, the director's suite. Cubicles in the middle, copy room bottom-left (Priya & the set signs), kitchen bottom-right. Poke around \u2014 the drawers are worth it.",
     cityblock:"The civic center in Manhattan. The City Film Office is the door up top.",
     cityoffice:"The City Film Office \u2014 one-stop shop: Doris (permits), Marcus (DEP water), plus COI, Letter-in-Lieu, Parks/MTA and the tax-credit desks.",
     setblock:"Set & base camp in Greenpoint \u2014 the truck line, staged camera gear, video village, and the crew who run it (Big Mike, Dee, Ofc. Reyes). At wrap, the wrap checklist lives here too.",
@@ -2770,7 +2770,7 @@ function openScorecard(){
   stat("Receipts gotten",`${S.v8.purchases.filter(r=>r.rcpt).length}/${S.v8.purchases.length}`,"ask every time");
   stat("Badges",`${S.badges.size}/${Object.keys(BADGES).length}`,`${S.lingo.size} lingo \u00b7 ${statGet("drives")} drives`);
   if(pct<0.95)mbody.appendChild(el("div","banner fact","\uD83D\uDD0D The city's still open \u2014 anything you missed (field calls, drawers, doors, finds) is still out there. Finish the list and check this scorecard again from the Call Sheet board."));
-  else mbody.appendChild(el("div","banner ok","\uD83C\uDFC6 A perfect show. Every job, every call, every keepsake \u2014 Bryan's already talking about the next one."));
+  else mbody.appendChild(el("div","banner ok","\uD83C\uDFC6 A perfect show. Every job, every call, every keepsake \u2014 Ryan's already talking about the next one."));
   p("You left every block better than you found it. In this department, that IS the job \u2014 a clean wrap is the audition for the next show.","muted");
   actBtn("\uD83C\uDFAC Roll credits",()=>{closeModal();rollCredits();});
   actBtn("Keep exploring the city",closeModal,"act ghost");
@@ -3194,7 +3194,7 @@ function recordAnswer(key,correct){
   if(first&&S.rep>0){S.addRep(-1);return 1;}return 0;}
 function lifelineBtn(wrap,key){
   if(S.coins<25)return;
-  const b=el("button","act ghost life","📞 Call AMBR — $25 (strikes one wrong answer)");
+  const b=el("button","act ghost life","📞 Call Amber — $25 (strikes one wrong answer)");
   b.onclick=()=>{const wrong=[...wrap.querySelectorAll(".opt")].filter(x=>!x.disabled&&x.dataset.ok!=="1");
     if(!wrong.length)return;const w=wrong[Math.floor(Math.random()*wrong.length)];
     w.disabled=true;w.classList.add("struck");S.addCoins(-25);statAdd("lifelines");b.remove();
@@ -3229,9 +3229,9 @@ function objective(){
   if(!S.hasCar){if(S.map==="apartment")return {text:"Head out — first stop, Outerprise Rent-A-Car",tgt:{x:6,y:8}};
     if(S.map==="homeblock")return {text:"Take the N train to Outerprise Rent-A-Car",sub:"30 Av station, end of the block",tgt:{x:21,y:11}};
     return routeStep("rental","trevor","Pick up your rental from Trevor");}
-  if(!S.flags.has("kit"))return routeStep("office","caitlin","Get your kit from Kaitlin — Locations office");
+  if(!S.flags.has("kit"))return routeStep("office","caitlin","Get your kit from Caitlin — Locations office");
   for(const [id] of PHASE_LIST){if(S.solved.has(id))continue;
-    if(id==="techscout")return routeStep("office","caitlin","Take the day's plan from Kaitlin");
+    if(id==="techscout")return routeStep("office","caitlin","Take the day's plan from Caitlin");
     if(id==="scout")return routeStep("brownstone","halloran","Scout Halloran's brownstone");
     if(id==="neighborhood"){const left=KNOCKS.filter(k=>!S.flags.has(k[1]));
       if(left.length)return Object.assign(routeStep("scoutblock",left[0][0],`Knock the doors on Halloran's block (${4-left.length}/4)`),{});
@@ -3429,7 +3429,7 @@ const BARKS={
   trevor:["Drive safe!","Full tank, please!","We'll pick you up. Figuratively."],
   benny:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
   courierL:["Outta my way, I'm flying in!","Labs, set, office. Repeat."],
-  sal:["Leave it better than you found it.","Where's Kaitlin?","Twenty years, kid."],
+  sal:["Leave it better than you found it.","Where's Caitlin?","Twenty years, kid."],
   ines:["Manhattan-bound's delayed again.","Outerprise is right there!"],
   caitlin:["Did you read my email?","Photograph everything!","Car's gassed up, right?"],
   gaby:["If it isn't in the folder…","COI's in!","Photograph everything."],
@@ -3636,7 +3636,7 @@ function openGuide(tab){tab=tab||"finds";openModal("Field Guide","Keepsakes · l
     const b=el("button","tab"+(k===tab?" on":""),l);b.onclick=()=>openGuide(k);tabs.appendChild(b);});mbody.appendChild(tabs);
   if(tab==="finds"){for(const id in FINDS){const f=FINDS[id],has=S.finds.has(id);
     mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?f.icon:"❔"}</div><div><div class="nm">${has?f.name:"— locked —"}</div><div class="nt">${has?f.note:"Keep working the show to unlock this."}</div></div>`));}}
-  else if(tab==="lingo"){p(S.finds.has("walkie")?"Heard over the walkie and on set. Keep your ears on channel 1.":"Get your walkie from Kaitlin's first job — then the lingo starts flowing.","muted");
+  else if(tab==="lingo"){p(S.finds.has("walkie")?"Heard over the walkie and on set. Keep your ears on channel 1.":"Get your walkie from Caitlin's first job — then the lingo starts flowing.","muted");
     for(const k in LINGO){const L=LINGO[k],has=S.lingo.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?"📻":"❔"}</div><div><div class="nm">${has?L.t:"— not heard yet —"}</div><div class="nt">${has?L.d:""}</div></div>`));}}
   else{for(const k in BADGES){const B=BADGES[k],has=S.badges.has(k);mbody.appendChild(el("div","findcard"+(has?"":" locked"),`<div class="ic">${has?B.icon:"🔒"}</div><div><div class="nm">${B.name}</div><div class="nt">${B.note}</div></div>`));}}}
 
@@ -3659,7 +3659,7 @@ function checkTrash(){if(!S.trash||S.trash.phase!==S.phase)return;
   b.got=true;statAdd("trash");const n=S.trash.spots.filter(q=>q.got).length,tot=S.trash.spots.length;
   addFloat(`\uD83D\uDDD1\uFE0F ${n}/${tot}`,"#c9ccd4");tone(240,0.06,"triangle",0.05);setTimeout(()=>tone(170,0.09,"triangle",0.04),60);
   if(n===tot&&!S.trash.paid){S.trash.paid=true;const prize=TRASH_PRIZE[S.phase]||50;S.addCoins(prize);S.addRep(1);award("sweep");confetti(40);chime();
-    toast("\uD83D\uDDD1\uFE0F",`Clean sweep \u2014 all ${tot} bags!`,`Hauled to the production dumpster (never the corner can). +$${prize} clean-block bonus from Bryan.`);}
+    toast("\uD83D\uDDD1\uFE0F",`Clean sweep \u2014 all ${tot} bags!`,`Hauled to the production dumpster (never the corner can). +$${prize} clean-block bonus from Ryan.`);}
   saveJSON("trash",S.trash);updateHUD();}
 function drawTrashBag(sx,sy,now,seed){const w=Math.sin(now/300+seed)*0.6;
   ctx.fillStyle="rgba(0,0,0,.28)";ctx.beginPath();ctx.ellipse(sx+16,sy+27,10,3,0,0,7);ctx.fill();
@@ -4000,7 +4000,7 @@ function resolvePickup(map){let n=0;tSpots().forEach(q=>{if(q.st==="pile"&&q.pma
   if(S.map!==map)toast("🚛","TrashMan came by",`Hauled ${n} blue-taped bag${n>1?"s":""} from ${MAPS[map].name}.`);
   const tot=tSpots().length;
   if(tGone()===tot&&tot&&!S.trash.paid){S.trash.paid=true;saveJSON("trash",S.trash);const prize=TRASH_PRIZE[S.phase]||50;realCash(prize);S.addRep(1);award("sweep");confetti(40);chime();
-    toast("🗑️",`Clean sweep: all ${tot} bags!`,`Every loose bag blue-taped and hauled. +$${prize} clean-block bonus from Bryan.`);}
+    toast("🗑️",`Clean sweep: all ${tot} bags!`,`Every loose bag blue-taped and hauled. +$${prize} clean-block bonus from Ryan.`);}
   updateHUD();}
 function truckAt(x,y){const T=V8.truck;if(!T||T.map!==S.map||y!==T.row)return false;return x*TILE+30>T.px&&x*TILE+2<T.px+64;}
 {const _ca=carAt;carAt=function(x,y){return _ca(x,y)||truckAt(x,y);};}
@@ -4168,7 +4168,7 @@ function updateSteve(s,now){const T=V8.steve;if(!T)return;
     if(!vFree(T.stopX,10,null)){T.wait=(T.wait||0)+s;if(T.wait>4){T.st="leave";}return;}
     T.man=visAdd(S.map,{id:"steve",name:"Steve Sans",role:"Photographer · on a bike",x:T.stopX,y:10,sprite:STEVE_PAL,spd:0.55,_extra:steveCam,
       _vis:{kind:"steve",hint:"Say hi to Steve",talk:openSteve}});
-    walkieLine(pick(["Keisha","Big Mike","AMBR"]),pick(["Heads up: Steve Sans just rolled up on his bike.","Steve's here! Somebody tell talent.","Paparazzi on the block. It's Steve. Of course it's Steve."]),null);
+    walkieLine(pick(["Keisha","Big Mike","Amber"]),pick(["Heads up: Steve Sans just rolled up on his bike.","Steve's here! Somebody tell talent.","Paparazzi on the block. It's Steve. Of course it's Steve."]),null);
     steveSpot(T);return;}
   if(T.st==="walkto"){const r=vMove(T.man,s);if(r==="moving"||r==="wait")return;T.st="snap";T.t=rnd(1.4,2.6);T.man._dir=pick(["up","left","right","up"]);return;}
   if(T.st==="snap"){T.t-=s;
@@ -4329,7 +4329,7 @@ function openHoleCall(){const used=new Set(S.v8.notes.filter(n=>n.cat==="hole").
   p(`"Locations, copy? ... Yeah, hey, just so you know, we put ${h.what}. <b>${h.where}</b>. Tiny! You'll never see it."`);
   p("They didn't ask first. What do you do?","muted");lockModal(true);
   const w=el("div");mbody.appendChild(w);
-  [["a","\"Copy.\" Log it: where, how many, how big. Photo it. It goes in your notes for Kaitlin (ALM).",true],
+  [["a","\"Copy.\" Log it: where, how many, how big. Photo it. It goes in your notes for Caitlin (ALM).",true],
    ["b","\"Copy, it's tiny.\" No need to write anything down.",false,"Tiny holes are still damage in someone's home. If it isn't in the notes, the owner finds it at the walkthrough, and it looks like Locations hid it."],
    ["c","Go to two and chew them out.",false,"Save that conversation for later, off the main channel. Right now the job is to log it: where, how many, how big."]].forEach(([k,l,ok,fb])=>{
     const b=el("button","opt",`<span class="k">${k.toUpperCase()}</span> ${l}`);if(ok)b.dataset.ok="1";
@@ -4346,8 +4346,8 @@ const DISTRACT=["🎟️ Sammy's lotto scratcher numbers","🐦 How many pigeons
   "🌭 Frank's hotdog-suit dry-cleaning schedule","📺 Your review of last night's cop show","🍩 A rumor that crafty is getting a donut wall","🚲 Your personal bike-commute stats"];
 function dayName(ph){return ph==="PREP"?"Prep Day 1":ph==="SHOOT"?"Shoot Day 1":ph==="WRAP"?"Wrap Day":"Wrapped";}
 function openNotes(fromGate){const notes=todaysNotes(),due=eodDue();
-  openModal("📝 Day Notes",`${dayName(S.phase)} · for Kaitlin (ALM)`,{pal:CAST.caitlin.sprite});
-  if(fromGate)mbody.appendChild(el("div","banner ok","🌙 <b>That's the day's work done.</b> Last thing before tomorrow: the end-of-day email to Kaitlin with every detail from today."));
+  openModal("📝 Day Notes",`${dayName(S.phase)} · for Caitlin (ALM)`,{pal:CAST.caitlin.sprite});
+  if(fromGate)mbody.appendChild(el("div","banner ok","🌙 <b>That's the day's work done.</b> Last thing before tomorrow: the end-of-day email to Caitlin with every detail from today."));
   if(!notes.length)p("Nothing logged yet today. Holes in walls, neighbor complaints, visitors, TCD adventures, TrashMan pickups: it all lands here as it happens.","muted");
   notes.forEach(n=>mbody.appendChild(el("div","findcard",`<div class="ic">${n.icon}</div><div><div class="nt" style="color:var(--ink);font-size:12px">${n.text}</div></div>`)));
   const spent=S.v8.spend[S.phase]||0;if(spent)p(`Petty cash spent today: <b>$${spent}</b> · receipts waiting for Accounting: <b>${pendingReceipts().length}</b>`,"muted");
@@ -4358,16 +4358,16 @@ function openNotes(fromGate){const notes=todaysNotes(),due=eodDue();
 function openEodCompose(){const ph=S.phase,notes=todaysNotes(),nm=S.name||CHARS[S.charIdx].name;
   const items=notes.map((n,i)=>({t:n.icon+" "+n.text,real:true,i})).concat(DISTRACT.slice().sort(()=>Math.random()-.5).slice(0,3).map(t=>({t,real:false}))).sort(()=>Math.random()-.5);
   const jobs=(DAY_TASKS[ph]||[]).filter(t=>t.done()).map(t=>t.label);
-  openModal("✉️ End-of-day email","To Kaitlin · cc Bryan, AMBR");
-  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>To</span><b>Kaitlin</b> (ALM)</div><div><span>Cc</span>Bryan Ferguson (LM), AMBR (Coordinator)</div>
+  openModal("✉️ End-of-day email","To Caitlin · cc Ryan, Amber");
+  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>To</span><b>Caitlin</b> (ALM)</div><div><span>Cc</span>Ryan (LM), Amber (Coordinator)</div>
     <div class="em-s"><span>Subject</span><b>Locations EOD: Pridwin, ${dayName(ph)}</b></div></div>
-    <div class="em-b"><p>Hi Kaitlin, here's today's wrap-up from Locations.</p><p class="em-sec">DONE TODAY</p><ul>${jobs.map(j=>`<li>${j}</li>`).join("")||"<li>(see below)</li>"}</ul>
+    <div class="em-b"><p>Hi Caitlin, here's today's wrap-up from Locations.</p><p class="em-sec">DONE TODAY</p><ul>${jobs.map(j=>`<li>${j}</li>`).join("")||"<li>(see below)</li>"}</ul>
     <p class="em-sec">PETTY CASH</p><p>$${S.v8.spend[ph]||0} spent · ${S.receipts.filter(r=>!r.coded).length} receipt(s) still to drop at Accounting.</p>
     <p class="em-sec">DETAILS FROM THE DAY</p><p class="muted">Tap every detail that belongs in the email, and nothing that doesn't.</p></div>`));
   const sel=new Set(),w=el("div");mbody.appendChild(w);
   items.forEach((it,k)=>{const b=el("button","opt",`☐ ${it.t}`);b.onclick=()=>{if(sel.has(k)){sel.delete(k);b.innerHTML=`☐ ${it.t}`;b.classList.remove("poi-seen");}else{sel.add(k);b.innerHTML=`☑ ${it.t}`;b.classList.add("poi-seen");}tone(620,0.02,"square",0.012);};w.appendChild(b);});
-  if(!items.some(x=>x.real))p("(Quiet day: nothing logged. Still send it; Kaitlin wants to hear it was quiet.)","muted");
-  actBtn(`📨 Send to Kaitlin, from ${nm}`,()=>{
+  if(!items.some(x=>x.real))p("(Quiet day: nothing logged. Still send it; Caitlin wants to hear it was quiet.)","muted");
+  actBtn(`📨 Send to Caitlin, from ${nm}`,()=>{
     const missed=items.filter((it,k)=>it.real&&!sel.has(k)),extra=items.filter((it,k)=>!it.real&&sel.has(k));
     mbody.innerHTML="";S.setFlag("eod_"+ph);S.addFind("dayNotes");
     mbody.appendChild(el("div","banner ok","📨 <b>Sent.</b> A reply lands two minutes later…"));
@@ -4376,7 +4376,7 @@ function openEodCompose(){const ph=S.phase,notes=todaysNotes(),nm=S.name||CHARS[
     else{reply=(missed.length?`You left out: <b>${missed.map(x=>x.t).join("</b>; <b>")}</b>. If it isn't in the email, it didn't happen, and I'll be the one explaining it to the owner. `:"")+
       (extra.length?`And, uh, I don't need ${extra.map(x=>x.t.replace(/^\S+\s/,"")).join(" or ")}. Keep it to the show. `:"")+"Otherwise, good day.";
       if(missed.length)S.addRep(-1);}
-    mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Kaitlin</b></div><div class="em-s"><span>Subject</span><b>RE: Locations EOD</b></div></div><div class="em-b"><p>${reply}</p><p>— C</p></div>`));
+    mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Caitlin</b></div><div class="em-s"><span>Subject</span><b>RE: Locations EOD</b></div></div><div class="em-b"><p>${reply}</p><p>— C</p></div>`));
     const nx=V8.eodNext;V8.eodNext=null;actBtn(nx?"📬 Check your inbox":"Close",()=>{closeModal();if(nx)nx();});blip(true);});
   actBtn("Not yet",closeModal,"act ghost");}
 {const b=el("button","tbtn","📝 Notes");b.id="b-notes";b.onclick=()=>{if(started)openNotes(false);};document.getElementById("b-map").before(b);}
@@ -4444,7 +4444,7 @@ function v8Interact(f){const e=f.ent;
   const nb=document.getElementById("b-notes");if(nb)nb.textContent=eodDue()?"✉️ EOD email!":`📝 Notes${S.v8&&todaysNotes().length?" "+todaysNotes().length:""}`;};}
 {const _ob=objective;objective=function(){
   if(S.map==="stoopset")return _ob();
-  if(eodDue())return {text:"Send your end-of-day email to Kaitlin",sub:(COARSE?"☰ Menu → Day Notes":"📝 Notes button (or press N)")+" → write it up",tgt:null};
+  if(eodDue())return {text:"Send your end-of-day email to Caitlin",sub:(COARSE?"☰ Menu → Day Notes":"📝 Notes button (or press N)")+" → write it up",tgt:null};
   if(V8.tcd)return {text:`🚦 Find ${V8.tcd.a.name} (TCD) and get them back on post`,sub:`Keisha: "${V8.tcd.h.hint}"`,tgt:null};
   if(V8.insp&&V8.insp.st!=="leave"&&S.map==="setblock"){const v=V8.insp.vios[0];return {text:`🏛️ City Hall's checking base camp`,sub:V8.insp.vios.length?`Fix ${V8.insp.vios.length} violation(s), then show Ms. Greer your permit`:"All clear. Show Ms. Greer your permit",tgt:v?{x:v.x,y:v.y}:(V8.insp.man?{x:V8.insp.man.x,y:V8.insp.man.y}:null)};}
   if(S.flags.has("kit")&&S.hasCar){const next=PHASE_LIST.find(([id])=>!S.solved.has(id));
@@ -4595,12 +4595,12 @@ function filmRoute(){const left=FILM_LEN-S.v8.filmT;
   return {text:"🎬 Martini shot's up…",sub:"Wrap up anything still open (City Hall, TCD)",tgt:null};}
 const DAY_TASKS={
   PREP:[
-    {id:"wake",label:"Read Kaitlin's email & grab your go-bag",done:()=>S.flags.has("dayStarted")&&S.flags.has("hasBag"),route:earlyRoute},
+    {id:"wake",label:"Read Caitlin's email & grab your go-bag",done:()=>S.flags.has("dayStarted")&&S.flags.has("hasBag"),route:earlyRoute},
     {id:"car",label:"N train to Outerprise, pick up your rental",done:()=>S.hasCar||S.flags.has("carReturned"),route:earlyRoute},
-    {id:"kit",label:"Get your kit from Kaitlin at the office",done:()=>S.flags.has("kit"),route:()=>R("office","caitlin","Get your kit from Kaitlin — Locations office")},
-    {id:"techscout",label:"Tech scout with the department heads",done:()=>S.solved.has("techscout"),route:()=>R("office","caitlin","Take the day's plan from Kaitlin")},
-    {id:"supply",label:"Supply run for Priya's UPA van (Bryan's list)",done:()=>S.flags.has("suppliesLoaded"),route:()=>{
-      if(!S.flags.has("supplyList"))return R("office","sal","Bryan has a supply run for you");
+    {id:"kit",label:"Get your kit from Caitlin at the office",done:()=>S.flags.has("kit"),route:()=>R("office","caitlin","Get your kit from Caitlin — Locations office")},
+    {id:"techscout",label:"Tech scout with the department heads",done:()=>S.solved.has("techscout"),route:()=>R("office","caitlin","Take the day's plan from Caitlin")},
+    {id:"supply",label:"Supply run for Priya's UPA van (Ryan's list)",done:()=>S.flags.has("suppliesLoaded"),route:()=>{
+      if(!S.flags.has("supplyList"))return R("office","sal","Ryan has a supply run for you");
       const left=SUPPLY_LIST.filter(k=>!S.flags.has("sup_"+k));
       if(left.length)return R("officeblock","dmitri",`Supply run: ${SUPPLY_LIST.length-left.length}/${SUPPLY_LIST.length} — Dmitri's Hardware`);
       return R("officeblock","vansO","Load the supplies into Priya's UPA van");}},
@@ -4627,8 +4627,8 @@ const DAY_TASKS={
     {id:"relW",label:"St. Agnes Hall: fix it, get Walt's release",done:()=>S.finds.has("relHolding"),route:()=>{const d=dmgLeft("holding");
       return d.length?R("holding",d[0],`Walkthrough at Holding: ${DAMAGE[d[0]].label}`):R("holding","walt","Get Walt's signed release");}},
     {id:"wrap",label:"Sign off the wrap-out checklist at base camp",done:()=>S.solved.has("wrap"),route:()=>R("setblock","wrapboard","Sign off the wrap-out checklist at base camp")},
-    {id:"releasesIn",label:"Office: turn in the releases to AMBR",done:()=>S.flags.has("releasesIn"),route:()=>R("office","gaby","Turn in all three releases to AMBR")},
-    {id:"kitback",label:"Office: return your E-ZPass & P-Card to Kaitlin",done:()=>S.flags.has("kitReturned"),route:()=>R("office","caitlin","Return your E-ZPass & P-Card to Kaitlin")},
+    {id:"releasesIn",label:"Office: turn in the releases to Amber",done:()=>S.flags.has("releasesIn"),route:()=>R("office","gaby","Turn in all three releases to Amber")},
+    {id:"kitback",label:"Office: return your E-ZPass & P-Card to Caitlin",done:()=>S.flags.has("kitReturned"),route:()=>R("office","caitlin","Return your E-ZPass & P-Card to Caitlin")},
     {id:"books",label:"Accounting: final receipts & missing-receipt forms",done:()=>S.flags.has("finalAccounting"),route:()=>R("office","deb","Final receipts with Deb in Accounting")},
     {id:"carback",label:"Return the car to Outerprise",done:()=>S.flags.has("carReturned"),route:()=>R("rental","trevor","Return the car to Trevor at Outerprise")},
     {id:"home",label:"Take the N train home",done:()=>S.flags.has("homeFinal"),route:()=>{
@@ -4636,7 +4636,7 @@ const DAY_TASKS={
       if(S.map==="rentalblock")return {text:"Take the N train home",sub:"Queensboro Plaza station on the corner",tgt:{x:16,y:11}};
       if(S.map==="homeblock")return {text:"You're home. Head upstairs",tgt:{x:4,y:4}};
       return {text:"Take the N train home",sub:"From Queensboro Plaza",tgt:null};}},
-    {id:"email",label:"Read Bryan's email",done:()=>S.phase==="DONE",route:()=>({text:"One new email — from Bryan",sub:"Laptop on your desk",tgt:{x:8,y:1}})},
+    {id:"email",label:"Read Ryan's email",done:()=>S.phase==="DONE",route:()=>({text:"One new email — from Ryan",sub:"Laptop on your desk",tgt:{x:8,y:1}})},
   ],
 };
 function tasksFor(ph){return DAY_TASKS[ph]||[];}
@@ -4681,19 +4681,19 @@ buy=function(id,n){const it=Object.assign({id},SHOP[id]);S.bought[shopKey(id)]=(
     else p(it.blurb,"muted");});};
 openHardware=function(n){openModal("Dmitri's Hardware","LIC · next to the office",{pal:n.sprite});
   const listOn=S.flags.has("supplyList")&&!S.flags.has("suppliesLoaded");
-  p(`"What do you need? Booties, vests, tape, water, ram board. Everything a film crew forgets."`+(listOn?` <span class="muted">Bryan's list is in your pocket.</span>`:""));
+  p(`"What do you need? Booties, vests, tape, water, ram board. Everything a film crew forgets."`+(listOn?` <span class="muted">Ryan's list is in your pocket.</span>`:""));
   const cart=new Set(),list=el("div");mbody.appendChild(list);
   const ring=el("button","act","🛒 Ring it up");
   const upd=()=>{const tot=[...cart].reduce((a,k)=>a+HW[k].price,0);ring.textContent=cart.size?`🛒 Ring it up — $${tot}`:"Pick what you need";ring.disabled=!cart.size||tot>pcardLeft();};
   for(const id in HW){const it=HW[id],have=S.flags.has(it.flag),onList=listOn&&SUPPLY_LIST.includes(id)&&!S.flags.has("sup_"+id);
-    const b=el("button","opt dest","");const draw=()=>{b.innerHTML=`<span class="di">${cart.has(id)?"☑":"☐"} ${it.icon}</span><span><b>${it.name}</b> · $${it.price}${onList?' <span style="color:var(--yellow)">· 📋 on Bryan\'s list</span>':""}<div class="muted" style="margin-top:2px">${have?"✓ Already got it":it.blurb}</div></span>`;};
+    const b=el("button","opt dest","");const draw=()=>{b.innerHTML=`<span class="di">${cart.has(id)?"☑":"☐"} ${it.icon}</span><span><b>${it.name}</b> · $${it.price}${onList?' <span style="color:var(--yellow)">· 📋 on Ryan\'s list</span>':""}<div class="muted" style="margin-top:2px">${have?"✓ Already got it":it.blurb}</div></span>`;};
     draw();if(have)b.disabled=true;b.onclick=()=>{if(cart.has(id))cart.delete(id);else cart.add(id);draw();upd();tone(620,0.02,"square",0.012);};list.appendChild(b);}
   mbody.appendChild(ring);upd();
   ring.onclick=()=>{const ids=[...cart],tot=ids.reduce((a,k)=>a+HW[k].price,0);
     purchase({id:"hw",icon:"🛠️",name:ids.map(k=>HW[k].name.split(" (")[0]).join(", "),price:tot},"Dmitri's Hardware · LIC",n.sprite,"🚪 Leave Hardware",()=>{
       ids.forEach(k=>{S.setFlag(HW[k].flag);if(SUPPLY_LIST.includes(k))S.setFlag("sup_"+k);if(HW[k].rep)S.addRep(HW[k].rep);});
       const left=SUPPLY_LIST.filter(k=>!S.flags.has("sup_"+k));
-      if(S.flags.has("supplyList")&&!S.flags.has("suppliesLoaded"))p(left.length?`Still on Bryan's list: ${left.map(k=>HW[k].icon+" "+HW[k].name.split(" (")[0]).join(", ")}.`:"That's everything on Bryan's list. Load it into Priya's UPA van out front.","muted");});};
+      if(S.flags.has("supplyList")&&!S.flags.has("suppliesLoaded"))p(left.length?`Still on Ryan's list: ${left.map(k=>HW[k].icon+" "+HW[k].name.split(" (")[0]).join(", ")}.`:"That's everything on Ryan's list. Load it into Priya's UPA van out front.","muted");});};
   actBtn("Just looking",closeModal,"act ghost");};
 openCoffee=function(pr){const vendor=pr.id==="cartC"?"Coffee cart · Civic Center":"Coffee cart · LIC";
   openModal(pr.label,"Coffee · $"+COFFEE_ITEM.price);
@@ -4748,20 +4748,20 @@ function openFinalBooks(n){if(pendingReceipts().length){openReceipts(n,()=>openF
         fw.appendChild(f);fw.appendChild(sb);});};
     w.appendChild(b);}}
 
-/* ---------- Prep: Bryan's supply run for the UPA van ---------- */
-function openSupplyList(n){n._dir=OPP[S.dir];openModal("Bryan","Location Manager · supply run",{pal:n.sprite});
+/* ---------- Prep: Ryan's supply run for the UPA van ---------- */
+function openSupplyList(n){n._dir=OPP[S.dir];openModal("Ryan","Location Manager · supply run",{pal:n.sprite});
   p(`"Before you scout anything: I need you to stock Priya's UPA van for shoot day. Here's the list."`);
   mbody.appendChild(el("div","banner kit",SUPPLY_LIST.map(k=>`${S.flags.has("sup_"+k)?"✅":"☐"} ${HW[k].icon} ${HW[k].name}`).join("<br>")));
   p(`"Dmitri's Hardware, right next door, has all of it. Petty cash. And <b>get the receipts</b>, or Deb will come for both of us. Then load it all into the UPA van out front."`);
-  if(!S.flags.has("supplyList")){S.setFlag("supplyList");toast("📋","Supply run","Bryan's list: booties, vests, blue tape, ram board, water, zip ties. Dmitri's Hardware is next door.");}
+  if(!S.flags.has("supplyList")){S.setFlag("supplyList");toast("📋","Supply run","Ryan's list: booties, vests, blue tape, ram board, water, zip ties. Dmitri's Hardware is next door.");}
   actBtn("On it",closeModal);}
 function openVan(pr){if(!S.flags.has("supplyList")||S.phase!=="PREP"||S.flags.has("suppliesLoaded")){openLook(pr);return;}
   const left=SUPPLY_LIST.filter(k=>!S.flags.has("sup_"+k));
   openModal("Priya's UPA van","Unit PA van · shoot-day supplies",{pal:CAST.priya.sprite});
-  if(left.length){p(`Priya pops the back doors. "Bryan's list? I'm still missing: ${left.map(k=>HW[k].icon+" "+HW[k].name.split(" (")[0]).join(", ")}."`);actBtn("Back to the store",closeModal);return;}
+  if(left.length){p(`Priya pops the back doors. "Ryan's list? I'm still missing: ${left.map(k=>HW[k].icon+" "+HW[k].name.split(" (")[0]).join(", ")}."`);actBtn("Back to the store",closeModal);return;}
   p(`Priya pops the back doors. "Booties, vests, blue tape, ram board, water, zip ties. Beautiful. That's shoot day handled."`);
   actBtn("📦 Load the van",()=>{closeModal();V8.busy={t:0,dur:1.6,label:"Loading the UPA van…",done:()=>{S.setFlag("suppliesLoaded");S.addRep(2);S.addCoins(40);confetti(30);chime();
-    toast("🚐","UPA van stocked","Everything on Bryan's list is in Priya's van for shoot day.");addNote("supply","🚐","Supply run done: booties, vests, blue tape, ram board, water and zip ties loaded into the UPA van for shoot day.");}};held.clear();});}
+    toast("🚐","UPA van stocked","Everything on Ryan's list is in Priya's van for shoot day.");addNote("supply","🚐","Supply run done: booties, vests, blue tape, ram board, water and zip ties loaded into the UPA van for shoot day.");}};held.clear();});}
 
 /* ---------- evenings: EOD email, Marching Orders, alarm, bed ---------- */
 function dayStats(){const ph=S.phase,d=S.v8.dayStart||{rep:0,coins:0,heard:0,n:0};
@@ -4776,7 +4776,7 @@ function openMarchingOrders(){const ph=S.phase,next=ph==="PREP"?"SHOOT":"WRAP",s
   openModal("📧 Marching Orders","Inbox · 9:47 PM",{pal:CAST.caitlin.sprite});
   const trashLine=st.tot?`🗑️ <b>Trash:</b> ${st.gone} of ${st.tot} loose bags blue-taped and hauled.`+(st.missed?` <b>${st.missed} missed</b> (${Object.entries(st.where).map(([k,v])=>`${v} on ${k}`).join(", ")}). Sanitation noticed. Let's get them all tomorrow.`:" Every single one. The block thanks you."):"";
   const next3=next==="SHOOT"?"Call time <b>6:00 AM at base camp, Greenpoint</b>. The trucks land at 4.":"Call time <b>7:00 AM on Halloran's block</b>. Company's wrapped; today we give it all back.";
-  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Kaitlin</b> · ALM</div><div><span>To</span>${nm}</div><div><span>Cc</span>Bryan, AMBR</div>
+  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Caitlin</b> · ALM</div><div><span>To</span>${nm}</div><div><span>Cc</span>Ryan, Amber</div>
     <div class="em-s"><span>Subject</span><b>Marching orders: ${dayName(next)} · Mission Implausible: The Pridwin</b></div></div>
     <div class="em-b"><p>Hi ${nm}, great work today. Here's how your ${dayName(ph)} shook out, and tomorrow's plan.</p>
     <p class="em-sec">TODAY · BY THE NUMBERS</p><ul>
@@ -4786,7 +4786,7 @@ function openMarchingOrders(){const ph=S.phase,next=ph==="PREP"?"SHOOT":"WRAP",s
     ${ph==="SHOOT"?`<li>🏠 <b>Neighbors heard out:</b> ${st.heard}.</li>`:""}
     <li>💳 <b>Spending:</b> $${st.spent} spent on ${st.buys} purchase${st.buys===1?"":"s"}. Keep those receipts together; Deb reconciles everything at wrap.</li></ul>
     <p class="em-sec">TOMORROW · ${dayName(next).toUpperCase()}</p><p>${next3}</p><ul>${tasksFor(next).map(t=>`<li>${t.label}</li>`).join("")}</ul>
-    <p>${next==="SHOOT"?"Eat something. Charge your walkie. Wear the warm boots: it's 28°F.":"Last push. Bring your releases folder and your receipt envelope."}</p><p>— Kaitlin</p></div>`));
+    <p>${next==="SHOOT"?"Eat something. Charge your walkie. Wear the warm boots: it's 28°F.":"Last push. Bring your releases folder and your receipt envelope."}</p><p>— Caitlin</p></div>`));
   actBtn("⏰ Set alarm for 5:30 AM",()=>{S.setFlag("alarm_"+ph);if(st.missed&&!S.flags.has("trashRep_"+ph)){S.setFlag("trashRep_"+ph);S.addRep(-1);}
     closeModal();toast("⏰","Alarm set: 5:30 AM","Go get some sleep. The bed's in the corner.");tone(988,0.08,"triangle",0.04);});}
 function goToSleep(){if(V8.sleeping)return;V8.sleeping=true;held.clear();cancelPath();const sl=document.getElementById("sleep");
@@ -4871,16 +4871,16 @@ function openRelease(fid,who,place,portrait){openModal("Location Release",place,
   mbody.appendChild(el("div","release",`<h4>LOCATION RELEASE</h4>Property: <b>${place}</b><br>The undersigned confirms the property has been restored to its original condition and releases <b>Pridwin Productions LLC</b> from any further obligation relating to its use for <i>Mission Implausible: The Pridwin</i>.<div class="ink" id="rel-ink"></div><div class="sig"><span>Owner / Agent</span><span>Date</span></div>`));
   actBtn("✍️ Ask them to sign",()=>{document.getElementById("rel-ink").textContent=who;mbody.querySelectorAll(".act").forEach(x=>x.remove());
     S.addFind(fid);S.addRep(2);addNote("release","📜",`Release signed: ${place} (${who}).`);tone(523,0.06,"triangle",0.04);setTimeout(()=>tone(784,0.1,"triangle",0.04),90);
-    if(hasRel()===3){award("released");confetti(40);chime();toast("📜","All three releases","Take them to AMBR at the office.");}
+    if(hasRel()===3){award("released");confetti(40);chime();toast("📜","All three releases","Take them to Amber at the office.");}
     actBtn("Close",closeModal);});}
 function openFinalEmail(){const nm=S.name||CHARS[S.charIdx].name;
   openModal("📧 One new email","Inbox · 8:12 PM",{pal:CAST.sal.sprite});
-  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Bryan Ferguson</b> · Location Manager</div><div><span>To</span>${nm}</div><div><span>Cc</span>Kaitlin, AMBR</div>
+  mbody.appendChild(el("div","email",`<div class="em-h"><div><span>From</span><b>Ryan</b> · Location Manager</div><div><span>To</span>${nm}</div><div><span>Cc</span>Caitlin, Amber</div>
     <div class="em-s"><span>Subject</span><b>Thank you + summer + wrap party 🍾</b></div></div>
     <div class="em-b"><p>${nm},</p><p>Thank you. Three releases signed, every sign pulled, books closed, not one call to the office about us. Halloran told me you're the first crew that ever put his couch back in the dents. That's the job.</p>
     <p>Which is why I'm asking now: are you free <b>June through August</b>? We're prepping a summer feature called <b><i>Jurassic Parking</i></b>. It's about dinosaurs. And parking. Mostly parking. I want you on it.</p>
     <p>And tonight: <b>wrap party</b>, 9 PM, The Martini Shot in LIC. Open bar. Deb promised not to bring the envelope.</p>
-    <p>See you there.<br>— Bryan</p></div>`));
+    <p>See you there.<br>— Ryan</p></div>`));
   S.addFind("summerGig");actBtn("🎬 WRAP!",()=>{closeModal();startParty();});}
 function startParty(){S.setPhase("DONE");S.map="wrapparty";S.x=9;S.y=10;S.dir="up";S.px=S.x*TILE;S.py=S.y*TILE;S.moving=false;savePos();
   setBanner("THAT'S A WRAP!");confetti(90);chime();award("party");award("wrap");if(CHARS[S.charIdx].id==="frank")award("hotdog");if(!statGet("lifelines"))award("nolife");
@@ -4905,16 +4905,16 @@ function startParty(){S.setPhase("DONE");S.map="wrapparty";S.x=9;S.y=10;S.dir="u
       openRelease("relHalloran","T. Halloran","126 Halloran Brownstone",{pal:e.sprite});return true;}
     if(e.id==="gaby"&&ph==="WRAP"&&!S.flags.has("releasesIn")){e._dir=OPP[S.dir];openModal(e.name,e.role,{pal:e.sprite});
       if(hasRel()<3){p(`"I need all three releases before I close the folder: Halloran, the Adeyemis and St. Agnes. You've got ${hasRel()}."`);actBtn("On it",closeModal);return true;}
-      p(`AMBR takes the releases like they're made of glass. "Halloran. Adeyemi. St. Agnes. Signed, dated, in the folder." She closes it. "If it isn't in the folder, it didn't happen. And it ALL happened."`);
-      S.setFlag("releasesIn");S.addRep(1);addNote("office","📁","Turned in all three location releases to AMBR.");actBtn("Close",closeModal);blip(true);return true;}
+      p(`Amber takes the releases like they're made of glass. "Halloran. Adeyemi. St. Agnes. Signed, dated, in the folder." She closes it. "If it isn't in the folder, it didn't happen. And it ALL happened."`);
+      S.setFlag("releasesIn");S.addRep(1);addNote("office","📁","Turned in all three location releases to Amber.");actBtn("Close",closeModal);blip(true);return true;}
     if(e.id==="caitlin"&&ph==="WRAP"&&!S.flags.has("kitReturned")){e._dir=OPP[S.dir];openModal(e.name,e.role,{pal:e.sprite});
       p(`"E-ZPass and P-Card, please." You hand them over. "Every toll on the account, every charge on the statement. Thanks for not making me chase you."`);
-      S.setFlag("kitReturned");addNote("office","🛣️","Returned the E-ZPass and P-Card to Kaitlin.");actBtn("Close",closeModal);blip(true);return true;}
+      S.setFlag("kitReturned");addNote("office","🛣️","Returned the E-ZPass and P-Card to Caitlin.");actBtn("Close",closeModal);blip(true);return true;}
     if(e.id==="deb"&&ph==="WRAP"&&!S.flags.has("finalAccounting")){e._dir=OPP[S.dir];openFinalBooks(e);return true;}
     if(e.id==="trevor"&&(ph==="WRAP"||ph==="DONE")){e._dir=OPP[S.dir];
       if(S.flags.has("carReturned")){openModal(e.name,e.role,{pal:e.sprite});p(`"Keys are back, tank's full. See you next show!"`);actBtn("Close",closeModal);return true;}
       if(!officeDone()){openModal(e.name,e.role,{pal:e.sprite});p(`"Returning it already? Pretty sure your office still needs you. You'll want the car for that."`);
-        const miss=[];if(!S.solved.has("wrap"))miss.push("wrap-out checklist");if(!S.flags.has("releasesIn"))miss.push("releases to AMBR");if(!S.flags.has("kitReturned"))miss.push("E-ZPass & P-Card to Kaitlin");if(!S.flags.has("finalAccounting"))miss.push("final receipts with Deb");
+        const miss=[];if(!S.solved.has("wrap"))miss.push("wrap-out checklist");if(!S.flags.has("releasesIn"))miss.push("releases to Amber");if(!S.flags.has("kitReturned"))miss.push("E-ZPass & P-Card to Caitlin");if(!S.flags.has("finalAccounting"))miss.push("final receipts with Deb");
         mbody.appendChild(el("div","banner fact","Still to do: "+miss.join(", ")));actBtn("Close",closeModal);return true;}
       openModal(e.name,e.role,{pal:e.sprite});p(`Trevor walks around the car with a clipboard. "No dings, tank's full, no parking tickets in the glovebox. Beautiful. Keys, please."`);
       actBtn("🔑 Hand over the keys",()=>{S.setHasCar(false);S.setFlag("carReturned");addNote("office","🔑","Returned the rental car to Outerprise.");mbody.innerHTML="";
@@ -4928,7 +4928,7 @@ function startParty(){S.setPhase("DONE");S.map="wrapparty";S.x=9;S.y=10;S.dir="u
       if(!S.flags.has("fix_dmg_oil")){openModal("128 — the Adeyemis","Wrap walkthrough",{door:{hc:e.hc,num:e.num}});p(`Mrs. Adeyemi opens the door and points past you. "Have you seen our driveway?"`);actBtn("Checking it now",closeModal);return true;}
       openRelease("relAdeyemi","F. Adeyemi","128 — Adeyemi driveway",{door:{hc:e.hc,num:e.num}});return true;}
     if(e.kind==="holdset"&&ph==="PREP"){openModal(e.label,"St. Agnes Hall");p("Holding goes up on shoot day. Everything's folded and waiting.");actBtn("Close",closeModal);return true;}
-    if(e.id==="wrapboard"&&!S.solved.has("wrap")&&hasRel()<3){openModal("Wrap-out checklist","Base camp");p(`The last box on Bryan's checklist: <b>"All location releases signed."</b> You've got ${hasRel()} of 3. Finish the walkthroughs first.`);actBtn("Close",closeModal);return true;}
+    if(e.id==="wrapboard"&&!S.solved.has("wrap")&&hasRel()<3){openModal("Wrap-out checklist","Base camp");p(`The last box on Ryan's checklist: <b>"All location releases signed."</b> You've got ${hasRel()} of 3. Finish the walkthroughs first.`);actBtn("Close",closeModal);return true;}
     if(e.id==="djbooth"){openModal("The DJ booth","The Martini Shot");p("The DJ grins and points at the button taped to the table: <b>ROLL CREDITS</b>.");actBtn("🎬 Roll credits",()=>{closeModal();rollCredits();});actBtn("Keep partying",closeModal,"act ghost");return true;}
     if((e.id==="deskA"||e.kind==="phone")&&S.flags.has("dayStarted")){
       if(ph==="WRAP"&&S.flags.has("homeFinal")&&e.id==="deskA"){openFinalEmail();return true;}
@@ -4972,7 +4972,7 @@ function startParty(){S.setPhase("DONE");S.map="wrapparty";S.x=9;S.y=10;S.dir="u
     if(f.id==="h_drive"&&ph==="WRAP"&&!S.finds.has("relAdeyemi"))return "Release form";
     if(f.id==="djbooth")return "Roll credits";
     if((f.id==="deskA"||f.kind==="phone")&&(ph==="PREP"||ph==="SHOOT")&&dayTasksDone())return "Evening inbox";
-    if(f.id==="deskA"&&ph==="WRAP"&&S.flags.has("homeFinal"))return "Read Bryan's email";
+    if(f.id==="deskA"&&ph==="WRAP"&&S.flags.has("homeFinal"))return "Read Ryan's email";
     if((f.id==="bed"||f.id==="bedBL")&&S.flags.has("alarm_"+ph))return "Go to sleep";}
   return _vh(faced,txt);};}
 objective=function(){
@@ -4986,7 +4986,7 @@ objective=function(){
     if(tCarry()&&!S.flags.has("hasBlueTape")&&!o.sub)o.sub="🔵 Carrying trash: get blue tape at Dmitri's Hardware (LIC)";return o;}
   if(S.phase==="PREP"||S.phase==="SHOOT"){
     if(S.flags.has("alarm_"+S.phase))return S.map==="apartment"?{text:"Go to bed",sub:"Big day tomorrow",tgt:{x:2,y:2}}:R("apartment","bed","Head home and go to bed");
-    if(S.map==="apartment")return {text:"Check your evening inbox",sub:S.flags.has("eod_"+S.phase)?"Laptop on your desk":"Send Kaitlin your EOD email, then read tonight's marching orders",tgt:{x:8,y:1}};
+    if(S.map==="apartment")return {text:"Check your evening inbox",sub:S.flags.has("eod_"+S.phase)?"Laptop on your desk":"Send Caitlin your EOD email, then read tonight's marching orders",tgt:{x:8,y:1}};
     const o=R("apartment","deskA","🌙 That's the day! Head home");if(!S.flags.has("eod_"+S.phase))o.sub=(o.sub?o.sub+" · ":"")+"EOD email due tonight";return o;}
   return {text:"That's a wrap!",tgt:null};};
 openBoard=function(){openModal("Call Sheet — Mission Implausible: The Pridwin",`${dayName(S.phase)} · production status`);
@@ -5026,7 +5026,7 @@ v8Update=function(dt,now){const s=Math.min(dt,50)/1000;
   if(S.map==="wrapparty"){V8.partyT-=s;if(V8.partyT<=0){V8.partyT=rnd(3,6);confetti(25);}}
   if(!started||S.drive||S.train)return;
   if(dayTasksDone()&&!V8.doneToast[S.phase]&&(S.phase==="PREP"||S.phase==="SHOOT")){V8.doneToast[S.phase]=true;
-    toast("🌙","That's the day!",S.flags.has("eod_"+S.phase)?"Head home. Tonight's marching orders will be in your inbox.":"Head home, send Kaitlin your EOD email, and read tonight's marching orders.");}
+    toast("🌙","That's the day!",S.flags.has("eod_"+S.phase)?"Head home. Tonight's marching orders will be in your inbox.":"Head home, send Caitlin your EOD email, and read tonight's marching orders.");}
   if(S.phase!=="SHOOT")return;
   const onBlock=S.map==="scoutblock"||S.map==="setblock";
   /* unhappy neighbors, any time on shoot day once the trucks land */
@@ -5097,12 +5097,12 @@ function pcardLeft(){return PCARD_LIMIT-pcardSpent();}
   const pc=el("span","pill pcard-pill",`💳 <b id="p-pcard">—</b>`);pc.title="Production P-Card: credit left";pill.after(pc);}
 rewardChips=function(r){let s="";if(r.rep)s+=`<span class="reward">⭐ +${r.rep} rep</span>`;if(r.find&&FINDS[r.find])s+=`<span class="reward">${FINDS[r.find].icon} ${FINDS[r.find].name}</span>`;return s;};
 lifelineBtn=function(wrap,key){const left=3-statGet("lifelines");if(left<=0)return;
-  const b=el("button","act ghost life",`📞 Call AMBR (${left} left this show): strikes one wrong answer`);
+  const b=el("button","act ghost life",`📞 Call Amber (${left} left this show): strikes one wrong answer`);
   b.onclick=()=>{const wrong=[...wrap.querySelectorAll(".opt")].filter(x=>!x.disabled&&x.dataset.ok!=="1");if(!wrong.length)return;
     const w=wrong[Math.floor(Math.random()*wrong.length)];w.disabled=true;w.classList.add("struck");statAdd("lifelines");b.remove();tone(440,0.06,"triangle",0.04);};
   wrap.after(b);return b;};
 TRASH_PRIZE.PREP=20;TRASH_PRIZE.SHOOT=30;TRASH_PRIZE.WRAP=40;
-canBuy=function(id){const it=SHOP[id];if(!S.flags.has("kit"))return "Get your P-Card from Kaitlin first";
+canBuy=function(id){const it=SHOP[id];if(!S.flags.has("kit"))return "Get your P-Card from Caitlin first";
   if(it.needPhase&&S.phase!==it.needPhase)return "Only when it's freezing on the shoot";
   if(it.repeat!=="many"&&S.bought[shopKey(id)])return it.repeat==="phase"?"Bought this phase":"Already bought";
   if(it.price>pcardLeft())return "Over your P-Card limit";return "";};
@@ -5171,12 +5171,12 @@ openFinalBooks=function(n){if(pendingReceipts().length){openReceipts(n,()=>openF
 /* ---------- the kit: E-ZPass, P-Card, and your walkie ---------- */
 openBoss=function(n){
   if(S.flags.has("kit")){if(!S.solved.has("techscout"))openScenario("techscout");else openChat(n);return;}
-  openModal("Kaitlin","Assistant Location Manager · first-day kit",{pal:n.sprite});
-  p(`Kaitlin looks up from the map wall. "There's my new Locations Assistant. You made it, and with the car. Kit first, then the day."`);
+  openModal("Caitlin","Assistant Location Manager · first-day kit",{pal:n.sprite});
+  p(`Caitlin looks up from the map wall. "There's my new Locations Assistant. You made it, and with the car. Kit first, then the day."`);
   p(`She hands you three things: an <b>E-ZPass</b> ("you'll cross a lot of bridges"), the production <b>P-Card</b> ("$1,000 limit, and every charge needs a receipt for Deb"), and a <b>walkie</b> ("Channel 1 for everything. If somebody says 'go to 2,' you switch and answer. Always answer.").`,"muted");
   mbody.appendChild(el("div","banner kit",`🛣️ <b>E-ZPass</b> + 💳 <b>P-Card</b> ($1,000) + 📟 <b>Walkie</b> added. Your own cash stays yours: $${S.coins} in your pocket.`));
   actBtn("Take the kit: what's first?",()=>{S.addFind("ezpass");S.addFind("pcard");S.addFind("walkie");S.unlock("cityblock");S.unlock("scoutblock");S.setFlag("kit");blip(true);updateHUD();
-    closeModal();walkieLine("Kaitlin","Radio check, radio check. Welcome to Channel 1.","copy");openScenario("techscout");});};
+    closeModal();walkieLine("Caitlin","Radio check, radio check. Welcome to Channel 1.","copy");openScenario("techscout");});};
 
 /* ---------- daily rolls: every playthrough is different ---------- */
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -5265,9 +5265,9 @@ function openMTV(n){n._dir=OPP[S.dir];const reyes=n.id==="reyes",f=reyes?"mtv_re
     S.setFlag(f);addNote("mtv","👮",`Met ${n.name} (NYPD Movie/TV Unit), contact saved.`);
     if(S.flags.has("mtv_reyes")&&S.flags.has("mtv_whit"))p("You've got both. Send them to the team group chat — 📱 Phone"+(COARSE?" (☰ Menu)":" (or press P)")+".","muted");
     actBtn("Thanks!",closeModal);blip(true);});}
-function openGroupChat(){openModal("📱 Pridwin Locations 🎬","Group chat · Bryan, Kaitlin, AMBR, you");
+function openGroupChat(){openModal("📱 Pridwin Locations 🎬","Group chat · Ryan, Caitlin, Amber, you");
   const box=el("div","chat");mbody.appendChild(box);
-  const draw=()=>{box.innerHTML=(S.v8.chat.length?S.v8.chat:[{who:"AMBR",text:"Welcome to the Locations chat! Keep it to the show 🙃"}]).map(m=>`<div class="m${m.who==="You"?" me":""}"><b>${m.who}</b>${m.text}</div>`).join("");box.scrollTop=9e9;};draw();
+  const draw=()=>{box.innerHTML=(S.v8.chat.length?S.v8.chat:[{who:"Amber",text:"Welcome to the Locations chat! Keep it to the show 🙃"}]).map(m=>`<div class="m${m.who==="You"?" me":""}"><b>${m.who}</b>${m.text}</div>`).join("");box.scrollTop=9e9;};draw();
   if(S.phase==="SHOOT"&&S.flags.has("mtv_reyes")&&S.flags.has("mtv_whit")&&!S.flags.has("mtvSent")){
     p("Attach to your message:","muted");const sel=new Set(),w=el("div");mbody.appendChild(w);
     [["reyes","📇 Ofc. Reyes: NYPD Movie/TV Unit",1],["whit","📇 Sgt. Whitfield: NYPD Movie/TV Unit",1],["selfie","🤳 Your selfie with the camera truck",0]].forEach(([k,l])=>{
@@ -5275,8 +5275,8 @@ function openGroupChat(){openModal("📱 Pridwin Locations 🎬","Group chat · 
     actBtn("📨 Send",()=>{if(!sel.has("reyes")||!sel.has("whit")){p("You still need both Movie/TV Unit contacts attached.","muted");return;}
       w.remove();mbody.querySelectorAll(".act,.muted").forEach(x=>x.remove());
       chatPost("You",`Movie/TV Unit contacts for today 👮<br><span class="ccard">Ofc. Reyes · (917) 555-0142</span><span class="ccard">Sgt. Whitfield · (917) 555-0187</span>`+(sel.has("selfie")?"<br>🤳 (also, me and the camera truck)":""),true);
-      chatPost("Kaitlin","Perfect, saved. Thank you!",true);chatPost("AMBR","Added to the contact sheet ✅",true);
-      chatPost("Bryan",sel.has("selfie")?"👍 (the selfie was not necessary)":"👍",true);
+      chatPost("Caitlin","Perfect, saved. Thank you!",true);chatPost("Amber","Added to the contact sheet ✅",true);
+      chatPost("Ryan",sel.has("selfie")?"👍 (the selfie was not necessary)":"👍",true);
       S.setFlag("mtvSent");S.addFind("mtvCards");award("groupchat");S.addRep(sel.has("selfie")?1:2);draw();
       addNote("mtv","📱","Sent the Movie/TV Unit contacts to the team group chat.");actBtn("Close",closeModal);blip(true);});}
   else actBtn("Close",closeModal,"act ghost");}
@@ -5304,7 +5304,7 @@ DAY_TASKS.SHOOT.splice(2,0,{id:"mtv",label:"Meet the NYPD Movie/TV Unit & share 
 {const _rs=restore;restore=function(){_rs();v9Defaults();};}
 {const _ca=clearAll;clearAll=function(){_ca();v9Defaults();V8.ch2go=null;V9.adQ=[];};}
 {const _ad=advanceDay;advanceDay=function(){_ad();V8.ch2go=null;V9.adQ=[];S.v8.sched=null;S.v8.dayT=0;v8Save();roll();if(S.phase==="WRAP")applyDrive();
-  chatPost("Kaitlin",S.phase==="SHOOT"?"Morning! Call is 6 at base camp. Trucks are landing. Walkies on Ch. 1 📻":"Last day! Walkthroughs first, then office. Bring your releases folder + receipt envelope 📁",true);};}
+  chatPost("Caitlin",S.phase==="SHOOT"?"Morning! Call is 6 at base camp. Trucks are landing. Walkies on Ch. 1 📻":"Last day! Walkthroughs first, then office. Bring your releases folder + receipt envelope 📁",true);};}
 {const _sc=openScorecard;openScorecard=function(){_sc();const g=mbody.querySelector(".stat-grid");if(!g)return;
   g.appendChild(el("div","stat",`<span>P-Card</span><b>$${pcardSpent()}</b><div class="sub">of $${PCARD_LIMIT}, ${S.v8.purchases.filter(q=>q.rcpt).length}/${S.v8.purchases.length} receipts</div>`));
   g.appendChild(el("div","stat",`<span>Channel 2 calls</span><b>${S.v8.ch2n}</b><div class="sub">"go to 2"</div>`));};}
@@ -5339,7 +5339,7 @@ v8Update=function(dt,now){const s=Math.min(dt,50)/1000;
   if(!started||S.drive||S.train)return;
   if(V9.evCD>0)V9.evCD-=s;
   if(dayTasksDone()&&!V8.doneToast[S.phase]&&(S.phase==="PREP"||S.phase==="SHOOT")){V8.doneToast[S.phase]=true;
-    toast("🌙","That's the day!",S.flags.has("eod_"+S.phase)?"Head home. Tonight's marching orders will be in your inbox.":"Head home, send Kaitlin your EOD email, and read tonight's marching orders.");}
+    toast("🌙","That's the day!",S.flags.has("eod_"+S.phase)?"Head home. Tonight's marching orders will be in your inbox.":"Head home, send Caitlin your EOD email, and read tonight's marching orders.");}
   const ph=S.phase,onBlock=S.map==="scoutblock"||S.map==="setblock",hasWalkie=S.finds.has("walkie");
   if(!(ph in DAY_TASKS)||dayTasksDone())return;
   S.v8.dayT+=s;
@@ -5372,7 +5372,7 @@ v8Update=function(dt,now){const s=Math.min(dt,50)/1000;
   const must=["hole1","hole2","insp","tcd1","ch2a","ch2b","ch2c"].every(k=>F[k]);
   if(t>=FILM_LEN&&must&&S.flags.has("inspected")&&!V8.tcd&&!V8.ch2go&&!V9.adQ.length){S.setFlag("filmingDone");_ddC=0;
     walkieLine("Tom","That's a WRAP on shoot day! Thank you, everybody. Great work.","martini");confetti(40);chime();
-    chatPost("Bryan","Great shoot day, team. Thank you 🎬");}};
+    chatPost("Ryan","Great shoot day, team. Thank you 🎬");}};
 VIOS[1].opts=[["Ask the driver to kill the engine. NYC idling law caps it at 3 minutes, and the Code says engines off as soon as possible.",true,"Engine off. NYC's idling limit is 3 minutes (1 next to a school), and idling is one of the first things neighbors report."],
   ["It's 28°F. Let it run.",false,"Cold doesn't change the idling law, and it's the first thing an inspector notices."],
   ["Move it down the block and let it idle there.",false,"Idling is idling, wherever it happens. Engine off."]];
@@ -5434,10 +5434,10 @@ openCh2=function(c){const who=CAST[c.who]||{name:"Crew",sprite:null},text=!onSet
   const p0=mbody.querySelector("p");if(p0)p0.innerHTML=p0.innerHTML.replace(/Locations, copy\? \.\.\. Yeah, hey, just so you know,/,"Hey! Just so you know,");};}
 /* the AD's Ready / Rolling / Action / Cut calls: you only hear them on set */
 {const _as=adSequence;adSequence=function(){if(onSet())_as();};}
-/* the moment the permit's pulled, Kaitlin says so */
+/* the moment the permit's pulled, Caitlin says so */
 {const _u=v8Update;v8Update=function(dt,now){_u(dt,now);if(!started||S.phase!=="PREP"||!S.solved.has("permit")||S.flags.has("signsDone"))return;
   if(!S.flags.has("signsPing")&&!modalOpen){S.setFlag("signsPing");setBanner("🚧 HANG THE NO PARKING SIGNS");
-    chatPost("Kaitlin","Permit's in! 🎉 Hang the No Parking signs on Halloran's block NOW. They have to be up 48 hours before we shoot. The sign stack's at the far end of the block.");}
+    chatPost("Caitlin","Permit's in! 🎉 Hang the No Parking signs on Halloran's block NOW. They have to be up 48 hours before we shoot. The sign stack's at the far end of the block.");}
   if(V9.sgMap!==S.map){V9.sgMap=S.map;if(S.map==="scoutblock")setBanner("🚧 HANG THE NO PARKING SIGNS");}};}
 
 /* ============================== flow_v73.js =========================== *
@@ -5489,13 +5489,13 @@ function drawPileIcon(cv2){const c=cv2.getContext("2d");c.imageSmoothingEnabled=
   c.strokeStyle="#3a6ea5";c.setLineDash([3,2]);c.strokeRect(2.5,4.5,27,24);c.setLineDash([]);
   c.fillStyle="#3a3f4d";c.fillRect(26,1,2,12);c.fillStyle="#f4f2ec";c.fillRect(18,0,12,7);c.fillStyle="#3a6ea5";c.fillRect(18,0,12,2);
   for(const [x,y] of [[10,21],[20,22],[15,14]]){c.fillStyle="#15171c";c.beginPath();c.ellipse(x,y+3,6,5,0,0,7);c.fill();c.fillStyle="#3a8fe0";c.fillRect(x-6,y+2,12,2);c.fillRect(x-1,y-2,2,9);}}
-function openTrashPlan(){openModal("🗑️ The Trash Plan","Bryan's clean-block rule",{pal:CAST.sal.sprite});
+function openTrashPlan(){openModal("🗑️ The Trash Plan","Ryan's clean-block rule",{pal:CAST.sal.sprite});
   p(`"Production trash is OURS. Every day there are <b>10 loose bags</b> around the places we work. You find them, you haul them. Never into the neighbors' cans, never into the city's."`);
   const pic=el("div","trashpic");const cv2=document.createElement("canvas");cv2.width=32;cv2.height=32;drawPileIcon(cv2);pic.appendChild(cv2);
   pic.appendChild(el("div","",`<b>This is a TrashMan pickup spot.</b><br><span class="muted">A dashed blue square with a little PICKUP sign on the sidewalk. There's one on the <b>Production Office block</b> (LIC), <b>Halloran's block</b> (Brooklyn) and at <b>base camp</b> (Greenpoint).</span>`));
   mbody.appendChild(pic);
-  mbody.appendChild(el("div","banner kit",`<b>The plan</b><br>1. 🔵 Have <b>blue tape</b> (Dmitri's Hardware in LIC; it's on Bryan's supply list).<br>2. 🗑️ Walk over loose bags to pick them up. Carry as many as you like.<br>3. 📍 Bring them to a pickup spot and press ${ACTK}: every bag gets blue-taped and piled.<br>4. 🚛 The TrashMan pulls up and hauls it away.`));
-  mbody.appendChild(el("div","banner fact",`<b>The goal:</b> all 10 hauled every day = Bryan's clean-block cash bonus + points on your final score. Missed bags show up in tonight's email and cost you rep. New bags appear each morning.`));
+  mbody.appendChild(el("div","banner kit",`<b>The plan</b><br>1. 🔵 Have <b>blue tape</b> (Dmitri's Hardware in LIC; it's on Ryan's supply list).<br>2. 🗑️ Walk over loose bags to pick them up. Carry as many as you like.<br>3. 📍 Bring them to a pickup spot and press ${ACTK}: every bag gets blue-taped and piled.<br>4. 🚛 The TrashMan pulls up and hauls it away.`));
+  mbody.appendChild(el("div","banner fact",`<b>The goal:</b> all 10 hauled every day = Ryan's clean-block cash bonus + points on your final score. Missed bags show up in tonight's email and cost you rep. New bags appear each morning.`));
   if(!S.flags.has("hasBlueTape"))mbody.appendChild(el("div","banner no",`🔵 <b>You don't have blue tape yet.</b> Grab it at <b>Dmitri's Hardware</b> next to the production office before you pile anything. The TrashMan won't touch untaped bags.`));
   actBtn("Got it: haul 'em all",closeModal);}
 {const _ct=checkTrash;checkTrash=function(){const before=tCarry(),first=!S.flags.has("trashPlan");if(first)S.flags.add("trashTip");
